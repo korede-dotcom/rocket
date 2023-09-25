@@ -1,6 +1,6 @@
 import React from 'react'
 import Userlayout from '../../reuseables/Userlayout'
-import WalletCard from '../../reuseables/WalletCard'
+import WalletCard from '../../reuseables/walletCard'
 
 function Wallet() {
   return (
