@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { Input, Link, Space } from '@arco-design/web-react';
 import Logo from '../images/logo.svg'
@@ -11,8 +11,8 @@ import Btn from '../reuseables/Btn';
 import { Switch, Timeline, Typography } from '@arco-design/web-react';
 import { DatePicker } from '@arco-design/web-react';
 import { Select } from '@arco-design/web-react';
-import { userLogin } from "../services/Auth";
-import { useMutation } from "@tanstack/react-query";
+import { userLogin,checkEmail } from "../services/Auth";
+import { useMutation,useQuery} from "@tanstack/react-query";
 import { useSessionStorage } from '../hooks/useSessionStorage'
 import { useNavigate } from 'react-router-dom';
 import { Spin, Modal } from '@arco-design/web-react';
@@ -21,7 +21,11 @@ import { UserTestData } from "../../config/Test"
 import Modals from '../reuseables/Modals';
 import { ToastContainer, toast } from 'react-toastify';
 import { Axios } from '../utils/Axios';
+import ReusableModal from '../reuseables/ReusableModal';
+import Msg from '../reuseables/Msg';
+import { BASE_URL } from '../../config/config';
 
+const baseurl = BASE_URL
 
 const Option = Select.Option;
 const TextArea = Input.TextArea;
@@ -33,76 +37,76 @@ const TimelineItem = Timeline.Item;
 
 function Login() {
 
-    var myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/json");
-
-var raw = JSON.stringify({
-  "username": "shaphanayenajeyi@gmail.com",
-  "password": "fileopen",
-  "deviceId": "Tets",
-  "source": "Web"
-});
-
-var requestOptions = {
-  method: 'POST',
-  headers: myHeaders,
-  maxBodyLength: Infinity,
-  body: raw,
-  redirect: 'follow'
-};
-
-fetch("https://moneybusiness.tm-dev.xyz/moneybusiness/auth", requestOptions)
-  .then(response => response.text())
-  .then(result => console.log(result))
-  .catch(error => console.log('error', error));
-
 
 
     const navigate = useNavigate();
     const [err, seterr] = useState(null)
+    const [modal, setModal] = useState(false)
     const [loginDetails, setloginDetails] = useState({
         username: "",
         password: "",
         deviceId: "Tets",
         source: "Web"
     })
-    console.log("🚀 ~ file: Login.jsx:31 ~ Login ~ loginDetails:", loginDetails)
 
     const handleLogin = async () => {
         mutate(loginDetails)
-
-        const result = await Axios.post("moneybusiness/auth", {
-            method: 'POST',
-            body: JSON.stringify(loginDetails),
-          });
-        console.log("🚀 ~ file: Login.jsx:55 ~ handleLogin ~ result:", result)
     }
+
 
     const handleChange = (value, i) => {
         const { name } = i.target
+
+        if(name === "password" && loginDetails.password.length){
+            const requestData = {
+                username: loginDetails.username,
+              };
+          
+              axios
+                .get(`${baseurl}moneybusiness/checkUserExistByEmail`, requestData)
+                .then((response) => {
+                  console.log(response.data);
+          
+                  setloginDetails((prev) => {
+                    return { ...prev, [name]: value };
+                  });
+                })
+                .catch((error) => {
+                    seterr(error?.message)
+                    setModal(true)
+                  console.error(error);
+                });
+
+           
+        }
 
         setloginDetails((prev) => {
             return { ...prev, [name]: value }
         })
 
+ 
+
     }
-    const { setSessionStorage } = useSessionStorage("__appUser")
+    
+
 
     const { mutate, isLoading, isError } = useMutation({
         mutationFn: userLogin,
         onSuccess: (data) => {
-            console.log("🚀 ~ file: Login.jsx:61 ~ Login ~ data:", data)
             if (!data.status) {
                 seterr(data?.message)
                 toast.error(data?.message)
+                setModal(true)
+                return
             }
-            // localStorage.setItem("userDetails",JSON.stringify(UserTestData))
-            setSessionStorage({
-                access_token: data.token,
-            });
-            //  navigate("/dashboard");
+            localStorage.setItem("userDetails",JSON.stringify(data))
+            navigate("/user/dashboard")
+
+
+          
         },
         onError: (data) => {
+            setModal(true)
             // localStorage.setItem("userDetails",JSON.stringify(UserTestData))
             // console.log(data.response.data.message)
             setTimeout(() => {
@@ -127,6 +131,16 @@ fetch("https://moneybusiness.tm-dev.xyz/moneybusiness/auth", requestOptions)
                             <p>Welcome back! Please enter your details.</p>
                         </div>
                         <div className='inputform'>
+                        {
+                            modal && (
+                                <ReusableModal isOpen={modal} onClose={() => setModal(false)} >
+                                   <Msg>
+                                   {err}
+                                   </Msg>
+                                </ReusableModal>
+
+                            )
+                        }
                             <div>
                                 <span>Email</span>
                                 <InputStyle >
@@ -144,7 +158,7 @@ fetch("https://moneybusiness.tm-dev.xyz/moneybusiness/auth", requestOptions)
                                 <Link style={{ color: 'var(--primary-color)' }}>Forgot password</Link>
                             </div>
                             <div>
-                                <Btn clicking={handleLogin} styles={{ width: '100%', background: 'var(--primary-color)', color: '#fff', borderRadius: '8px', padding: '0.8em' }}>
+                                <Btn disabled={loginDetails?.username === "" && loginDetails?.password === "" ? true : false} clicking={handleLogin} styles={{ width: '100%', background: 'var(--primary-color)', color: '#fff', borderRadius: '8px', padding: '0.8em' }}>
                                     {isLoading ? <Spin dot /> : "Sign In"}
                                 </Btn>
                             </div>
@@ -154,8 +168,11 @@ fetch("https://moneybusiness.tm-dev.xyz/moneybusiness/auth", requestOptions)
                             </CenterElement>
                         </div>
 
+                   
+
+
                        
-                        <ToastContainer
+                        {/* <ToastContainer
                             position="top-right"
                             autoClose={1000}
                             hideProgressBar={false}
@@ -167,8 +184,7 @@ fetch("https://moneybusiness.tm-dev.xyz/moneybusiness/auth", requestOptions)
                             pauseOnHover
                             theme="light"
                         />
-                        {/* Same as */}
-                        <ToastContainer />
+                        <ToastContainer /> */}
 
 
                     </Center>

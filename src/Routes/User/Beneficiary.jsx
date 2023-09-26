@@ -3,7 +3,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import Userlayout from '../../reuseables/Userlayout'
 import {styled} from "styled-components"
 import { Input, Space } from '@arco-design/web-react';
@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { useMutation,useQuery } from "@tanstack/react-query";
 import FormattedDate from '../../reuseables/FormattedDate';
+import {GetDetails} from "../../services/Dashboard"
 
 
 
@@ -85,17 +86,43 @@ const InputSearch = Input.Search;
 
 
 function Beneficiary() {
+
+  const Userdata = JSON.parse(localStorage?.getItem("userDetails"))
+  const BeneList = Userdata?.data.user.beneficiaries
+
+    // useEffect(() => {
+      
+    // },[Userdata])
+
+    const { data:newDetails,isLoading:newDetailsloading,refetch:refetchnewDetails} = useQuery({
+      queryKey: [Userdata?.data?.user?.userId],
+      queryFn: GetDetails,
+      // refetchInterval: 10000, // fetch data every 10 seconds
+      onError: (err) => {
+        // navigate("/")
+      //   setMessage(err.response.data.detail || err.message);
+      //   setOpen(true);
+      console.log(err)
+      },
+    });
+    console.log("🚀 ~ file: Beneficiary.jsx:108 ~ Beneficiary ~ newDetails:", newDetails)
+
+    // localStorage.setItem("userDetails",newDetails)
+
+
+
     const navigate = useNavigate();
 
-    const Userdata = JSON.parse(localStorage.getItem("userDetails"))
-    const BeneList = Userdata?.data.user.beneficiaries
+
 
     // const goBack = () => {
     //   navigate(-1); // This navigates back to the previous page in the navigation stack.
     // };
 
+
+
     const [searchKeyword, setSearchKeyword] = useState("");
-const [filteredBeneList, setFilteredBeneList] = useState(BeneList);
+    const [filteredBeneList, setFilteredBeneList] = useState(BeneList);
 
 
     const handleSearch = (event) => {
@@ -135,15 +162,14 @@ const [filteredBeneList, setFilteredBeneList] = useState(BeneList);
                             <Link key={d.id} className='box' to={`/user/beneficiary/details?id=${d.id}`} style={{color:"#000",textDecoration:"none"}}>
                             <Box>
                             <Avatar className="av">
-  {`${d?.beneficiaryName?.split(" ")[0][0]} ${d?.beneficiaryName?.split(" ")[1][0]}`}
-</Avatar>
+                                {`${d?.beneficiaryName?.split(" ")[0][0]} ${d?.beneficiaryName?.split(" ")[1][0]}`}
+                                </Avatar>
 
                                 <div className='text'>
                                     <h5 >{d?.beneficiaryName}</h5>
                                     <p>{d?.beneficiaryPhoneNumber}</p>
                                     <p>{d?.beneficiaryBank?.accountNumber.length ? "Bank" : "Pick Up"}</p>
                                     <p>createOn : <FormattedDate dateString={d?.dateCreated}/></p>
-
                                 </div>
                                 <div className='options'>
                                 {/* <Dropdown droplist={Droplist} position='bl' on>

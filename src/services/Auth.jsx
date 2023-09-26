@@ -29,6 +29,14 @@ export const countries = async () => {
   );
   return data;
 };
+export const checkEmail = async (body) => {
+  const { data } = await Axios.get(
+    `${baseurl}moneybusiness/checkUserExistByEmail`,
+    body
+  );
+  console.log("🚀 ~ file: Auth.jsx:37 ~ checkEmail ~ data:", data)
+  return data;
+};
 export const profession = async () => {
   const { data } = await Axios.get(
     `${baseurl}moneybusiness/getprofession`

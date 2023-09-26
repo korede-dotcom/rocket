@@ -13,10 +13,11 @@ const modalStyles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+
   },
   modal: {
     backgroundColor: '#fff',
-    borderRadius: '4px',
+    borderRadius: '10px',
     padding: '20px',
     boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.1)',
     position: 'relative',
@@ -27,6 +28,14 @@ const modalStyles = {
     right: '10px',
     cursor: 'pointer',
   },
+  span:{
+    height:"100px" ,
+    width:"200px",
+    display:"inline-flex",
+    justifyContent:"center",
+    alignItems:"center"
+    
+  }
 };
 
 function ReusableModal({ isOpen, onClose, children }) {
@@ -40,8 +49,11 @@ function ReusableModal({ isOpen, onClose, children }) {
           style={modalStyles.closeButton}
         >
           &#x2715;
-        </span>
+        </span >
+        <div style={modalStyles.span}>
+
         {children}
+        </div>
       </div>
     </div>
   );

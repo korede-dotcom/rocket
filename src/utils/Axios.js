@@ -4,35 +4,39 @@ import { BASE_URL } from '../../config/config';
 const baseurl = BASE_URL
 
 
+
+// Create an Axios instance with default configuration
 export const Axios = axios.create({
   baseURL: baseurl,
   maxBodyLength: Infinity,
+  withCredentials: true, // Send and accept cookies with each request
 });
 
-Axios.interceptors.request.use((config) => {
-  const token = JSON.parse(sessionStorage.getItem("__appUser"))?.access_token;
-
-  if (token) {
-    config.headers = {}
-  }
-
-  return config;
-});
-
-Axios.interceptors.response.use(
-  function (response) {
-    return response;
+// Request interceptor
+Axios.interceptors.request.use(
+  (config) => {
+    // You can add any custom headers or transformations here if needed
+    return config;
   },
-  function (error) {
-    if (401 === error?.response?.status) {
-      window.location = "/";
-    } else if ("Request failed with status code 500" === error.message || error?.response?.status >= 500) {
-      return Promise.reject({
-        ...error,
-        message: "It's not you, it's us. Try again later.",
-      });
-    } else {
-      return Promise.reject(error);
-    }
+  (error) => {
+    return Promise.reject(error);
   }
 );
+
+// Response interceptor
+Axios.interceptors.response.use(
+  (response) => {
+    // Handle successful responses here if needed
+    return response;
+  },
+  (error) => {
+    // Handle errors, including 401 unauthorized (if needed)
+    return Promise.reject(error);
+  }
+);
+
+
+export default Axios;
+
+
+

@@ -8,6 +8,13 @@
   }
 }
 
+* > .arco-input-inner-wrapper .arco-input-group{
+  
+  outline: none !important;
+}
+
+
+
 p{
   font-size: 12px;
 }

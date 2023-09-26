@@ -53,6 +53,13 @@ export const Payoutchannel = async () => {
     );
     return data;
 };
+export const GetDetails = async (id) => {
+    console.log("🚀 ~ file: Dashboard.jsx:57 ~ GetDetails ~ id:", id?.queryKey[0])
+    const { data } = await Axios.get(
+      `${baseurl}moneybusiness/getuserdashboard/${id?.queryKey[0]}`
+    );
+    return data;
+};
 
 export const Rates = async (fcId,tcId,famount,tamount) => {
     const { data } = await Axios.get(
