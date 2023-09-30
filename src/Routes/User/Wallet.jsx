@@ -2,7 +2,7 @@ import React,{useEffect, useState} from 'react'
 import Userlayout from '../../reuseables/Userlayout'
 import WalletCard from '../../reuseables/walletCard'
 import {styled} from 'styled-components'
-import Kyc from '../../reuseables/Kyc'
+// import Kyc from '../../reuseables/Kyc'
 import { Carousel } from '@arco-design/web-react';
 import { useQuery } from '@tanstack/react-query'
 import { GetDetails } from '../../services/Dashboard'

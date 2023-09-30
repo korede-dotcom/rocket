@@ -28,7 +28,7 @@ import TransactionDetails from './Routes/User/TransactionDetails'
 import 'react-toastify/dist/ReactToastify.css';
 import UploadBeneficiaryFiles from './Routes/User/UploadBeneficiaryFiles'
 import SendMoney from './Routes/User/SendMoney'
-import Wallet from './Routes/User/Wallet'
+import Wallet from './Routes/User/Wallet';
 import AgentCustomer from './Routes/Agent/AgentCustomer'
 
 
