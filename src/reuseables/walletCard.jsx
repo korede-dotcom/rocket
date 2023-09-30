@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import card from "../images/card.svg"
-import wallet from "../images/wallet.svg"
+import wallet from "../images/Wallet.svg"
 import ReactCountryFlag from 'react-country-flag'
 import { Carousel } from '@arco-design/web-react';
 import CountryFlag from 'react-country-flag';
