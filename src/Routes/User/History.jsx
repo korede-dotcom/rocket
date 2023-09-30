@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-vars */
 
 
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import Userlayout from '../../reuseables/Userlayout'
 import {styled} from "styled-components"
 import { Input, Space } from '@arco-design/web-react';
@@ -81,10 +81,16 @@ const InputSearch = Input.Search;
 
 function History() {
 
-    const Userdata = JSON.parse(localStorage.getItem("userDetails"))
+  const [Userdata,setUserdata] = useState(null)
+  useEffect(() => {
+    const userDataFromLocalStorage = JSON.parse(localStorage.getItem("userDetails"));
+    setUserdata(userDataFromLocalStorage);
+  }, []); 
+
+    // const Userdata = JSON.parse(localStorage.getItem("userDetails"))
     const { data:nameEnq,isLoading:namEnqloading,refetch:refetchnameEnq} = useQuery({
-          // queryKey: ["nameEnq"],
-          queryFn: Tranx(Userdata?.data?.user?.userId),
+          queryKey: [Userdata?.data?.user?.userId],
+          queryFn: Tranx,
           // refetchInterval: 10000, // fetch data every 10 seconds
           onError: (err) => {
           //   setMessage(err.response.data.detail || err.message);
@@ -92,18 +98,21 @@ function History() {
           console.log(err)
           },
         });
+    console.log("🚀 ~ file: History.jsx:95 ~ History ~ nameEnq:", nameEnq)
+
+      
   
-  const [transactionList, setTransactionList ] = useState(nameEnq || Trnx.data )
+  const [transactionList, setTransactionList ] = useState(nameEnq?.data || Trnx?.data)
 
   const [searchKeyword, setSearchKeyword] = useState('');
   const [filteredData, setFilteredData] = useState(transactionList && transactionList);
-  console.log("🚀 ~ file: History.jsx:99 ~ History ~ filteredData:", filteredData)
   const [sortOrder, setSortOrder] = useState('asc'); // or 'desc' for descending
   const [showFilterOptions,setshowFilterOptions] = useState(false)
   const [filterby,setFilerby] = useState("")
 
-  const objectKeys = Object.keys(filteredData[0]);
-console.log(objectKeys);
+  // const objectKeys = Object.keys(filteredData[0]);
+  const objectKeys = filteredData && filteredData.length > 0 ? Object.keys(filteredData[0]) : [];
+
 
 
   // Function to handle search
@@ -169,7 +178,7 @@ const handlesorts = () => {
                         }
                       }).map(item =>  (
                         <>
-                                <Link className='box' to='/user/transactions/details' style={{color:"#000",textDecoration:"none"}}>
+                                <Link className='box' to={`/user/transactions/details/?id=${item.sn}`} style={{color:"#000",textDecoration:"none"}}>
                                 <Box>
                                 {/* <Avatar  className="av">AB</Avatar> */}
                                 {

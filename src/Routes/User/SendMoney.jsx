@@ -23,10 +23,13 @@ import CountryFlag from 'react-country-flag';
 import RateComponent from "../../reuseables/Rates"
 import Total from '../../reuseables/Total';
 import Checktrnx from "../../images/checktnx.svg"
+import { Tooltip} from '@arco-design/web-react';
+const { Text } = Typography;
 const TextArea = Input.TextArea;
 
 const InputSearch = Input.Search;
 const TabPane = Tabs.TabPane;
+
 
 
 
@@ -107,6 +110,7 @@ const Droplist = ({ id, onNavigate }) => (
     const three = 3;
     const four = 4;
 
+    
 
 
     const { data:paymentchannel,isLoading:paymentchannelloading,refetch:refetchpaymentchannel} = useQuery({
@@ -150,8 +154,9 @@ const Droplist = ({ id, onNavigate }) => (
             "description": "Bank Transfer"
       }
 
-    const [pchannel, setpchannel] = useState(paymentchannel ||testpaymentchannel?.data );
-    const [payouts, setpayouts] = useState(payout ||payoutchannels?.data );
+    const [pchannel, setpchannel] = useState(paymentchannel?.data ||testpaymentchannel?.data );
+    const [payouts, setpayouts] = useState(payout?.data ||payoutchannels?.data );
+    console.log("🚀 ~ file: SendMoney.jsx:157 ~ SendMoney ~ payouts:", payouts)
 
     const mappedPurpose = testtransferpurpose?.data?.map(d => {
         return {
@@ -199,6 +204,7 @@ const Droplist = ({ id, onNavigate }) => (
       const [selectedBene, setselectedBene] = useState();
       const [isSelected, setisSelected] = useState(false);
       const [selectedItems, setSelectedItems] = useState(null);
+      const [selectedItems2, setSelectedItems2] = useState(null);
   
       const handleSearch = (event) => {
           const keyword = event;
@@ -220,10 +226,16 @@ const Droplist = ({ id, onNavigate }) => (
       
       
 
-        const handleSelect = (id) => {
-            console.log("🚀 ~ file: SendMoney.jsx:155 ~ handleSelect ~ id:", id)
+        const handleSelect = (id,name) => {
+            console.log("🚀 ~ file: SendMoney.jsx:155 ~ handleSelect ~ id:", id,name)
           
             setSelectedItems(id);
+          
+        }
+        const handleSelect2 = (id,name) => {
+            console.log("🚀 ~ file: SendMoney.jsx:155 ~ handleSelect ~ id:", id,name)
+          
+            setSelectedItems2(id);
           
         }
 
@@ -297,8 +309,14 @@ const Droplist = ({ id, onNavigate }) => (
                     
                     
                 </BeneficiaryCont>
+    
+                
                 <div className='btn'>
-                  <Btn clicking={handleStep}>Continue</Btn>
+                    {
+                        selectedItems && (
+                            <Btn disabled={!selectedItems && true} clicking={handleStep}>Continue</Btn>
+                        )
+                    }
                 </div>
                         </>
 
@@ -322,7 +340,7 @@ const Droplist = ({ id, onNavigate }) => (
                                             pchannel?.filter(d => d.status)?.map((d)=> {
                                                 const isSelected = selectedItems === d?.id;
                                                 return (
-                                                    <div key={d.id} className='box' style={{color:"#000",textDecoration:"none",border:`${isSelected ?'2px solid rgba(22, 157, 7, 1)' : '2px solid rgba(233, 237, 245, 1)'}`}} onClick={() => handleSelect(d?.id)}>
+                                                    <div key={d.id} className='box' style={{color:"#000",textDecoration:"none",border:`${isSelected ?'2px solid rgba(22, 157, 7, 1)' : '2px solid rgba(233, 237, 245, 1)'}`}} onClick={() => handleSelect(d?.id,d?.name)}>
                                                     <Box>
                                                     {/* <Avatar className="av"> */}
                                                         {
@@ -386,9 +404,9 @@ const Droplist = ({ id, onNavigate }) => (
                                             <p>Collection Type</p>
                                         {
                                             payouts?.filter(d => !d.status)?.map((d)=> {
-                                                const isSelected = selectedItems === d?.id;
+                                                const isSelected = selectedItems2 === d?.id;
                                                 return (
-                                                    <div key={d.id} className='box' style={{color:"#000",textDecoration:"none",border:`${isSelected ?'2px solid rgba(22, 157, 7, 1)' : '2px solid rgba(233, 237, 245, 1)'}`}} onClick={() => handleSelect(d?.id)}>
+                                                    <div key={d.id} className='box' style={{color:"#000",textDecoration:"none",border:`${isSelected ?'2px solid rgba(22, 157, 7, 1)' : '2px solid rgba(233, 237, 245, 1)'}`}} onClick={() => handleSelect2(d?.id,d?.name)}>
                                                     <Box>
                                                     {/* <Avatar className="av"> */}
                                                         {

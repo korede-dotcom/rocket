@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React,{useState,useEffect} from 'react'
 import CountryDropdown from './CountryList'
 import CountryFlag from 'react-country-flag';
@@ -8,6 +9,8 @@ import AmountFormatter from '../reuseables/AmountFormatter'
 function Rates() {
     const Userdata = JSON.parse(localStorage.getItem("userDetails"))
     console.log("🚀 ~ file: Dashboard.jsx:18 ~ Dashboard ~ Userdata:", Userdata)
+
+    
 
 
     const countryFlags = [

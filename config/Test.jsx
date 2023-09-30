@@ -3006,7 +3006,6 @@ export const countries = {
     ]
   }
 
-
   export const stateTest = {
     "transactionRef": "SUCCESS",
     "status": true,

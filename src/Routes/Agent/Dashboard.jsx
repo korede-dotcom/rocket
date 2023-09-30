@@ -21,6 +21,7 @@ import {Rates} from '../../services/Dashboard'
 import {countries} from '../../services/Auth'
 import { useQuery } from '@tanstack/react-query'
 import CustomInput from '../../reuseables/CustomInput'
+import Agentlayout from '../../reuseables/AgentLayout'
 
 function Dashboard() {
     const navigate = useNavigate()
@@ -134,7 +135,7 @@ function Dashboard() {
  
 
   return (
-   <Userlayout>
+   <Agentlayout>
     <Content>
   
       {/* <div>
@@ -187,8 +188,9 @@ function Dashboard() {
                                 <rect x="3" y="3" width="32" height="32" rx="16" stroke="#31B550" strokeOpacity="0.1" strokeWidth="5"/>
                                 </svg>
                                 <div className='dashboardamount'>
-                                <p>Total Transaction </p>
+                                <p>Total Earnings </p>
                                 <h3>{dashboardDetails?.totalSuccessful || (dashboardDetails?.depositedAmount || 0)}</h3>
+                                <p>Count: 12,900</p>
                                 </div>
                         </div>      
                         <div className='dbox dbox2'>
@@ -199,8 +201,9 @@ function Dashboard() {
                         <rect x="3" y="3" width="32" height="32" rx="16" stroke="#FEC84B" strokeOpacity="0.1" strokeWidth="5"/>
                         </svg>
                         <div className='dashboardamount'>
-                            <p>Pending Transactions</p>
+                            <p>Available Balance</p>
                             <h3>{dashboardDetails?.totalPendingAmount || (dashboardDetails?.pendingAmount || 0)}</h3>
+                            <p>Count: 12,900</p>
                         </div>
                          </div>      
                         <div className='dbox dbox3'>
@@ -220,19 +223,13 @@ function Dashboard() {
 
                         </div>      
                         <div className='dbox dbox4'>
-                    <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="3" y="3" width="32" height="32" rx="16" fill="#F04438"/>
-                    <g clipPath="url(#clip0_391_5535)">
-                    <path d="M19 23.0576C17.9095 23.0576 17.0225 23.9447 17.0225 25.0351C17.1219 27.6549 20.8784 27.6542 20.9774 25.0351C20.9774 23.9447 20.0903 23.0576 19 23.0576Z" fill="white"/>
-                    <path d="M20.9765 11.9132C19.9952 10.6959 18.0053 10.6953 17.0236 11.9132C16.532 12.4985 16.3256 13.2658 16.4574 14.0183C16.8503 16.2632 17.4047 19.4315 17.6536 20.8544C17.9324 22.3522 20.0678 22.3517 20.3463 20.8545L21.5427 14.0183C21.6745 13.2658 21.4681 12.4985 20.9765 11.9132Z" fill="white"/>
-                    </g>
-                    <rect x="3" y="3" width="32" height="32" rx="16" stroke="#F04438" strokeOpacity="0.1" strokeWidth="5"/>
-                    <defs>
-                    <clipPath id="clip0_391_5535">
-                    <rect width="16" height="16" fill="white" transform="translate(11 11)"/>
-                    </clipPath>
-                    </defs>
-                    </svg>
+                        <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="32" height="32" rx="16" fill="#F04438"/>
+                        <path d="M28 15.7305V14.7812C28 13.6939 27.1186 12.8125 26.0312 12.8125H11.9688C10.8814 12.8125 10 13.6939 10 14.7812V15.7305C10 15.8275 10.0787 15.9062 10.1758 15.9062H27.8242C27.9213 15.9062 28 15.8275 28 15.7305Z" fill="white"/>
+                        <path d="M10 17.207V23.2188C10 24.3061 10.8814 25.1875 11.9688 25.1875H26.0312C27.1186 25.1875 28 24.3061 28 23.2188V17.207C28 17.11 27.9213 17.0312 27.8242 17.0312H10.1758C10.0787 17.0312 10 17.11 10 17.207ZM14.5 21.8125C14.5 22.1231 14.2481 22.375 13.9375 22.375H13.375C13.0644 22.375 12.8125 22.1231 12.8125 21.8125V21.25C12.8125 20.9394 13.0644 20.6875 13.375 20.6875H13.9375C14.2481 20.6875 14.5 20.9394 14.5 21.25V21.8125Z" fill="white"/>
+                        <rect x="3" y="3" width="32" height="32" rx="16" stroke="#F04438" stroke-opacity="0.1" stroke-width="5"/>
+                        </svg>
+
                     <div className='dashboardamount'>
                         <p>Failed Transactions</p>
                         <h3>{dashboardDetails?.totalFailedAmount || (dashboardDetails?.failedAmount || 0)}</h3>
@@ -262,7 +259,7 @@ function Dashboard() {
         </SectionTwo>
         <SectionThree>
             <div className='text'>
-                <p>Select country to view rates</p>
+                <p>Select country to view today's rates</p>
                 <CountryDropdown  value={selectedCountry} onChange={handleRates} />
                 {/* <CustomInput placeholder="Input Amount" onChange={(e) => console.log(e.target.value) } /> */}
 
@@ -309,7 +306,7 @@ function Dashboard() {
         </div>
         </SectionFour>
     </Content>
-   </Userlayout>
+   </Agentlayout>
   )
 }
 
@@ -330,6 +327,15 @@ const Content = styled.div`
     /* border: 1px solid red; */
 
 
+    .dashboardamount{
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      > p:nth-of-type(2) {
+        font-weight: lighter;
+        
+      }
+    }
 
 
  
@@ -403,7 +409,8 @@ height: 90vh;
 }
 
 .sel1{
-    background-color: #00A85A;
+    background-color: rgba(127, 86, 217, 1);
+    background-image: linear-gradient(to left top, rgba(127, 86, 217, 1),rgba(83, 56, 158, 1));
     height: 250px;
     padding: 1rem;
     text-align: center;

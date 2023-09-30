@@ -16,24 +16,54 @@ import Select from 'react-select';
 import CustomSelect from '../../reuseables/CustomSelect';
 import {InputStyle} from "../../styles/Input";
 import {countries,cities,states,employment,profession} from "../../services/Auth"
-import {nameEnquiry,createBeneficiary} from "../../services/Dashboard"
+import {nameEnquiry,createBeneficiary,getBanks,Payoutchannel} from "../../services/Dashboard"
 import {countries as testCountries,stateTest as testState,cityTest as cityTest,employment as employmentTest, profession as professionTest,BankTest as BankList,nameEnq as NameEqnquiry } from "../../../config/Test"
 import CustomInput from '../../reuseables/CustomInput';
-
+import Loader from "../../reuseables/Loader"
+import ReusableModal from '../../reuseables/ReusableModal';
+import Msg from '../../reuseables/Msg';
 
 
 
 function CreateBeneficiary() {
 
-const [accNum,setAccNum] = useState("");
-const [bankcode,setBankCode] = useState();
+    const [accNum,setAccNum] = useState(null);
+    const [info,setInfo] = useState(null);
+    const [show,setShow] = useState(false);
+    const [bankcode,setBankCode] = useState();
+    const [countryDetails, setCountryDetails] = useState({
+        "regionId": 1,
+        "subRegionId": 3,
+        "telephoneCode": "234",
+        "currencyCode": "NGN",
+        "emoji": "??",
+        "status": false,
+        "id": 161,
+        "name": "Nigeria",
+        "longitude": "8",
+        "latitude": "10"
+    });
+
 
     useEffect(() => {
        
     },[accNum])
 
+    const { data:Banks,isLoading:BankListloading,refetch:refetchBankList} = useQuery({
+        // queryKey: ["nameEnq"],
+        queryFn: getBanks,
+        // refetchInterval: 10000, // fetch data every 10 seconds
+        onError: (err) => {
+        //   setMessage(err.response.data.detail || err.message);
+        //   setOpen(true);
+        console.log(err)
+        },
+      });
 
-    const banksSelection =  BankList?.data?.map(d => {
+      const [banks,setbanks] = useState(Banks?.data || BankList?.data)
+
+
+    const banksSelection =  banks?.map(d => {
         return{
             name:d?.bankCode,
             label:d?.bankName
@@ -54,17 +84,38 @@ const [bankcode,setBankCode] = useState();
       ];
 
     const defaultCountry = {
-        label: 'United Kingdom',
-        value: 'GB', // ISO country code for the UK
+        label: 'Nigeria',
+        value: 'NG', // ISO country code for the UK
         flag: '', // URL to the UK flag image
       };
 
       const options = ['Beijing', 'Shanghai', 'Guangzhou', 'Disabled'];
+      const [Countries,setCountries] = useState()
+
+
+      const { data:payout,isLoading:payoutloading,refetch:refetchpayout} = useQuery({
+        // queryKey: ["nameEnq"],
+        queryFn:Payoutchannel ,
+        onSuccess:(data) => {
+            console.log("🚀 ~ file: CreateBeneficiary.jsx:100 ~ CreateBeneficiary ~ data:", data)
+            
+        },
+        // refetchInterval: 10000, // fetch data every 10 seconds
+        onError: (err) => {
+        //   setMessage(err.response.data.detail || err.message);
+        //   setOpen(true);
+        console.log(err)
+        },
+      });
+      console.log("🚀 ~ file: CreateBeneficiary.jsx:110 ~ CreateBeneficiary ~ payout:", payout)
 
 
       const { data:countrylist,isLoading:countrylistloading,refetch:refetchcountrylist } = useQuery({
         queryKey: ["getCategories"],
         queryFn: countries,
+        onSuccess:(data) => {
+            setCountries(data?.data)
+        },
         // refetchInterval: 10000, // fetch data every 10 seconds
         onError: (err) => {
         //   setMessage(err.response.data.detail || err.message);
@@ -74,8 +125,28 @@ const [bankcode,setBankCode] = useState();
       });
 
       const { data:nameEnq,isLoading:namEnqloading,refetch:refetchnameEnq} = useQuery({
-        // queryKey: ["nameEnq"],
-        queryFn: nameEnquiry(bankcode,accNum),
+        queryKey: [bankcode,accNum],
+        queryFn: nameEnquiry,
+        onSuccess: (data) => {
+            console.log("🚀 ~ file: CreateBeneficiary.jsx:93 ~ CreateBeneficiary ~ data:", data)
+            setCreateBene((prev) => {
+                return {
+                    // userId: 1000,
+                    userBeneficiary: {
+                        countryId:countryDetails?.id,
+                        beneficiaryName: data?.data?.account_name,
+                        beneficiaryPhoneNumber: "",
+                        beneficiaryBank: {
+                            accountNumber:data?.data?.account_number,
+                            bankId:data?.data?.bank_id
+                        }
+                    }
+     
+                }})
+                
+    
+            
+        },
         // refetchInterval: 10000, // fetch data every 10 seconds
         onError: (err) => {
         //   setMessage(err.response.data.detail || err.message);
@@ -84,9 +155,8 @@ const [bankcode,setBankCode] = useState();
         },
       });
 
-      const [Countries,setCountries] = useState(countrylist || testCountries.data)
-      const [nameenquiry,setnameenquiry] = useState(nameEnq || NameEqnquiry.data)
-      console.log("🚀 ~ file: CreateBeneficiary.jsx:89 ~ CreateBeneficiary ~ nameenquiry:", nameenquiry)
+      const [nameenquiry,setnameenquiry] = useState(nameEnq?.data)
+      console.log("🚀 ~ file: CreateBeneficiary.jsx:102 ~ CreateBeneficiary ~ nameenquiry:", nameEnq?.data)
 
       
       const [user,setUser] = useState({
@@ -111,18 +181,15 @@ const [bankcode,setBankCode] = useState();
     
     //   const [selectedCountry, setSelectedCountry] = useState(defaultCountry);
       const [selectedCountry, setselectedCountry] = useState(defaultCountry);
-      const [countryDetails, setCountryDetails] = useState();
       const [type, setType] = useState({name:"direct",label:"direct to bank"});
-      console.log("🚀 ~ file: CreateBeneficiary.jsx:85 ~ CreateBeneficiary ~ countryDetails:", Countries)
       
       const handleSelectCountry = (e) => {
           console.log("🚀 ~ file: CreateBeneficiary.jsx:105 ~ handleSelectCountry ~ e:", e)
+          const getCountryDetails = Countries?.find(d => d?.name?.toLowerCase() === e?.label?.toLowerCase());
+          console.log("🚀 ~ file: CreateBeneficiary.jsx:155 ~ handleSelectCountry ~ getCountryDetails:", getCountryDetails)
         setselectedCountry(e)
-        // const CountryOption = [...Countries.find(d => d.currencyCode == e.label)];
         
-        const getCountryDetails = Countries.find(d => d?.name === e?.label);
         setCountryDetails(getCountryDetails && getCountryDetails)
-        console.log("🚀 ~ file: Register.jsx:78 ~ handleSelectCountry ~ e:", getCountryDetails)
         
     }
 
@@ -141,30 +208,37 @@ const [bankcode,setBankCode] = useState();
 
 
       const [createBene,setCreateBene] = useState({
-        userId: 100,
+        // userId: 100,
         userBeneficiary: {
-            beneficiaryName: nameenquiry?.account_name,
+            beneficiaryName: nameEnq?.data?.account_name,
             beneficiaryPhoneNumber: nameenquiry?.phone,
             beneficiaryBank: {
-                accountNumber: nameenquiry?.account_name || "",
-                bankId: nameenquiry?.bank_id | ""
+                accountNumber: accNum,
+                bankId: nameenquiry?.bank_id 
             }
         }
     })
+      console.log("🚀 ~ file: CreateBeneficiary.jsx:165 ~ CreateBeneficiary ~ createBene:", createBene)
 
     const { mutate, isLoading, isError } = useMutation({
         mutationFn: createBeneficiary,
         onSuccess: (data) => {
             console.log("🚀 ~ file: Login.jsx:61 ~ Login ~ data:", data)
             if (!data.status) {
-                seterr(data?.message)
-                toast.error(data?.message)
+                setInfo(data)
+                setShow(true)
+                // toast.error(data?.message)
             }
+            setInfo(data)
+            setShow(true)
+            
             // localStorage.setItem("userDetails",JSON.stringify(UserTestData))
-           
+            
         },
         onError: (data) => {
-    
+            
+            setShow(true)
+            setInfo(data)
             setTimeout(() => {
                 //  seterr("")
             }, 2000)
@@ -222,7 +296,7 @@ const [bankcode,setBankCode] = useState();
                 <p style={{    paddingBlock: "10px"}}>Phone Number</p>
                     <Input name='phone' addBefore={countryDetails?.telephoneCode}  className="input" style={{borderRadius:'8px',height:"42px",padding:"5px",border:"0.2px solid grey"}} placeholder='+44 000-000-0000' onChange={(e) => setCreateBene(prev => {
                           return {
-                            userId: 100,
+                            // userId: "",
                             userBeneficiary: {
                                 beneficiaryName: prev?.userBeneficiary?.beneficiaryName,
                                 beneficiaryPhoneNumber: e,
@@ -239,18 +313,46 @@ const [bankcode,setBankCode] = useState();
                     :
                     <div className='text'>
                         <p>Bank Name</p>
-                        <CustomSelect options={banksSelection} styles={{fontSize:"10px ! important"}} placeholder="select your bank" onChange={(e) => setBankCode(e?.name)} />
+                        <CustomSelect options={banksSelection} styles={{fontSize:"10px ! important"}} placeholder="select your bank" onChange={(e) => {
+                            setBankCode(e?.name)
+                            setAccNum("")
+                            }} />
                         <p>Accont Number</p>
                         <CustomInput placeholder="Enter account number" readonly={false} onChange={(e) => setAccNum(e?.target?.value)} />
-                        <p>Accont Name</p>
-                        <CustomInput val={nameenquiry?.account_name} placeholder="Enter account number" readonly={true} style={{background:"rgba(239, 239, 239, 1)"}} />
-                    
+                        {
+                            info && (
+                                <ReusableModal isOpen={show} onClose={() => setShow(false)}>
+                                   <Msg>
+                                   <p>{info?.message}</p> 
+                                   </Msg>
+                                </ReusableModal>
+                            )
+                        }
+                        {accNum && accNum.length > 1 ? (
+                            <>
+                                <p>Account Name</p>
+                                {nameEnq?.data?.account_name ? (
+                                <CustomInput
+                                    val={nameEnq?.data?.account_name}
+                                    placeholder="Account name displayed here"
+                                    readOnly={true}
+                                    style={{ background: "rgba(239, 239, 239, 1)" }}
+                                />
+                                ) : (
+                                <Loader style={{ textAlign: "center" }} />
+                                )}
+                            </>
+                            ) : null}
+
+
+
+                   
                     </div>
 
                    }
 
-    </SectionThree>
-                   <button onClick={createbeneficiary}>Submit</button>
+        </SectionThree>
+                   <button disabled={nameEnq?.data?.account_name ? false : true} onClick={createbeneficiary}>{isLoading ?  (<Loader color="#fff" style={{ textAlign: "center" }} /> ):"Submit"}</button>
            
             
          </div>

@@ -10,6 +10,7 @@ export const Axios = axios.create({
   baseURL: baseurl,
   maxBodyLength: Infinity,
   withCredentials: true, // Send and accept cookies with each request
+  
 });
 
 // Request interceptor

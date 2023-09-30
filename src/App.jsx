@@ -19,6 +19,7 @@ import {
   // Navigate,
 } from 'react-router-dom';
 import Dashboard from './Routes/User/Dashboard'
+import AgentDashboard from './Routes/Agent/Dashboard'
 import Beneficiary from './Routes/User/Beneficiary'
 import BeneficiaryDetails from './Routes/User/BeneficiaryDetails'
 import CreateBeneficiary from './Routes/User/CreateBeneficiary'
@@ -28,6 +29,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import UploadBeneficiaryFiles from './Routes/User/UploadBeneficiaryFiles'
 import SendMoney from './Routes/User/SendMoney'
 import Wallet from './Routes/User/Wallet'
+import AgentCustomer from './Routes/Agent/AgentCustomer'
 
 
 
@@ -55,11 +57,13 @@ function App() {
               <Route path='/user/transaction/history' element={<Dashboard/>} />
               <Route path='/user/setting' element={<Dashboard/>} />
               <Route path='/user/wallet' element={<Wallet/>} />
+              <Route path='/agent/dashboard' element={<AgentDashboard/>} />
+              <Route path='/agent/customers' element={<AgentCustomer/>} />
             {/* </Route> */}
             <Route path='*' element={<h1>Error</h1>} />
 
         </Route>
-      </Routes>ååå
+      </Routes>
       </Router>
  
     

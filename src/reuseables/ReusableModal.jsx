@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 
 // CSS styles for the modal
@@ -15,19 +17,22 @@ const modalStyles = {
     alignItems: 'center',
 
   },
+
   modal: {
     backgroundColor: '#fff',
     borderRadius: '10px',
-    padding: '20px',
+    padding: '40px',
     boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.1)',
     position: 'relative',
   },
+
   closeButton: {
     position: 'absolute',
     top: '10px',
     right: '10px',
     cursor: 'pointer',
   },
+
   span:{
     height:"100px" ,
     width:"200px",

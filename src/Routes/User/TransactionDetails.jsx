@@ -3,32 +3,63 @@
 /* eslint-disable no-unused-vars */
 
 
-import React from 'react'
+import React, { useState } from 'react'
 import Userlayout from '../../reuseables/Userlayout';
 import {styled} from 'styled-components';
 import { Avatar, Typography } from '@arco-design/web-react';
 import Checktrnx from "../../images/checktnx.svg"
+import { useMutation,useQuery } from "@tanstack/react-query";
+import { useParams } from 'react-router-dom';
+import { useLocation,useNavigate } from 'react-router-dom';
+import { Tranx } from '../../services/Dashboard';
+
 function TransactionDetails() {
-  return ( 
+    const navigate = useNavigate()
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    
+    // Access the 'id' query parameter
+    const id = queryParams.get('id');
+    console.log("🚀 ~ file: TransactionDetails.jsx:22 ~ TransactionDetails ~ id:", id)
+    const Userdata = JSON.parse(localStorage.getItem("userDetails"))
+    const [transactionList, setTransactionList ] = useState()
+    const { data:nameEnq,isLoading:namEnqloading,refetch:refetchnameEnq} = useQuery({
+          queryKey: [Userdata?.data?.user?.userId],
+          queryFn: Tranx,
+          onSuccess:(data) => {
+            setTransactionList(data?.data?.find(d => id.toString() === d?.sn?.toString() ))
+          },
+          // refetchInterval: 10000, // fetch data every 10 seconds
+          onError: (err) => {
+          //   setMessage(err.response.data.detail || err.message);
+          //   setOpen(true);
+          console.log(err)
+          },
+        });
+
+ 
+
+    return ( 
     <Userlayout current="Transactions Details" useBack={true}>
         <Content>
+           
             <div className='cont'>
             <Header>
-                <p>12-09-2023 17:12:34 </p>
+                <p>{transactionList?.collectionDate}</p>
 
                 <img src={Checktrnx}/>
                 <p>Transaction Successful</p>
-                <small>TX2647329384</small>
+                <small>{transactionList?.sn}</small>
             </Header>
             <Details>
                 <h3 className='detailsinfo'>Personal Details</h3>
                 <div className='detailscont'>
                     <div className='details'>
                     <h5>Beneficiary Name</h5>
-                    <p>Bada Sulaimon</p>
+                    <p>{transactionList?.beneficiaryName}</p>
                     </div>
                     <div className='details'>
-                    <h5>Date of Birth</h5>
+                    <h5>Sender Name</h5>
                     <p>2000</p>
                     </div>
                     <div className='details'>

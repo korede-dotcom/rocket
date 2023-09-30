@@ -5,7 +5,7 @@ import Select from 'react-select';
 import countryList from 'react-select-country-list';
 import CountryFlag from 'react-country-flag';
 import { styled } from 'styled-components'
-const CountryDropdown = ({ value, onChange,style}) => {
+const CountryDropdown = ({ value, onChange,style,defaultValue}) => {
   const options = countryList().getData();
 
   return (
@@ -15,6 +15,7 @@ const CountryDropdown = ({ value, onChange,style}) => {
       value={value}
       onChange={onChange}
       options={options}
+      defaultValue={defaultValue}
       getOptionLabel={(country) => (
         <div className='dropdown' style={{style} || {display:"inline-flex",gap:"2px",alignItems:"center", borderColor: '#dadada !important'}}>
           <CountryFlag className='flag' countryCode={country.value} svg /> &nbsp;

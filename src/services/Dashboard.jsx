@@ -20,16 +20,18 @@ export const getBanks = async (userId,bid) => {
     );
     return data;
   };
-export const nameEnquiry = async (bankCode,accountNumber) => {
+export const nameEnquiry = async (query) => {
+    console.log("🚀 ~ file: Dashboard.jsx:24 ~ nameEnquiry ~ query:", query?.queryKey)
     const { data } = await Axios.get(
-      `${baseurl}moneybusiness/BankDetailsLookUp?bankCode=${bankCode}&accountNumber=${accountNumber}`
+      `${baseurl}moneybusiness/BankDetailsLookUp?bankCode=${query?.queryKey[0]}&accountNumber=${query?.queryKey[1]}`
     );
     return data;
 };
 
 export const Tranx = async (userId) => {
+    console.log("🚀 ~ file: Dashboard.jsx:31 ~ Tranx ~ userId:", userId?.queryKey[0])
     const { data } = await Axios.get(
-      `${baseurl}moneybusiness/getuserlog/${userId}`
+      `${baseurl}moneybusiness/getuserlog/${userId?.queryKey[0]}`
     );
     return data;
 };
@@ -61,10 +63,10 @@ export const GetDetails = async (id) => {
     return data;
 };
 
-export const Rates = async (fcId,tcId,famount,tamount) => {
+export const Rates = async (query) => {
+  const q = query?.queryKey
     const { data } = await Axios.get(
-      `${baseurl}moneybusiness/getrate?fromCurrencyId=${fcId || 0}&toCurrencyId=${tcId || 0}&fromAmount=${famount || 0}&toAmount=${tamount || 0}',
-      `
+      `${baseurl}moneybusiness/getrate?fromCurrencyId=${q[0] || 0}&toCurrencyId=${q[1] || 0}&fromAmount=${q[2] || 0}&toAmount=${q[3] || 0}`
     );
     return data;
 };

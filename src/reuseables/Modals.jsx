@@ -18,7 +18,7 @@ function Modals({text,show}) {
     focusLock={true}
     
   >
-    <p>
+  <p>
      {text}
     </p>
   </Modal>

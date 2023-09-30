@@ -16,6 +16,7 @@ import {countries,cities,states,employment,profession} from "../services/Auth"
 import {countries as testCountries,stateTest as testState,cityTest as cityTest,employment as employmentTest, profession as professionTest } from "../../config/Test"
 import { useMutation,useQuery } from "@tanstack/react-query";
 import axios from 'axios';
+import Kyc from '../reuseables/Kyc';
 const Option = Select.Option;
 const TextArea = Input.TextArea;
 
@@ -203,7 +204,6 @@ function Register() {
     <LoginCotainer>
         <div className='flex'>
             <div className='side1'>
-             
             </div>
             <div className='side2 fade-In'>
               

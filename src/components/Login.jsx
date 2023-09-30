@@ -25,6 +25,9 @@ import ReusableModal from '../reuseables/ReusableModal';
 import Msg from '../reuseables/Msg';
 import { BASE_URL } from '../../config/config';
 
+// Inside your component
+
+
 const baseurl = BASE_URL
 
 const Option = Select.Option;
@@ -118,12 +121,12 @@ function Login() {
 
     return (
         <LoginCotainer>
+            
             <div className='flex'>
                 <div className='side1'>
 
                 </div>
                 <div className='side2'>
-
                     <Center>
                         <img src={Logo} />
                         <div className='logintext'>
@@ -135,7 +138,7 @@ function Login() {
                             modal && (
                                 <ReusableModal isOpen={modal} onClose={() => setModal(false)} >
                                    <Msg>
-                                   {err}
+                                     {err}
                                    </Msg>
                                 </ReusableModal>
 
