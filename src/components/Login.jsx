@@ -199,7 +199,7 @@ function Login() {
                                 {/* </InputStyle > */}
                             </div>
                             <div className='flexjustify'>
-                                <Checkbox>Remember for 30 days</Checkbox>
+                                <Checkbox>Remember me</Checkbox>
                                 <Link style={{ color: 'var(--primary-color)' }}>Forgot password</Link>
                             </div>
                             <div>
@@ -212,26 +212,6 @@ function Login() {
                                 <Link onClick={() => navigate("/signup")} style={{ color: 'var(--primary-color)' }}>Sign up</Link>
                             </CenterElement>
                         </div>
-
-                   
-                        
-                        {/* <Kyc/> */}
-                       
-                        {/* <ToastContainer
-                            position="top-right"
-                            autoClose={1000}
-                            hideProgressBar={false}
-                            newestOnTop={false}
-                            closeOnClick
-                            rtl={false}
-                            pauseOnFocusLoss
-                            draggable
-                            pauseOnHover
-                            theme="light"
-                        />
-                        <ToastContainer /> */}
-
-
                     </Center>
 
 
@@ -271,6 +251,7 @@ const LoginCotainer = styled.div`
     .flexjustify{
         display: flex;
         justify-content: space-between;
+        width: 100%;
     }
    
     .flex{
@@ -315,6 +296,12 @@ const Center = styled.div`
     width:100%;
     gap: 10px;
     overflow-x: hidden;
+    overflow-y: hidden;
+
+    > input{
+        font-size: 16px;
+        
+    }
 
     .logintext{
         display: flex;
