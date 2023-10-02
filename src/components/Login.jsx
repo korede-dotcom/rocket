@@ -281,7 +281,7 @@ const LoginCotainer = styled.div`
         .side2{
             background: #FCFCFC;
             width: 50%;
-            overflow-y: hidden;
+            overflow-y: scroll;
         }
     }
 
@@ -300,7 +300,6 @@ const Center = styled.div`
 
     > input{
         font-size: 16px;
-
     }
 
     .logintext{
