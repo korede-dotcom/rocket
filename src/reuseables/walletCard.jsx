@@ -7,7 +7,7 @@ import { Carousel } from '@arco-design/web-react';
 import CountryFlag from 'react-country-flag';
 
 
-function walletCard({ countryName, currency,amount }) {
+function walletCard({ countryName, currency,amount ,handleLinkClick}) {
  
   return (
       <Card>
@@ -25,10 +25,20 @@ function walletCard({ countryName, currency,amount }) {
             <p className="fas fa-wallet">{amount}</p>
           </div>
 
+          <div style={{display:"flex",alignItems:"center",gap:"10px",cursor:"pointer"}} onClick={handleLinkClick}>
+            <p  style={{fontSize:"10px",lineHeight:"3"}}>Explore more</p>
+            <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.5209 7.66081L2.77087 7.66081" stroke="white" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M7.99182 11.1751L11.521 7.66107L7.99182 4.14648" stroke="white" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+          </div>
+
           </div>
           <div className='side2'>
                 <img src={wallet}/>
           </div>
+          
           
         </div>
 

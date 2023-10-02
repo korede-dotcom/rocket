@@ -70,6 +70,13 @@ export const Rates = async (query) => {
     );
     return data;
 };
+export const TodayRates = async (query) => {
+  const q = query?.queryKey
+    const { data } = await Axios.get(
+      `${baseurl}moneybusiness/gettodaysrate?fromCurrencyId=${q[0] || 0}&toCurrencyId=${q[1] || 0}`
+    );
+    return data;
+};
 
 
 export const createBeneficiary = async (body) => {

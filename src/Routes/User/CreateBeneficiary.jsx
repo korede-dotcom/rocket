@@ -31,6 +31,7 @@ function CreateBeneficiary() {
     const [info,setInfo] = useState(null);
     const [show,setShow] = useState(false);
     const [bankcode,setBankCode] = useState();
+
     const [countryDetails, setCountryDetails] = useState({
         "regionId": 1,
         "subRegionId": 3,
@@ -208,15 +209,30 @@ function CreateBeneficiary() {
 
 
       const [createBene,setCreateBene] = useState({
-        // userId: 100,
-        userBeneficiary: {
-            beneficiaryName: nameEnq?.data?.account_name,
-            beneficiaryPhoneNumber: nameenquiry?.phone,
-            beneficiaryBank: {
-                accountNumber: accNum,
-                bankId: nameenquiry?.bank_id 
+
+      
+            "userId": "",
+            "userBeneficiary": {
+                "country": {
+                    "id": countryDetails?.id
+                },
+                "beneficiaryName": nameEnq?.data?.account_name,
+                "beneficiaryPhoneNumber": nameenquiry?.phone,
+                "beneficiaryBank": {
+                    "accountNumber": accNum,
+                    "bankId": nameenquiry?.bank_id 
+                }
             }
-        }
+
+        // userId: 100,
+        // userBeneficiary: {
+        //     beneficiaryName: nameEnq?.data?.account_name,
+        //     beneficiaryPhoneNumber: nameenquiry?.phone,
+        //     beneficiaryBank: {
+        //         accountNumber: accNum,
+        //         bankId: nameenquiry?.bank_id 
+        //     }
+        // }
     })
       console.log("🚀 ~ file: CreateBeneficiary.jsx:165 ~ CreateBeneficiary ~ createBene:", createBene)
 
@@ -296,6 +312,7 @@ function CreateBeneficiary() {
                 <p style={{    paddingBlock: "10px"}}>Phone Number</p>
                     <Input name='phone' addBefore={countryDetails?.telephoneCode}  className="input" style={{borderRadius:'8px',height:"42px",padding:"5px",border:"0.2px solid grey"}} placeholder='+44 000-000-0000' onChange={(e) => setCreateBene(prev => {
                           return {
+                            
                             // userId: "",
                             userBeneficiary: {
                                 beneficiaryName: prev?.userBeneficiary?.beneficiaryName,

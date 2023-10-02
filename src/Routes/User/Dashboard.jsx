@@ -17,7 +17,7 @@ import CountryDropdown from '../../reuseables/CountryList'
 import CountryFlag from 'react-country-flag';
 import AmountFormatter from '../../reuseables/AmountFormatter'
 import { useNavigate } from 'react-router-dom'
-import {Rates} from '../../services/Dashboard'
+import {Rates,TodayRates} from '../../services/Dashboard'
 import {countries} from '../../services/Auth'
 import { useQuery } from '@tanstack/react-query'
 import CustomInput from '../../reuseables/CustomInput'
@@ -42,8 +42,8 @@ function Dashboard() {
     console.log("🚀 ~ file: Dashboard.jsx:37 ~ Dashboard ~ currencyDetails:", currencyDetails)
     
     const { data:rates,isLoading:Ratesloading,refetch:RatesnameEnq} = useQuery({
-      queryKey: [getrates?.id || dataObject?.id?.country?.id ,161,2,0],
-      queryFn: Rates,
+      queryKey: [getrates?.id || dataObject?.id?.country?.id ,161],
+      queryFn: TodayRates,
       onSuccess:(data) => {
         setcurrentRates(data?.data)
       },
@@ -270,7 +270,7 @@ function Dashboard() {
                     <div className='pri'>
                     <CountryFlag countryCode={countryFlags[0].code} svg />
                     {/* <p>920.000 USD</p> */}
-                    <AmountFormatter currency={countryFlags[0].code} value={rates?.data?.fromAmount}/>
+                    <AmountFormatter currency={countryFlags[0].code} value={1}/>
                     {/* <p>{rates?.data?.fromAmount}</p> */}
                     </div>
                     <div style={{color:"#000"}}>
@@ -278,7 +278,7 @@ function Dashboard() {
                     </div>
                     <div className='sec'>
                     <CountryFlag countryCode={countryFlags[1].code} svg />
-                    <AmountFormatter currency={countryFlags[0].code} value={rates?.data?.computedToAmount}/>
+                    <AmountFormatter currency={countryFlags[0].code} value={currentRates}/>
                     {/* <p>920.000 NGN</p> */}
                     </div>
                 </div>

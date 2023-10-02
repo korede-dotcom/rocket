@@ -3,7 +3,7 @@
 /* eslint-disable no-unused-vars */
 
 
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import Userlayout from '../../reuseables/Userlayout';
 import {styled} from 'styled-components';
 import { Avatar, Typography } from '@arco-design/web-react';
@@ -14,33 +14,41 @@ import { useLocation,useNavigate } from 'react-router-dom';
 import { Tranx } from '../../services/Dashboard';
 
 function TransactionDetails() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    
+
     // Access the 'id' query parameter
     const id = queryParams.get('id');
-    console.log("🚀 ~ file: TransactionDetails.jsx:22 ~ TransactionDetails ~ id:", id)
-    const Userdata = JSON.parse(localStorage.getItem("userDetails"))
-    const [transactionList, setTransactionList ] = useState()
-    const { data:nameEnq,isLoading:namEnqloading,refetch:refetchnameEnq} = useQuery({
-          queryKey: [Userdata?.data?.user?.userId],
-          queryFn: Tranx,
-          onSuccess:(data) => {
-            setTransactionList(data?.data?.find(d => id.toString() === d?.sn?.toString() ))
-          },
-          // refetchInterval: 10000, // fetch data every 10 seconds
-          onError: (err) => {
-          //   setMessage(err.response.data.detail || err.message);
-          //   setOpen(true);
-          console.log(err)
-          },
-        });
+    const Userdata = JSON.parse(localStorage.getItem("userDetails"));
+    const [transactionList, setTransactionList] = useState(null);
 
- 
+    const { data: nameEnq, isLoading: nameEnqLoading, refetch: refetchNameEnq } = useQuery({
+        queryKey: [Userdata?.data?.user?.userId],
+        queryFn: Tranx,
+        onSuccess: (data) => {
+            setTransactionList(data?.data?.find(d => id.toString() === d?.sn?.toString()));
+        },
+        // refetchInterval: 10000, // fetch data every 10 seconds
+        onError: (err) => {
+            // Handle error logic
+            console.error(err);
+        },
+    });
+
+    // useEffect to run when the component mounts
+    useEffect(() => {
+        // Fetch data when the component mounts or 'id' changes
+        refetchNameEnq();
+    }, [id, refetchNameEnq]);
+
+    if (nameEnqLoading) {
+        return <div>Loading...</div>;
+    }
 
     return ( 
     <Userlayout current="Transactions Details" useBack={true}>
+        
         <Content>
            
             <div className='cont'>
@@ -48,8 +56,9 @@ function TransactionDetails() {
                 <p>{transactionList?.collectionDate}</p>
 
                 <img src={Checktrnx}/>
-                <p>Transaction Successful</p>
+                <p>Transaction {transactionList?.paymentStatus}</p>
                 <small>{transactionList?.sn}</small>
+                <small>{transactionList?.paymentDate}</small>
             </Header>
             <Details>
                 <h3 className='detailsinfo'>Personal Details</h3>
@@ -59,24 +68,32 @@ function TransactionDetails() {
                     <p>{transactionList?.beneficiaryName}</p>
                     </div>
                     <div className='details'>
+                    <h5>beneficiary Country</h5>
+                    <p>{transactionList?.beneficiaryCountry}</p>
+                    </div>
+                    <div className='details'>
                     <h5>Sender Name</h5>
-                    <p>2000</p>
+                    <p>{transactionList?.senderName}</p>
                     </div>
                     <div className='details'>
                     <h5>Mobile number</h5>
-                    <p>2000</p>
+                    <p>{transactionList?.beneficiaryPhone}</p>
                     </div>
                     <div className='details'>
-                    <h5>Address</h5>
-                    <p>2000</p>
+                    <h5>Collection Provider</h5>
+                    <p>{transactionList?.collectionProvider}</p>
                     </div>
                     <div className='details'>
-                    <h5>Address</h5>
-                    <p>2000</p>
+                    <h5>payment Type</h5>
+                    <p>{transactionList?.paymentType}</p>
                     </div>
                     <div className='details'>
-                    <h5>Address</h5>
-                    <p>2000</p>
+                    <h5>paymentRef</h5>
+                    <p>{transactionList?.paymentRef}</p>
+                    </div>
+                    <div className='details'>
+                    <h5>transaction Source</h5>
+                    <p>{transactionList?.transactionSource}</p>
                     </div>
                 </div>
                 

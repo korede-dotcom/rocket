@@ -5,6 +5,8 @@ import CountryFlag from 'react-country-flag';
 import CustomInput from './CustomInput';
 import styled from 'styled-components';
 import AmountFormatter from '../reuseables/AmountFormatter'
+import { useQuery } from '@tanstack/react-query';
+import {Rates as Ratess} from  "../services/Dashboard"
 
 function Rates() {
     const Userdata = JSON.parse(localStorage.getItem("userDetails"))
@@ -25,6 +27,11 @@ function Rates() {
         value: 'GB', // ISO country code for the UK
         flag: '', // URL to the UK flag image
       };
+      const defaultCountry2 = {
+        label: 'Nigeria',
+        value: 'NG', // ISO country code for the UK
+        flag: '', // URL to the UK flag image
+      };
 
      const defaultCountrys =  Userdata?.data?.user?.wallet.map(d => {
         return {
@@ -35,6 +42,7 @@ function Rates() {
      })
 
     const [selectedCountry, setSelectedCountry] = useState(defaultCountry);
+    const [selectedCountry2, setSelectedCountry2] = useState(defaultCountry2);
 
 
      const handleCountryChange = (selectedOption) => {
@@ -43,13 +51,26 @@ function Rates() {
         updateCurrencyDetails(selectedOption.label);
       };
 
+     const handleCountryChange2 = (selectedOption) => {
+        console.log("🚀 ~ file: Dashboard.jsx:37 ~ handleCountryChange ~ selectedOption:", selectedOption)
+        setSelectedCountry2(selectedOption);
+        updateCurrencyDetails2(selectedOption.label);
+      };
+
       const [currencyDetails, setCurrencyDetails] = useState([]);
+      const [currencyDetails2, setCurrencyDetails2] = useState([]);
+      const [amount, setAmount] = useState(0);
+      const [amount2, setAmount2] = useState(0);
       console.log("🚀 ~ file: Dashboard.jsx:57 ~ Dashboard ~ currencyDetails:", currencyDetails)
       const [dashboardDetails, setDashboardDetails] = useState(null);
+      const [Countries,setCountries] = useState(null)
+      const [getrates,setRates] = useState(null)
+      const [currentRates,setcurrentRates] = useState(null)
       
       // Initial data setup on component mount
       useEffect(() => {
         updateCurrencyDetails(defaultCountry.label);
+        updateCurrencyDetails2(defaultCountry2.label);
       }, []);
 
       const updateCurrencyDetails = (countryLabel) => {
@@ -64,14 +85,58 @@ function Rates() {
         
         setDashboardDetails(transactionArray);
       };
-      
+      const updateCurrencyDetails2 = (countryLabel) => {
+        const defaultDetails = Userdata?.data?.user?.wallet?.filter(d => d?.country?.name === countryLabel);
+        setCurrencyDetails2([...defaultDetails]);
+        
+        const transactionVolume = Userdata?.data?.user?.transactionVolume;
+        const transactionArray = Object.keys(transactionVolume).map(currencyCode => ({
+          currencyCode,
+          ...transactionVolume[currencyCode],
+        })).find(d => d?.currencyCode == defaultDetails[0]?.country?.currencyCode);
+        
+        setDashboardDetails(transactionArray);
+      };
+
+      const dataObject = {};
+      currencyDetails?.forEach(item => {
+        dataObject["id"] = item;
+      });
+      console.log("🚀 ~ file: Rates.jsx:105 ~ Rates ~ currencyDetails2:", currencyDetails2)
+      const dataObject2 = {};
+      currencyDetails2?.forEach(item => {
+          dataObject2["id"] = item;
+        });
+        console.log("🚀 ~ file: Rates.jsx:104 ~ Rates ~ dataObject2:", dataObject2)
+
+      const { data:rates,isLoading:Ratesloading,refetch:RatesnameEnq} = useQuery({
+        queryKey: [getrates?.id || dataObject?.id?.country?.id ,dataObject2?.id?.country?.id,amount,amount2],
+        queryFn: Ratess,
+        onSuccess:(data) => {
+          setcurrentRates(data?.data)
+        },
+        // refetchInterval: 10000, // fetch data every 10 seconds
+        onError: (err) => {
+        //   setMessage(err.response.data.detail || err.message);
+        //   setOpen(true);
+        console.log(err)
+        },
+      });
+
+
+      const handleRatesChanges = (e) => {
+        const {value} = e?.target;
+        setAmount(value)
+          console.log("🚀 ~ file: Rates.jsx:128 ~ handleRatesChanges ~ e:", value)
+        
+      }
       
   return (
     <div>
         <RateCont>
             <div className='cont1'>
                 <CountryDropdown value={selectedCountry} onChange={handleCountryChange}  />
-                <CustomInput className="input" style={{borderRadius:"0px",borderSize:"0.5px"}}/>
+                <CustomInput placeholder="Input amount"  className="input" style={{borderRadius:"0px",borderSize:"0.5px"}} onChange={(e) => handleRatesChanges(e)}/>
             </div>
             <div className='cont2'>
             <div className='cont2content'>
@@ -116,12 +181,12 @@ function Rates() {
                     </h4>
                 <div className='line2'></div>
                     <h4>
-                    <span>Rate <AmountFormatter currency={currencyDetails[0]?.country?.currencyCode} value={1}/> = </span>
+                    <span>Fee <AmountFormatter currency={currencyDetails[0]?.country?.currencyCode} value={0}/> = </span>
                     <AmountFormatter currency={currencyDetails[0]?.country?.currencyCode} value={currencyDetails[0]?.balance}/>
                     </h4>
                 <div className='line2'></div>
                     <h4>
-                    <span>Rate <AmountFormatter currency={currencyDetails[0]?.country?.currencyCode} value={1}/> = </span>
+                    <span>Total to pay <AmountFormatter currency={currencyDetails[0]?.country?.currencyCode} value={1}/> = </span>
                     <AmountFormatter currency={currencyDetails[0]?.country?.currencyCode} value={currencyDetails[0]?.balance}/>
                     </h4>
                 <div className='line2'></div>
@@ -130,8 +195,8 @@ function Rates() {
                 
             </div>
             <div className='cont3'>
-                <CountryDropdown value={selectedCountry} onChange={handleCountryChange} />
-                <CustomInput className="input" style={{borderRadius:"0px",borderSize:"0.5px"}}/>
+                <CountryDropdown value={selectedCountry2} onChange={handleCountryChange2} />
+                <CustomInput placeholder="Input amount"  className="input" style={{borderRadius:"0px",borderSize:"0.5px"}}/>
             </div>
 
         </RateCont>
@@ -186,6 +251,9 @@ const RateCont = styled.div`
         .sidecontenr{
             /* border: 1px solid red;å */
             width: 300px;
+            > h4{
+                font-weight: 500;
+            }
 
         }
 

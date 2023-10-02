@@ -24,6 +24,7 @@ import { Axios } from '../utils/Axios';
 import ReusableModal from '../reuseables/ReusableModal';
 import Msg from '../reuseables/Msg';
 import { BASE_URL } from '../../config/config';
+import Kyc from "../reuseables/Kyc"
 
 // Inside your component
 
@@ -45,6 +46,8 @@ function Login() {
     const navigate = useNavigate();
     const [err, seterr] = useState(null)
     const [modal, setModal] = useState(false)
+    const [redirect, setRedirect] = useState(false)
+    const [isKyc, setIsKyc] = useState(false)
     const [loginDetails, setloginDetails] = useState({
         username: "",
         password: "",
@@ -96,10 +99,41 @@ function Login() {
     const { mutate, isLoading, isError } = useMutation({
         mutationFn: userLogin,
         onSuccess: (data) => {
+
             if (!data.status) {
-                seterr(data?.message)
-                toast.error(data?.message)
-                setModal(true)
+
+                switch (data?.data) {
+                    case "1":
+                        
+                        break;
+                    case "2":
+                        
+                        break;
+                    case "3":
+
+                        setRedirect(true)
+                        seterr(data?.message)
+                        setModal(true)
+                        break;
+                    case "4":
+                        setRedirect(true)
+                        seterr(data?.message)
+                        setModal(true)
+                        break;
+                    case "5":
+                        // setRedirect(true)
+                        setIsKyc(true)
+                        seterr(data?.message)
+                        setModal(true)
+                        break;
+                
+                    default:
+                        seterr(data?.message)
+                        toast.error(data?.message)
+                        setModal(true)
+                        break;
+                }
+              
                 return
             }
             localStorage.setItem("userDetails",JSON.stringify(data))
@@ -137,8 +171,16 @@ function Login() {
                         {
                             modal && (
                                 <ReusableModal isOpen={modal} onClose={() => setModal(false)} >
-                                   <Msg>
-                                     {err}
+                                   <Msg >
+                                     {/* {err} */}
+                                     <p>{err}</p>
+                                     <br/>
+                                     {
+                                        isKyc && (
+                                            <Btn  clicking={() => navigate("/kyc")} size={30}>Continue with Kyc  </Btn>
+
+                                        )
+                                     }
                                    </Msg>
                                 </ReusableModal>
 
@@ -172,8 +214,8 @@ function Login() {
                         </div>
 
                    
-
-
+                        
+                        {/* <Kyc/> */}
                        
                         {/* <ToastContainer
                             position="top-right"

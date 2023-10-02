@@ -1,18 +1,58 @@
 import SumsubWebSdk from "@sumsub/websdk-react";
+import {styled} from "styled-components";
+import { useQuery } from "@tanstack/react-query";
+import {GetToken} from "../services/Auth"
+import { useState } from "react";
 
-export default function App() {
+export default function Kyc() {
   const applicantEmail = "saheedalbert@gmail.com";
   const applicantPhone = "08089828929";
   const accessToken = "sbx:2JZXIvSCi1XN93DaGhpmmGGN.ivvZPn3kdY1QmPo6Zn4xaEmqpFzkukDW";
+  const [accessT,setaccessT] = useState("")
+  console.log("🚀 ~ file: Kyc.jsx:12 ~ Kyc ~ accessT:", accessT)
+
+  const { data,isLoading,refetch} = useQuery({
+    queryKey: ["8230145"],
+    queryFn: GetToken,
+    onSuccess:(data) => {
+      setaccessT(data?.data?.token)
+    },
+    // refetchInterval: 10000, // fetch data every 10 seconds
+    onError: (err) => {
+    //   setMessage(err.response.data.detail || err.message);
+    //   setOpen(true);
+    console.log(err)
+    },
+  });
+
+
+
+
+
+
   return (
-    <div className="App">
-      <SumsubWebSdk
-        testEnv={true}
-        accessToken={accessToken}
-        updateAccessToken={() => console.log("updateAccessToken")}
-        expirationHandler={() => Promise.resolve(accessToken)}
+    <Content>
+    <div className="app">
+      <SumsubWebSdk 
+        // testEnv={true}
+        // baseUrl="test-api.sumsub.com"
+        accessToken={"_act-sbx-a29d3b2e-8da1-4e77-b858-82fd32fd0b95"}
+        pdateAccessToken={(callback) => {
+            // Call your backend API to get a new access token
+            // fetch('https://api.sumsub.com/resources/sdkIntegrations/websdkInit')
+            //   .then((response) => response.json())
+            //   .then((data) => {
+            //     callback(data.accessToken); // Update the access token
+            //   })
+            //   .catch((error) => {
+            //     console.error('Error fetching new access token:', error);
+            //   });
+          }}
+        expirationHandler={(e) => {
+            console.log(e)
+        }}
         config={{
-          lang: "zh-tw",
+          lang: "en",
           email: applicantEmail,
           phone: applicantPhone,
           i18n: {
@@ -40,5 +80,24 @@ export default function App() {
         onError={(data) => console.log("onError", data)}
       />
     </div>
+    </Content>
   );
 }
+
+
+const Content = styled.div`
+    background-color: #fff;
+    height: 100vh;
+    overflow-y: scroll;
+
+    .app{
+        height: 100%;
+        overflow-y: scroll;
+
+        .body{
+            height: 100vh;
+            overflow-y: scroll;
+        }
+    }
+
+`

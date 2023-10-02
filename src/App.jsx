@@ -30,7 +30,7 @@ import UploadBeneficiaryFiles from './Routes/User/UploadBeneficiaryFiles'
 import SendMoney from './Routes/User/SendMoney'
 import Wallet from './Routes/User/Wallet';
 import AgentCustomer from './Routes/Agent/AgentCustomer'
-
+import Kyc from './reuseables/Kyc'
 
 
 
@@ -59,6 +59,7 @@ function App() {
               <Route path='/user/wallet' element={<Wallet/>} />
               <Route path='/agent/dashboard' element={<AgentDashboard/>} />
               <Route path='/agent/customers' element={<AgentCustomer/>} />
+              <Route path='/kyc' element={<Kyc/>} /> 
             {/* </Route> */}
             <Route path='*' element={<h1>Error</h1>} />
 

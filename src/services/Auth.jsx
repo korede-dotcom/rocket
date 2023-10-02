@@ -50,6 +50,16 @@ export const employment = async () => {
   );
   return data;
 };
+
+
+export const GetToken = async (id) => {
+  console.log("🚀 ~ file: Auth.jsx:56 ~ GetToken ~ id:", id)
+  const { data } = await Axios.get(
+    `${baseurl}moneybusiness/getsumsubaccesstoken?userId=${id?.queryKey[0]}`
+  );
+  return data;
+};
+
 export const states = async (cid,sid) => {
   const { data } = await Axios.get(
     `${baseurl}moneybusiness/getstates?countryId=${cid || 0}&stateId=${sid || 0}`
