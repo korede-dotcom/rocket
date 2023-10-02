@@ -172,7 +172,9 @@ button:focus-visible {
 }
 
 /* Remove outline on all input elements */
-
+.arco-input{
+  display: none !important;
+}
 
 input {
   outline: none !important;
