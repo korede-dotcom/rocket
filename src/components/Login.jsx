@@ -209,7 +209,7 @@ function Login() {
                             </div>
                             <CenterElement>
                                 <span>Don’t have an account?</span>
-                                <Link href='/signup' style={{ color: 'var(--primary-color)' }}>Sign up</Link>
+                                <Link onClick={() => navigate("/signup")} style={{ color: 'var(--primary-color)' }}>Sign up</Link>
                             </CenterElement>
                         </div>
 
