@@ -24,6 +24,7 @@ export default function Kyc() {
     console.log(err)
     },
   });
+  console.log("🚀 ~ file: Kyc.jsx:27 ~ Kyc ~ data:", data?.data?.token)
 
 
 
@@ -36,7 +37,7 @@ export default function Kyc() {
       <SumsubWebSdk 
         // testEnv={true}
         // baseUrl="test-api.sumsub.com"
-        accessToken={"_act-sbx-a29d3b2e-8da1-4e77-b858-82fd32fd0b95"}
+        accessToken={data?.data?.token.toString()}
         pdateAccessToken={(callback) => {
             // Call your backend API to get a new access token
             // fetch('https://api.sumsub.com/resources/sdkIntegrations/websdkInit')
