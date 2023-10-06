@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import AmountFormatter from '../reuseables/AmountFormatter'
 import { useQuery } from '@tanstack/react-query';
 import {Rates as Ratess} from  "../services/Dashboard"
+import {countryObjectsArray} from "../../config/CountryCodes"
 
 function Rates() {
     const Userdata = JSON.parse(localStorage.getItem("userDetails"))
@@ -66,12 +67,20 @@ function Rates() {
       const [Countries,setCountries] = useState(null)
       const [getrates,setRates] = useState(null)
       const [currentRates,setcurrentRates] = useState(null)
+
+
+
+ 
       
       // Initial data setup on component mount
       useEffect(() => {
         updateCurrencyDetails(defaultCountry.label);
         updateCurrencyDetails2(defaultCountry2.label);
+        
       }, []);
+
+
+    
 
       const updateCurrencyDetails = (countryLabel) => {
         const defaultDetails = Userdata?.data?.user?.wallet?.filter(d => d?.country?.name === countryLabel);
@@ -102,7 +111,9 @@ function Rates() {
       currencyDetails?.forEach(item => {
         dataObject["id"] = item;
       });
+
       console.log("🚀 ~ file: Rates.jsx:105 ~ Rates ~ currencyDetails2:", currencyDetails2)
+
       const dataObject2 = {};
       currencyDetails2?.forEach(item => {
           dataObject2["id"] = item;
@@ -113,6 +124,7 @@ function Rates() {
         queryKey: [getrates?.id || dataObject?.id?.country?.id ,dataObject2?.id?.country?.id,amount,amount2],
         queryFn: Ratess,
         onSuccess:(data) => {
+        localStorage.setItem("amount",JSON.stringify(data?.data))
           setcurrentRates(data?.data)
         },
         // refetchInterval: 10000, // fetch data every 10 seconds
@@ -123,10 +135,18 @@ function Rates() {
         },
       });
 
+      useEffect(() => {
+  
+        setcurrentRates(rates?.data);
+        localStorage.setItem("amount",JSON.stringify(rates?.data))
+      }, [selectedCountry, selectedCountry2]);
+
 
       const handleRatesChanges = (e) => {
         const {value} = e?.target;
         setAmount(value)
+        localStorage.setItem("amount",JSON.stringify(rates?.data))
+
           console.log("🚀 ~ file: Rates.jsx:128 ~ handleRatesChanges ~ e:", value)
         
       }
@@ -136,7 +156,7 @@ function Rates() {
         <RateCont>
             <div className='cont1'>
                 <CountryDropdown value={selectedCountry} onChange={handleCountryChange}  />
-                <CustomInput placeholder="Input amount"  className="input" style={{borderRadius:"0px",borderSize:"0.5px"}} onChange={(e) => handleRatesChanges(e)}/>
+                <CustomInput placeholder="amount"  className="input" style={{borderRadius:"0px",borderSize:"0.5px"}} onChange={(e) => handleRatesChanges(e)}/>
             </div>
             <div className='cont2'>
             <div className='cont2content'>
@@ -196,7 +216,7 @@ function Rates() {
             </div>
             <div className='cont3'>
                 <CountryDropdown value={selectedCountry2} onChange={handleCountryChange2} />
-                <CustomInput placeholder="Input amount"  className="input" style={{borderRadius:"0px",borderSize:"0.5px"}}/>
+                <CustomInput placeholder="amount"  className="input" style={{borderRadius:"0px",borderSize:"0.5px"}} val={amount.length ?  currentRates?.computedToAmount: ""}/>
             </div>
 
         </RateCont>
@@ -222,12 +242,16 @@ const RateCont = styled.div`
         }
 
         .input{
-            padding: 10px !important;
+            padding: 8px !important;
             /* border-bottom-left-radius: 10px; */
         /* border-top-left-radius: 10px; */
              border-top-right-radius: 10px !important;
              border-bottom-right-radius: 10px !important;
             /* border: none !important; */
+
+            &::placeholder{
+                font-size: 12px;
+            }
         }
        
     }

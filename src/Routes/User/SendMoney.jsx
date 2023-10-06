@@ -13,7 +13,7 @@ import FormattedDate from '../../reuseables/FormattedDate';
 import { Dropdown, Menu, Divider } from '@arco-design/web-react';
 import { IconDown,IconMoreVertical } from '@arco-design/web-react/icon';
 import Btn from '../../reuseables/Btn';
-import { Paymentchannel,Payoutchannel,Rates, TransferPurpose} from "../../services/Dashboard"
+import { Paymentchannel,Payoutchannel,Rates, TransferPurpose,sendMoney} from "../../services/Dashboard"
 import {Paychannels as testpaymentchannel,Transferpurpose as testtransferpurpose ,payoutchannels as payoutchannels,rates as testrate} from "../../../config/Test"
 import { useQuery,useMutation } from '@tanstack/react-query';
 import CustomSelect from '../../reuseables/CustomSelect';
@@ -24,6 +24,8 @@ import RateComponent from "../../reuseables/Rates"
 import Total from '../../reuseables/Total';
 import Checktrnx from "../../images/checktnx.svg"
 import { Tooltip} from '@arco-design/web-react';
+import ReusableModal from '../../reuseables/ReusableModal';
+import Msg from '../../reuseables/Msg';
 const { Text } = Typography;
 const TextArea = Input.TextArea;
 
@@ -167,8 +169,19 @@ const Droplist = ({ id, onNavigate }) => (
     const [transferpurpose, settransferpurpose] = useState(tranxpurpose || mappedPurpose );
     console.log("🚀 ~ file: SendMoney.jsx:134 ~ SendMoney ~ transferpurpose:", transferpurpose)
 
-
+    const getLocals = (name) => {
+        return JSON.parse(localStorage.getItem(`${name}`))
+    }
   
+    const getBeneF = getLocals("userBeneficiaryId");
+    const getNote = getLocals("note");
+    const payoutC = getLocals("payoutChannelId");
+    const paychannel = getLocals("paymentChannelId");
+    const money = getLocals("amount");
+    const pcode = getLocals("promoCode");
+    const purposes = getLocals("purpose")
+    console.log("🚀 ~ file: SendMoney.jsx:175 ~ SendMoney ~ getBeneF:", getBeneF)
+    
    
     
     console.log("currentArr:", currentArr);
@@ -226,15 +239,22 @@ const Droplist = ({ id, onNavigate }) => (
       
       
 
+        const handleSelectBeneId = (id,name) => {
+            console.log("🚀 ~ file: SendMoney.jsx:155 ~ handleSelect ~ id:", id,name)
+            setSelectedItems(id);
+            localStorage.setItem("userBeneficiaryId",JSON.stringify({id,name:name}))
+          
+        }
         const handleSelect = (id,name) => {
             console.log("🚀 ~ file: SendMoney.jsx:155 ~ handleSelect ~ id:", id,name)
-          
             setSelectedItems(id);
-          
+            localStorage.setItem("paymentChannelId",JSON.stringify({id,name}))
+            
         }
         const handleSelect2 = (id,name) => {
             console.log("🚀 ~ file: SendMoney.jsx:155 ~ handleSelect ~ id:", id,name)
-          
+            
+            localStorage.setItem("payoutChannelId",JSON.stringify({id,name:name}))
             setSelectedItems2(id);
           
         }
@@ -246,12 +266,73 @@ const Droplist = ({ id, onNavigate }) => (
           };
 
           const [selectedCountry, setSelectedCountry] = useState(defaultCountry);
+          const [open,setOpen] = useState(false)
+          const [getmsg,setmsg] = useState("")
+
+          const { mutate, isLoading, isError } = useMutation({
+            mutationFn: sendMoney,
+            onSuccess: (data) => {
+                console.log("🚀 ~ file: Login.jsx:61 ~ Login ~ data:", data)
+                if (!data.status) {
+                    setOpen(true)
+                    setmsg(data?.message)
+
+                }
+           
+                
+            },
+            onError: (data) => {
+                console.log("🚀 ~ file: SendMoney.jsx:286 ~ SendMoney ~ data:", data)
+                
+                // setShow(true)
+                // setInfo(data)
+                // setTimeout(() => {
+                //     //  seterr("")
+                // }, 2000)
+                return
+            }
+        });
+
+
+          const handleSendMoney = () => {
+            // const getBeneF = getLocals("userBeneficiaryId");
+            // const getNote = getLocals("note");
+            // const payoutC = getLocals("payoutChannelId");
+            // const paychannel = getLocals("paymentChannelId");
+            // const money = getLocals("amount");
+            // const pcode = getLocals("promoCode");
+            // const purposes = getLocals("purpose")
+            const sendObj = {
+                "userId": Userdata?.user?.userId,
+                "userBeneficiaryId": getBeneF?.id,
+                "fromCountryId": money?.foreignCurrencyId,
+                "toCountryId": money?.localCurrencyId,
+                "amount": money?.fromAmount,
+                "paymentChannelId": paychannel?.id,
+                "walletId": 0,
+                "payoutChannelId": payoutC?.id,
+                "purpose":purposes,
+                "note": getNote,
+                "transactionSource": "Web",
+                "promoCode": Number(pcode)
+            }
+            mutate(sendObj)
+          }
       
 
   return (
     <Userlayout current="Send Money" useBack={true}>
         <Content>
-       
+            {
+                open && (
+                    <ReusableModal isOpen={open} onClose={() => setOpen(!open)}>
+                        <Msg >
+                            <p>{getmsg}</p>
+                        </Msg>
+                    </ReusableModal>
+
+                )
+            }
             <div className='cont'>
 
                 {
@@ -272,7 +353,7 @@ const Droplist = ({ id, onNavigate }) => (
                         filteredBeneList?.map((d)=> {
                             const isSelected = selectedItems === d?.id;
                             return (
-                                <div key={d.id} className='box' style={{color:"#000",textDecoration:"none"}} onClick={() => handleSelect(d?.id)}>
+                                <div key={d.id} className='box' style={{color:"#000",textDecoration:"none"}} onClick={() => handleSelectBeneId(d?.id,d?.beneficiaryName)}>
                                 <Box>
                                 <Avatar className="av">
                                     {`${d?.beneficiaryName?.split(" ")[0][0]} ${d?.beneficiaryName?.split(" ")[1][0]}`}
@@ -333,7 +414,7 @@ const Droplist = ({ id, onNavigate }) => (
                                 {/* <BeneficiaryCont2> */}
                                 {/* </BeneficiaryCont2> */}
                                 <BeneficiaryCont>
-                                    <RateComponent/>
+                                    <RateComponent />
                                         <div className='longcont'>
                                         <p className='payby'>You pay by</p>
                                         {
@@ -499,9 +580,9 @@ const Droplist = ({ id, onNavigate }) => (
                         <BeneficiaryCont>
                             <div className='longcont longcont1'>
                             <p className=''>Select purpose of transfer</p>
-                            <CustomSelect options={transferpurpose}  placeholder="Family support" />
+                            <CustomSelect options={mappedPurpose}  placeholder="Family support" onChange={(e) => localStorage.setItem("purpose",JSON.stringify(e?.label))} />
                             <p>Transaction note</p>
-                            <TextArea name='address'  className="textarea" placeholder='Enter comments ...' style={{ minHeight: 64, background:'transparent',border:"1px solid #d8d8d8",borderRadius:"8px"}} />
+                            <TextArea name='address'  className="textarea" placeholder='Enter comments ...' style={{ minHeight: 64, background:'transparent',border:"1px solid #d8d8d8",borderRadius:"8px"}} onChange={(e) => localStorage.setItem("note",JSON.stringify(e))} />
                             </div>
                         {/* </BeneficiaryCont> */}
                         {/* <BeneficiaryCont> */}
@@ -532,7 +613,7 @@ const Droplist = ({ id, onNavigate }) => (
                                 currentTab === 1 && (
                                     <>
                                         <p>Promo Code</p>
-                                       <CustomInput placeholder="Enter Promo Code"/>
+                                       <CustomInput placeholder="Enter Promo Code"  onChange={(e) => localStorage.setItem("promoCode",JSON.stringify(e?.target?.value)) }/>
                                        <br/>
                                        <Btn>Apply</Btn>
                                        <Btn styles={{backgroundColor:"#fff"}}>View Promo codes</Btn>
@@ -591,27 +672,27 @@ const Droplist = ({ id, onNavigate }) => (
                                 <div className='detailscont'>
                                     <div className='details'>
                                     <h5>Beneficiary Name</h5>
-                                    <p>Bada Sulaimon</p>
+                                    <p>{getBeneF && getBeneF?.name}</p>
                                     </div>
                                     <div className='details'>
-                                    <h5>Date of Birth</h5>
-                                    <p>2000</p>
+                                    <h5>Note</h5>
+                                    <p>{getNote}</p>
                                     </div>
                                     <div className='details'>
-                                    <h5>Mobile number</h5>
-                                    <p>2000</p>
+                                    <h5>Payout Channel</h5>
+                                    <p>{payoutC?.name}</p>
                                     </div>
                                     <div className='details'>
-                                    <h5>Address</h5>
-                                    <p>2000</p>
+                                    <h5>Payment Channel</h5>
+                                    <p>{paychannel?.name}</p>
                                     </div>
                                     <div className='details'>
-                                    <h5>Address</h5>
-                                    <p>2000</p>
+                                    <h5>Promo Code</h5>
+                                    <p>{pcode}</p>
                                     </div>
                                     <div className='details'>
-                                    <h5>Address</h5>
-                                    <p>2000</p>
+                                    <h5>Purpose</h5>
+                                    <p>{purposes}</p>
                                     </div>
                                 </div>
               
@@ -622,9 +703,9 @@ const Droplist = ({ id, onNavigate }) => (
                 </div> */}
 
 
-                            <Total/>
-                            <Total/>
-                                <div className='detailscont'>
+                            <Total  amount={money?.fromAmount}  />
+                            <Total amount={money?.computedToAmount}/>
+                                {/* <div className='detailscont'>
                                     <div className='details'>
                                     <h5>Beneficiary Name</h5>
                                     <p>Bada Sulaimon</p>
@@ -649,8 +730,8 @@ const Droplist = ({ id, onNavigate }) => (
                                     <h5>Address</h5>
                                     <p>2000</p>
                                     </div>
-                                </div>
-                            <Btn className="btn" clicking={() => setCurrent(5)} >Submit Transfer</Btn>
+                                </div> */}
+                            <Btn className="btn" clicking={handleSendMoney} > {isLoading ? "loading...." :"Submit Transfer"}</Btn>
                             </Details>
                         </BeneficiaryCont>
                         </>
@@ -674,7 +755,7 @@ const Droplist = ({ id, onNavigate }) => (
                 <h3 className='detailsinfo'>Personal Details</h3>
                     <div className='details'>
                     <h5>Beneficiary Name</h5>
-                    <p>Bada Sulaimon</p>
+                    <p>{getBeneF && getBeneF?.name}</p>
                     </div>
                     <div className='details'>
                     <h5>Date of Birth</h5>

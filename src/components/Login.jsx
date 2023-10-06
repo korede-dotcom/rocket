@@ -104,10 +104,15 @@ function Login() {
 
                 switch (data?.data) {
                     case "1":
+                        seterr(data?.message)
+                        toast.error(data?.message)
+                        setModal(true)
                         
                         break;
                     case "2":
-                        
+                        seterr(data?.message)
+                        toast.error(data?.message)
+                        setModal(true)
                         break;
                     case "3":
 

@@ -6,7 +6,7 @@ const AmountFormatter = ({ value, currency }) => {
     <FormattedNumber
       value={value}
       style="currency"
-      currency={currency}
+     currency={currency && currency}
       minimumFractionDigits={2}
     />
   );

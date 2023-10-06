@@ -9,7 +9,8 @@ const CustomInput = ({ readonly, style,placeholder,onChange,val ,className}) => 
     padding: '13px',
     border: '1px solid #ccc',
     color:"#000",
-    background:"none"
+    background:"none",
+    width:"100%"
     // Add other default styles here
   };
 

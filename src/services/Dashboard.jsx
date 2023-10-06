@@ -55,6 +55,7 @@ export const Payoutchannel = async () => {
     );
     return data;
 };
+
 export const GetDetails = async (id) => {
     console.log("🚀 ~ file: Dashboard.jsx:57 ~ GetDetails ~ id:", id?.queryKey[0])
     const { data } = await Axios.get(
@@ -91,6 +92,13 @@ export const createBeneficiary = async (body) => {
 export const createWallet = async (body) => {
     const { data } = await Axios.post(
       `${baseurl}moneybusiness/adduserwallet`,
+      body
+    ); 
+    return data;
+  };
+export const sendMoney = async (body) => {
+    const { data } = await Axios.post(
+      `${baseurl}moneybusiness/sm`,
       body
     ); 
     return data;
