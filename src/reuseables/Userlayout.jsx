@@ -27,7 +27,7 @@ const Layout = styled.div`
     margin: 0;
 
     .cont{
-        height: 85vh;
+        /* height: 85vh; */
         overflow-y: scroll;
  
     }
