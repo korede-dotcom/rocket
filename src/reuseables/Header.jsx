@@ -60,19 +60,27 @@ function Header({current,useBack}) {
 
 
 const HeaderCont = styled.div`
-    height: 300px;
-    /* height: calc(50vh); */
+    height: 7vh;
+    position: sticky;
+    /* top: 20px; */
+    z-index: 9999;
+    left: 0;
+    right: 0;
+    border: 1px solid red;
     background: #FFFFFF;
-
-
-  
-
+    
+    
+    
+    
+    
     .headercont{
+        /* border: 1px solid red; */
         display: flex;
         align-items: center;
         justify-content: space-around;
         width: 100%;
         padding-top: 10px;
+        height: 100%;
 
         .headercurrent{
             @media screen and (max-width:40em) {

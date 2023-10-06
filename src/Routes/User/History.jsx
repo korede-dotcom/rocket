@@ -81,23 +81,6 @@ const InputSearch = Input.Search;
 
 function History() {
 
-  // const [Userdata,setUserdata] = useState(null)
-  // useEffect(() => {
-  //   const userDataFromLocalStorage = JSON.parse(localStorage.getItem("userDetails"));
-  //   setUserData(userDataFromLocalStorage);
-  // }, []); 
-
-  //   const { data:nameEnq,isLoading:namEnqloading,refetch:refetchnameEnq} = useQuery({
-  //         queryKey: [Userdata?.data?.user?.userId],
-  //         queryFn: Tranx,
-  //         // refetchInterval: 10000, // fetch data every 10 seconds
-  //         onError: (err) => {
-  //         //   setMessage(err.response.data.detail || err.message);
-  //         //   setOpen(true);
-  //         console.log(err)
-  //         },
-  //       });
-  //   console.log("🚀 ~ file: History.jsx:95 ~ History ~ nameEnq:", nameEnq)
 
   const [userData, setUserData] = useState(null);
   const { data: nameEnq, isLoading: namEnqloading, refetch: refetchnameEnq } = useQuery({

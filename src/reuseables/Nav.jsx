@@ -80,7 +80,7 @@ function Nav() {
 
 const NavCont = styled.div`
 background-color: #FFFFFF;
-height: auto;
+height: 8vh;
 
 > ::-webkit-scrollbar{
     display: none !important ;
