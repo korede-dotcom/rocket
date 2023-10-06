@@ -60,7 +60,7 @@ function Header({current,useBack}) {
 
 
 const HeaderCont = styled.div`
-    /* height: 7vh; */
+    height: auto;
     background: #FFFFFF;
 
 
