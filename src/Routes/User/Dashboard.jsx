@@ -21,6 +21,7 @@ import {Rates,TodayRates} from '../../services/Dashboard'
 import {countries} from '../../services/Auth'
 import { useQuery } from '@tanstack/react-query'
 import CustomInput from '../../reuseables/CustomInput'
+import {countryObjectsArray} from "../../../config/CountryCodes"
 
 function Dashboard() {
     const navigate = useNavigate()
@@ -30,6 +31,7 @@ function Dashboard() {
     const [Countries,setCountries] = useState(null)
     const [getrates,setRates] = useState(null)
     const [currentRates,setcurrentRates] = useState(null)
+    console.log("🚀 ~ file: Dashboard.jsx:34 ~ Dashboard ~ currentRates:", currentRates)
     const [amount,setamount] = useState(0)
 
 
@@ -97,7 +99,15 @@ function Dashboard() {
 
       const handleRates = (e) => {
         const getCountryDetails = Countries?.find(d => d?.name?.toLowerCase() === e?.label?.toLowerCase());
+        const countrySlug =  countryObjectsArray(getCountryDetails?.name)
+        
         setRates(getCountryDetails)
+        setSelectedCountry({
+        label:getCountryDetails?.name ,
+        value:countrySlug, // ISO country code for the UK
+        flag: '', // URL to the UK flag image
+      })
+        
 
       }
       
@@ -268,7 +278,7 @@ function Dashboard() {
 
                 <div className='rates'>
                     <div className='pri'>
-                    <CountryFlag countryCode={countryFlags[0].code} svg />
+                    <CountryFlag countryCode={selectedCountry?.value || countryFlags[0].code} svg />
                     {/* <p>920.000 USD</p> */}
                     <AmountFormatter currency={countryFlags[0].code} value={1}/>
                     {/* <p>{rates?.data?.fromAmount}</p> */}
