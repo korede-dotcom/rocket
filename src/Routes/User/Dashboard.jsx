@@ -533,7 +533,7 @@ const SectionTwo = styled.div`
     /* background: #ECE8F6; */
    /* padding: 10px;
    border-radius: 10px; */
-
+    display: none;
    }
 `
 const SectionThree = styled.div`
