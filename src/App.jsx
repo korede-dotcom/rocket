@@ -31,6 +31,10 @@ import SendMoney from './Routes/User/SendMoney'
 import Wallet from './Routes/User/Wallet';
 import AgentCustomer from './Routes/Agent/AgentCustomer'
 import Kyc from './reuseables/Kyc'
+import Settings from './Routes/User/Settings'
+import CustomerContactDetails from './Routes/User/Settings/CustomerContactDetails'
+import IdDocuments from './Routes/User/Settings/idDocuments'
+import UploadId from './Routes/User/UploadId'
 
 
 
@@ -60,6 +64,12 @@ function App() {
               <Route path='/agent/dashboard' element={<AgentDashboard/>} />
               <Route path='/agent/customers' element={<AgentCustomer/>} />
               <Route path='/kyc' element={<Kyc/>} /> 
+              {/* Settings */}
+              <Route path='/settings' element={<Settings />} />
+              <Route path='/customer/contact/details' element={<CustomerContactDetails />} /> 
+              <Route path='/user/id/documents' element={<IdDocuments />} />
+              <Route path='/upload' element={<UploadId />} />
+              {/* Settings End */}
             {/* </Route> */}
             <Route path='*' element={<h1>Error</h1>} />
 

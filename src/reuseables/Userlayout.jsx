@@ -15,7 +15,7 @@ function Userlayout({children,current,useBack}) {
     <div className='cont'>
         {children}
     </div>
-    <Nav/>
+    {window.location.pathname !== '/upload' && <Nav/ >}
    </Layout>
   )
 }
@@ -29,7 +29,7 @@ const Layout = styled.div`
     .cont{
         height: 85vh;
         overflow-y: scroll;
- 
+        
     }
 ;
 

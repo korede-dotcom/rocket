@@ -42,6 +42,7 @@ const TimelineItem = Timeline.Item;
 function Login() {
 
 
+ 
 
     const navigate = useNavigate();
     const [err, seterr] = useState(null)
@@ -58,6 +59,7 @@ function Login() {
     const handleLogin = async () => {
         mutate(loginDetails)
     }
+    console.log(loginDetails)
 
 
     const handleChange = (value, i) => {
@@ -67,21 +69,22 @@ function Login() {
             const requestData = {
                 username: loginDetails.username,
               };
+            //  moneybusiness.tm-dev.xyz/moneybusiness//auth
+            //   axios
+            //     // .get(`${baseurl}moneybusiness/checkUserExistByEmail`, requestData)
+            //     .get(`${baseurl}/auth`, requestData)
+            //     .then((response) => {
+            //       console.log(response.data);
           
-              axios
-                .get(`${baseurl}moneybusiness/checkUserExistByEmail`, requestData)
-                .then((response) => {
-                  console.log(response.data);
-          
-                  setloginDetails((prev) => {
-                    return { ...prev, [name]: value };
-                  });
-                })
-                .catch((error) => {
-                    seterr(error?.message)
-                    setModal(true)
-                  console.error(error);
-                });
+            //       setloginDetails((prev) => {
+            //         return { ...prev, [name]: value };
+            //       });
+            //     })
+            //     .catch((error) => {
+            //         seterr(error?.message)
+            //         setModal(true)
+            //       console.error(error);
+            //     });
 
            
         }
@@ -99,6 +102,7 @@ function Login() {
     const { mutate, isLoading, isError } = useMutation({
         mutationFn: userLogin,
         onSuccess: (data) => {
+            console.log(data);
 
             if (!data.status) {
 
@@ -142,7 +146,13 @@ function Login() {
                 return
             }
             localStorage.setItem("userDetails",JSON.stringify(data))
-            navigate("/user/dashboard")
+            if (data.data.user.isKYCCompleted) {
+                navigate("/upload")
+                
+            }else{
+
+                navigate("/user/dashboard")
+            }
 
 
           

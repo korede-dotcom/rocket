@@ -170,16 +170,19 @@ const Droplist = ({ id, onNavigate }) => (
     console.log("🚀 ~ file: SendMoney.jsx:134 ~ SendMoney ~ transferpurpose:", transferpurpose)
 
     const getLocals = (name) => {
-        return JSON.parse(localStorage.getItem(`${name}`))
-    }
-  
-    const getBeneF = getLocals("userBeneficiaryId");
-    const getNote = getLocals("note");
-    const payoutC = getLocals("payoutChannelId");
-    const paychannel = getLocals("paymentChannelId");
-    const money = getLocals("amount");
-    const pcode = getLocals("promoCode");
-    const purposes = getLocals("purpose")
+        console.log(name);
+        const data = localStorage.getItem(name);
+        return data ? JSON.parse(data) : [];
+      }
+      
+      const getBeneF = getLocals("userBeneficiaryId") || [];
+      const getNote = getLocals("note") || [];
+      const payoutC = getLocals("payoutChannelId") || [];
+      const paychannel = getLocals("paymentChannelId") || [];
+      const money = getLocals("amount") || [];
+      const pcode = getLocals("promoCode") || [];
+      const purposes = getLocals("purpose") || [];
+      
     console.log("🚀 ~ file: SendMoney.jsx:175 ~ SendMoney ~ getBeneF:", getBeneF)
     
    

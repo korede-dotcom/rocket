@@ -66,21 +66,27 @@ const HeaderCont = styled.div`
     z-index: 9999;
     left: 0;
     right: 0;
-    border: 1px solid red;
+    // border: 1px solid red;
     background: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     
     
     
     
     
     .headercont{
-        /* border: 1px solid red; */
+        width: 650px;
         display: flex;
         align-items: center;
-        justify-content: space-around;
-        width: 100%;
+        // justify-content: space-around;
+        justify-content: space-between;
+        padding: 0 7.5%;
+        // width: 100%;
         padding-top: 10px;
         height: 100%;
+        border: 2px solid green;
 
         .headercurrent{
             @media screen and (max-width:40em) {
@@ -88,13 +94,13 @@ const HeaderCont = styled.div`
                 text-align: center;
             }
             width: 100%;
-    text-align: center;
+    text-align: center;     
         }
         
        
 
         .logo{
-            width: 61%;
+            // width: 61%;
           display: inline-flex;
           justify-content: flex-end;
           flex-direction: row;
@@ -114,7 +120,7 @@ const HeaderCont = styled.div`
         }
 
         .notifi{
-            width: 50%;
+            // width: 50%;
           display: inline-flex;
           justify-content: center;
           /* padding-inline:8rem; */

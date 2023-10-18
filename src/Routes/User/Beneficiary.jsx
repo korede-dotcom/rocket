@@ -162,7 +162,7 @@ function Beneficiary() {
                             <Link key={d.id} className='box' to={`/user/beneficiary/details?id=${d.id}`} style={{color:"#000",textDecoration:"none"}}>
                             <Box>
                             <Avatar className="av">
-                                {`${d?.beneficiaryName?.split(" ")[0][0]} ${d?.beneficiaryName?.split(" ")[1][0]}`}
+                                {`${d?.beneficiaryName?.split(" ")[0][0]} ${d?.beneficiaryName?.split(" ")[1][0]}`}12
                                 </Avatar>
 
                                 <div className='text'>

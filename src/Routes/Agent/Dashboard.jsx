@@ -776,7 +776,7 @@ const Box = styled.div`
     }
   
    > img{
-    border: 1px solid red;
+    // border: 1px solid red;
     height: 20px;
         justify-content: flex-end;
     }
