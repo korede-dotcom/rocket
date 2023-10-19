@@ -660,8 +660,8 @@ const Droplist = ({ id, onNavigate }) => (
                                }
                             </div>
 
-                            <Total amount={money?.fromAmount} />
-                            <Total amount={money?.computedToAmount}/>
+                            {/* <Total amount={money?.fromAmount} />
+                            <Total amount={money?.computedToAmount}/> */}
                                          <div className='btn'>
                   <Btn clicking={handleStep}>Continue</Btn>
                 </div>

@@ -157,7 +157,7 @@ function Rates() {
         <RateCont>
             <div className='cont1'>
                 <CountryDropdown value={selectedCountry} onChange={handleCountryChange}  />
-                <CustomInput placeholder="amount"  className="input" style={{borderRadius:"0px",borderSize:"0.5px"}} onChange={(e) => handleRatesChanges(e)}/>
+                <CustomInput placeholder="amount"  className="input" style={{borderRadius:"0px",borderSize:"0.5px",fontSize:"10px"}} onChange={(e) => handleRatesChanges(e)}/>
             </div>
             <div className='cont2'>
             <div className='cont2content'>
