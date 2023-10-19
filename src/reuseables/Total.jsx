@@ -2,13 +2,15 @@
 /* eslint-disable react/prop-types */
 import React from 'react'
 import styled from 'styled-components'
+import AmountFormatter from './AmountFormatter'
 
-export default function Total({text,amount}) {
+export default function Total({text,amount,currency}) {
   return (
     <TotalCont>
+      
         <div className='text'>
             <p>{text || 'Total amount you’ll be paying'}</p>
-            <h2>{amount || '£100.00'}</h2>
+            <h2>{ <AmountFormatter currency={currency}  value={amount}/>}</h2>
         </div>
     </TotalCont>
   )

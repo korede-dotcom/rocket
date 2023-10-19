@@ -25,6 +25,8 @@ import ReusableModal from '../reuseables/ReusableModal';
 import Msg from '../reuseables/Msg';
 import { BASE_URL } from '../../config/config';
 import Kyc from "../reuseables/Kyc"
+import visible from '../assets/view.png'
+import hide from '../assets/hide.png'
 
 // Inside your component
 
@@ -49,6 +51,8 @@ function Login() {
     const [modal, setModal] = useState(false)
     const [redirect, setRedirect] = useState(false)
     const [isKyc, setIsKyc] = useState(false)
+    const [type, setType] = useState(false)
+    const [vis, setVis] = useState(false)
     const [loginDetails, setloginDetails] = useState({
         username: "",
         password: "",
@@ -62,8 +66,8 @@ function Login() {
     console.log(loginDetails)
 
 
-    const handleChange = (value, i) => {
-        const { name } = i.target
+    const handleChange = (e, i) => {
+        const { name,value } = e.target
 
         if(name === "password" && loginDetails.password.length){
             const requestData = {
@@ -146,7 +150,7 @@ function Login() {
                 return
             }
             localStorage.setItem("userDetails",JSON.stringify(data))
-            if (data.data.user.isKYCCompleted) {
+            if (!data.data.user.isKYCCompleted) {
                 navigate("/upload")
                 
             }else{
@@ -167,6 +171,10 @@ function Login() {
             return
         }
     });
+
+    const togglePass = () => {
+            setType(!type)
+    }
 
     return (
         <LoginCotainer>
@@ -204,14 +212,22 @@ function Login() {
                             <div>
                                 <span>Email</span>
                                 <InputStyle >
-                                    <Input onChange={handleChange} name='username' className="input" style={{ borderRadius: '8px;' }} placeholder='Enter your email' />
+                                    {/* <Input autoComplete='false' onChange={handleChange} name='username' className="input" style={{ borderRadius: '8px;' }} placeholder='Enter your email' /> */}
                                 </InputStyle>
+                                <input name='username' onChange={handleChange}  type='email' className='emailinput'/>
                             </div>
                             <div>
                                 <span>Password</span>
                                 {/* <InputStyle > */}
-                                <Input.Password style={{ width: '100%' }} className="input" defaultValue='' onChange={handleChange} name='password' placeholder='Enter your password' />
+                                {/* <Input.Password style={{ width: '100%' }} className="input" defaultValue='' onChange={handleChange} name='password' placeholder='Enter your password' /> */}
                                 {/* </InputStyle > */}
+                                <div className='passwordcont'>
+                                <input name='password' onChange={handleChange}  type={type ? 'text' : 'password'} className='emailinput'/>
+                                <div className='visibility'>
+                                    <img src={type ? visible : hide} height="20px" onClick={togglePass}/>
+                                </div>
+
+                                </div>
                             </div>
                             <div className='flexjustify'>
                                 <Checkbox>Remember me</Checkbox>
@@ -253,6 +269,26 @@ const LoginCotainer = styled.div`
         border: 0.1px solid var(--gray-300, #D0D5DD);
         background: #FFFFFF;
 
+       }
+
+       .emailinput{
+        width: 100%;
+        /* background: none; */
+        padding: 10px;
+        /* border: none; */
+        background: #fff !important;
+        border: 1px solid #D0D5DD;
+        border-radius: 5px;
+        color: #000;
+        font-weight: 300;
+       }
+       .passwordcont{
+        position: relative;
+       }
+       .visibility{
+        position: absolute;
+        right: 30px;
+        bottom: 5px;
        }
     .inputdate{
         padding: 1.3rem;
@@ -347,10 +383,7 @@ const Center = styled.div`
        
     }
 
-    input[type="password"]{
-        padding: 0;
-        background-color: #FFFFFF;
-    }
+   /*  */
     .arco-input-password{
         width: 95%;
     }

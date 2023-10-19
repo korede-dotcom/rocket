@@ -86,7 +86,7 @@ const HeaderCont = styled.div`
         // width: 100%;
         padding-top: 10px;
         height: 100%;
-        border: 2px solid green;
+        /* border: 2px solid green; */
 
         .headercurrent{
             @media screen and (max-width:40em) {

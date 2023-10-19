@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useRef} from "react";
 import Userlayout from "../../reuseables/Userlayout";
 import styled from "styled-components";
 //
@@ -96,15 +96,39 @@ const Settings = () => {
     }
   ];
 
+
+
+  const handleUploadImage = (e) => {
+    const parent =  e.target.parentElement;
+    const getInput = parent.querySelector(".uploader");
+    getInput.click()
+    getInput.addEventListener("change",(e) => {
+      console.log(e)
+    })
+
+
+
+    
+  };
+  
+  // Usage: Call handleUploadImage() when your image is clicked
+  
+  // Usage: Call handleUploadImage() when your image is clicked
+  
+    
+
   const navigate = useNavigate();
+  const Userdata = JSON.parse(localStorage.getItem("userDetails"));
   return (
     <Userlayout>
       <Container>
         <InnerBox>
           <div className="user-info">
-            <div className="pro-photo">
+            <div className="pro-photo" onClick={handleUploadImage} >
              
-              <img src="" alt="" />
+              <img src={Userdata?.data?.user?.idImageURL} alt="" />
+                <input type="file" className="uploader" style={{display:"none"}} />
+
             </div>
             <p className="proname">Korede Sulaimon</p>
             <p className="copyreg"> <span>bit.ly/agentkorede</span><img src={copy} alt=""  onClick={() =>  navigator.clipboard.writeText('Copy')}/></p>
@@ -187,8 +211,8 @@ const InnerBox = styled.div`
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 50px;
-      height: 50px;
+      width: 80%;
+      height: 100px;
       border-radius: 50%;
       border: 2px solid #00A85A;
       img{

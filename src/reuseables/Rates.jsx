@@ -125,6 +125,7 @@ function Rates() {
         queryFn: Ratess,
         onSuccess:(data) => {
         localStorage.setItem("amount",JSON.stringify(data?.data))
+        localStorage.setItem("amount",JSON.stringify(data?.data))
           setcurrentRates(data?.data)
         },
         // refetchInterval: 10000, // fetch data every 10 seconds
@@ -197,7 +198,10 @@ function Rates() {
                 <div className='line2'></div>
                     <h4>
                     <span>Rate <AmountFormatter currency={currencyDetails[0]?.country?.currencyCode} value={1}/> = </span>
-                    <AmountFormatter currency={currencyDetails[0]?.country?.currencyCode} value={currencyDetails[0]?.balance}/>
+                    <span style={{fontSize:"11px"}}>
+                    <AmountFormatter currency={currencyDetails[0]?.country?.currencyCode} value={currentRates?.conversionRate || currencyDetails[0]?.balance}/>
+
+                    </span>
                     </h4>
                 <div className='line2'></div>
                     <h4>
@@ -207,7 +211,10 @@ function Rates() {
                 <div className='line2'></div>
                     <h4>
                     <span>Total to pay <AmountFormatter currency={currencyDetails[0]?.country?.currencyCode} value={1}/> = </span>
-                    <AmountFormatter currency={currencyDetails[0]?.country?.currencyCode} value={currencyDetails[0]?.balance}/>
+                    <span  style={{fontSize:"11px"}}>
+                    <AmountFormatter currency={currencyDetails[0]?.country?.currencyCode} value={currentRates?.computedToAmount || currencyDetails[0]?.balance}/>
+
+                    </span>
                     </h4>
                 <div className='line2'></div>
             </div>
@@ -216,7 +223,8 @@ function Rates() {
             </div>
             <div className='cont3'>
                 <CountryDropdown value={selectedCountry2} onChange={handleCountryChange2} />
-                <CustomInput placeholder="amount"  className="input" style={{borderRadius:"0px",borderSize:"0.5px"}} val={amount.length ?  currentRates?.computedToAmount: ""}/>
+                <CustomInput placeholder="amount"  className="input" style={{borderRadius:"0px",borderSize:"0.5px"}} val={amount.length ?  currentRates?.computedToAmount: ""}
+                />
             </div>
 
         </RateCont>

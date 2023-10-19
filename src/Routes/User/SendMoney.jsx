@@ -295,6 +295,20 @@ const Droplist = ({ id, onNavigate }) => (
                 return
             }
         });
+        const sendObj = {
+            "userId":  Userdata?.data?.user?.userId,
+            "userBeneficiaryId": getBeneF?.id,
+            "fromCountryId": money?.foreignCurrencyId,
+            "toCountryId": money?.localCurrencyId,
+            "amount": money?.fromAmount,
+            "paymentChannelId": paychannel?.id,
+            "walletId": 1,
+            "payoutChannelId": payoutC?.id,
+            "purpose":purposes,
+            "note": getNote,
+            "transactionSource": "Web",
+            "promoCode": Number(pcode)
+        }
 
 
           const handleSendMoney = () => {
@@ -305,20 +319,7 @@ const Droplist = ({ id, onNavigate }) => (
             // const money = getLocals("amount");
             // const pcode = getLocals("promoCode");
             // const purposes = getLocals("purpose")
-            const sendObj = {
-                "userId": Userdata?.user?.userId,
-                "userBeneficiaryId": getBeneF?.id,
-                "fromCountryId": money?.foreignCurrencyId,
-                "toCountryId": money?.localCurrencyId,
-                "amount": money?.fromAmount,
-                "paymentChannelId": paychannel?.id,
-                "walletId": 0,
-                "payoutChannelId": payoutC?.id,
-                "purpose":purposes,
-                "note": getNote,
-                "transactionSource": "Web",
-                "promoCode": Number(pcode)
-            }
+         
             mutate(sendObj)
           }
       
@@ -424,8 +425,8 @@ const Droplist = ({ id, onNavigate }) => (
                                             pchannel?.filter(d => d.status)?.map((d)=> {
                                                 const isSelected = selectedItems === d?.id;
                                                 return (
-                                                    <div key={d.id} className='box' style={{color:"#000",textDecoration:"none",border:`${isSelected ?'2px solid rgba(22, 157, 7, 1)' : '2px solid rgba(233, 237, 245, 1)'}`}} onClick={() => handleSelect(d?.id,d?.name)}>
-                                                    <Box>
+                                            <div key={d.id} className='box' style={{color:`${isSelected ?'rgba(22, 157, 7, 1)' : '#000'}`,textDecoration:"none",border:`${isSelected ?'0.5px solid rgba(22, 157, 7, 1)' : '1px solid rgba(233, 237, 245, 1)'}`}} onClick={() => handleSelect(d?.id,d?.name)}>
+                                            <Box>
                                                     {/* <Avatar className="av"> */}
                                                         {
                                                             d?.name === "Bank Transfer" ? (
@@ -455,11 +456,11 @@ const Droplist = ({ id, onNavigate }) => (
                                                         }
                                                     {/* </Avatar> */}
                     
-                                                        <div className='text'>
-                                                            <h5 >{d?.name}</h5>
-                                                            <p>{d?.description}</p>
-                                                           
-                                                        </div>
+                                    <div className='text'>
+                                        <h5>{d?.name}</h5>
+                                        <p>{d?.description}</p>
+                                        
+                                    </div>
                                                         <div className='options'>
                                                         
                                                         {
@@ -490,7 +491,7 @@ const Droplist = ({ id, onNavigate }) => (
                                             payouts?.filter(d => !d.status)?.map((d)=> {
                                                 const isSelected = selectedItems2 === d?.id;
                                                 return (
-                                                    <div key={d.id} className='box' style={{color:"#000",textDecoration:"none",border:`${isSelected ?'2px solid rgba(22, 157, 7, 1)' : '2px solid rgba(233, 237, 245, 1)'}`}} onClick={() => handleSelect2(d?.id,d?.name)}>
+                                                    <div key={d.id} className='box' style={{color:`${isSelected ?'rgba(22, 157, 7, 1)' : '#000'}`,textDecoration:"none",border:`${isSelected ?'0.5px solid rgba(22, 157, 7, 1)' : '1px solid rgba(233, 237, 245, 1)'}`}} onClick={() => handleSelect2(d?.id,d?.name)}>
                                                     <Box>
                                                     {/* <Avatar className="av"> */}
                                                         {
@@ -565,7 +566,15 @@ const Droplist = ({ id, onNavigate }) => (
                                             }
                                         </div>
                                     <div className='btn'>
-                  <Btn clicking={handleStep}>Continue</Btn>
+                           
+                                {
+                                     (selectedItems2 && selectedItems) && (
+                                        <Btn clicking={handleStep}>Continue</Btn>
+
+                                    )
+                                }
+                                {/* <Btn clicking={handleStep}>Continue</Btn> */}
+                            
                 </div>
                                     </BeneficiaryCont>
                         </>
@@ -581,17 +590,17 @@ const Droplist = ({ id, onNavigate }) => (
                                     <p>Please fill in the details</p>
                         </div>
                         <BeneficiaryCont>
-                            <div className='longcont longcont1'>
+                            <div className='longcont longcont1' style={{padding:"2em"}}>
                             <p className=''>Select purpose of transfer</p>
                             <CustomSelect options={mappedPurpose}  placeholder="Family support" onChange={(e) => localStorage.setItem("purpose",JSON.stringify(e?.label))} />
                             <p>Transaction note</p>
-                            <TextArea name='address'  className="textarea" placeholder='Enter comments ...' style={{ minHeight: 64, background:'transparent',border:"1px solid #d8d8d8",borderRadius:"8px"}} onChange={(e) => localStorage.setItem("note",JSON.stringify(e))} />
+                            <TextArea name='address'  className="textarea" placeholder='Enter comments ...' style={{ minHeight: 304, background:'transparent',border:"1px solid #d8d8d8",borderRadius:"8px"}} onChange={(e) => localStorage.setItem("note",JSON.stringify(e))} />
                             </div>
                         {/* </BeneficiaryCont> */}
                         {/* <BeneficiaryCont> */}
-                            <div className='longcont'>
-                                <div className='tabs'>
-                                    <div className='pane' onClick={() => setCurrentTab(1)} style={{color:`${currentTab === 1 ? "#00A85A" : "rgba(152, 162, 179, 1)"}`,borderBottomColor:`${currentTab === 1 ? "#00A85A" : "rgba(152, 162, 179, 1)" }`}} >
+                            <div className='longcont'style={{padding:"2em"}}>
+                                <div className='tabs' >
+                                    <div className='pane' onClick={() => setCurrentTab(1)} style={{color:`${currentTab === 1 ? "#00A85A" : "rgba(152, 162, 179, 1)"}`,borderBottomColor:`${currentTab === 1 ? "#00A85A" : "rgba(152, 162, 179, 1)" }`, }} >
                                     <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M6.53865 5.65355C6.53865 4.48047 7.00465 3.35545 7.83414 2.52596C8.66363 1.69647 9.78865 1.23047 10.9617 1.23047C12.1348 1.23047 13.2598 1.69647 14.0893 2.52596C14.9188 3.35545 15.3848 4.48047 15.3848 5.65355C15.3848 4.48047 15.8508 3.35545 16.6803 2.52596C17.5098 1.69647 18.6348 1.23047 19.8079 1.23047C20.981 1.23047 22.106 1.69647 22.9355 2.52596C23.765 3.35545 24.231 4.48047 24.231 5.65355V5.66416C24.231 5.78801 24.231 6.14185 24.1637 6.53816H27.7694C28.2386 6.53816 28.6887 6.72456 29.0205 7.05636C29.3522 7.38815 29.5387 7.83816 29.5387 8.30739V10.0766C29.5387 10.5459 29.3522 10.9959 29.0205 11.3277C28.6887 11.6595 28.2386 11.8459 27.7694 11.8459H3.00019C2.53096 11.8459 2.08095 11.6595 1.74915 11.3277C1.41736 10.9959 1.23096 10.5459 1.23096 10.0766V8.30739C1.23096 7.83816 1.41736 7.38815 1.74915 7.05636C2.08095 6.72456 2.53096 6.53816 3.00019 6.53816H6.60588C6.55915 6.24921 6.53666 5.95686 6.53865 5.66416V5.65355ZM8.42819 6.53816H13.6156V5.65355C13.6156 5.30504 13.5469 4.95994 13.4136 4.63796C13.2802 4.31598 13.0847 4.02343 12.8383 3.77699C12.5918 3.53056 12.2993 3.33508 11.9773 3.20171C11.6553 3.06834 11.3102 2.9997 10.9617 2.9997C10.6132 2.9997 10.2681 3.06834 9.94614 3.20171C9.62416 3.33508 9.33161 3.53056 9.08517 3.77699C8.83874 4.02343 8.64326 4.31598 8.50989 4.63796C8.37652 4.95994 8.30788 5.30504 8.30788 5.65355C8.30788 5.80393 8.31142 6.13832 8.3875 6.41432C8.39813 6.4565 8.41172 6.49789 8.42819 6.53816ZM17.154 6.53816H22.3414C22.3577 6.49782 22.3713 6.45645 22.3821 6.41432C22.4582 6.13832 22.4617 5.80393 22.4617 5.65355C22.4617 4.9497 22.1821 4.27469 21.6844 3.77699C21.1867 3.2793 20.5117 2.9997 19.8079 2.9997C19.104 2.9997 18.429 3.2793 17.9313 3.77699C17.4336 4.27469 17.154 4.9497 17.154 5.65355V6.53816ZM27.7694 13.6151V26.8843C27.7694 27.5882 27.4898 28.2632 26.9921 28.7609C26.4944 29.2586 25.8194 29.5382 25.1156 29.5382H17.154V13.6151H27.7694ZM5.65403 29.5382C4.95019 29.5382 4.27517 29.2586 3.77748 28.7609C3.27979 28.2632 3.00019 27.5882 3.00019 26.8843V13.6151H13.6156V29.5382H5.65403Z" fill={currentTab === 1 ? "#00A85A" : "rgba(152, 162, 179, 1)"}/>
                                     </svg>
@@ -617,7 +626,7 @@ const Droplist = ({ id, onNavigate }) => (
                                     <>
                                         <p>Promo Code</p>
                                        <CustomInput placeholder="Enter Promo Code"  onChange={(e) => localStorage.setItem("promoCode",JSON.stringify(e?.target?.value)) }/>
-                                       <br/>
+                                       {/* <br/> */}
                                        <Btn>Apply</Btn>
                                        <Btn styles={{backgroundColor:"#fff"}}>View Promo codes</Btn>
                                     </>
@@ -651,8 +660,8 @@ const Droplist = ({ id, onNavigate }) => (
                                }
                             </div>
 
-                               <Total/>
-                               <Total/>
+                            <Total amount={money?.fromAmount} />
+                            <Total amount={money?.computedToAmount}/>
                                          <div className='btn'>
                   <Btn clicking={handleStep}>Continue</Btn>
                 </div>
@@ -706,7 +715,7 @@ const Droplist = ({ id, onNavigate }) => (
                 </div> */}
 
 
-                            <Total  amount={money?.fromAmount}  />
+                            <Total amount={money?.fromAmount} />
                             <Total amount={money?.computedToAmount}/>
                                 {/* <div className='detailscont'>
                                     <div className='details'>
@@ -848,6 +857,8 @@ const Content = styled.div`
   margin: 0 auto;
   height: 100%; 
   overflow: hidden;
+  
+
 
   .btn{
             width: 80%;
@@ -892,6 +903,8 @@ const Content = styled.div`
         width: 100%;
         /* width: 30vw;
          margin: 0 auto; */
+
+         font-weight: 300;
 
          .header{
             /* display: none; */
@@ -1140,12 +1153,14 @@ gap: 10px;
     .text{
         display: inline-flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 2px;
         letter-spacing: 1;
         flex: 1;
-
+        padding: 2;
+        
         h5{
             font-size: 13px;
+            font-weight: 350;
         }
 
         p{

@@ -353,7 +353,7 @@ function CreateBeneficiary() {
                                     val={nameEnq?.data?.account_name}
                                     placeholder="Account name displayed here"
                                     readOnly={true}
-                                    style={{ background: "rgba(239, 239, 239, 1)" }}
+                                    style={{ background: "rgba(239, 239, 239, 1)",border:"none", }}
                                 />
                                 ) : (
                                 <Loader style={{ textAlign: "center" }} />
@@ -390,6 +390,11 @@ width: 30vw;
   height: 100%; 
   overflow: hidden;
 
+  > * p{
+    font-weight: 300;
+
+  }
+
   @media screen and (max-width:40em){
     width: 100%;
   }
@@ -400,11 +405,11 @@ width: 30vw;
     display: flex;
     flex-direction: column;
     gap: 20px;
-
-   .sec{
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    font-weight: 200;
+    .sec{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
    }
 
    button{

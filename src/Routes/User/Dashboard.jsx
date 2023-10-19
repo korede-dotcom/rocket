@@ -160,7 +160,7 @@ function Dashboard() {
         <SectionOne>
             <div className='sel1'>
                 <div className="container">
-                    <img src={User} height="50px"/>
+                    <img className='avatar' src={Userdata?.data?.user?.idImageURL}/>
                     <FlexCol className='currencyselect'>
                         {/* <Select></Select> */}
                         <CountryDropdown value={selectedCountry} onChange={handleCountryChange} />
@@ -198,7 +198,8 @@ function Dashboard() {
                                 </svg>
                                 <div className='dashboardamount'>
                                 <p>Total Transaction </p>
-                                <h3>{dashboardDetails?.totalSuccessful || (dashboardDetails?.depositedAmount || 0)}</h3>
+                                {/* <h3>{dashboardDetails?.totalSuccessful || (dashboardDetails?.depositedAmount || 0)}</h3> */}
+                                <h3>{ <AmountFormatter currency={currencyDetails && currencyDetails[0]?.country?.currencyCode || 0} value={dashboardDetails?.totalSuccessful || (dashboardDetails?.depositedAmount || 0)} /> }</h3>
                                 </div>
                         </div>      
                         <div className='dbox dbox2'>
@@ -280,7 +281,8 @@ function Dashboard() {
                     <div className='pri'>
                     <CountryFlag countryCode={selectedCountry?.value || countryFlags[0].code} svg />
                     {/* <p>920.000 USD</p> */}
-                    <AmountFormatter currency={countryFlags[0].code} value={1}/>
+                    {/* <AmountFormatter currency={countryFlags[0].code} value={1}/> */}
+                    <AmountFormatter currency={currencyDetails && currencyDetails[0]?.country?.currencyCode || 0} value={1} />
                     {/* <p>{rates?.data?.fromAmount}</p> */}
                     </div>
                     <div style={{color:"#000"}}>
@@ -288,7 +290,7 @@ function Dashboard() {
                     </div>
                     <div className='sec'>
                     <CountryFlag countryCode={countryFlags[1].code} svg />
-                    <AmountFormatter currency={countryFlags[0].code} value={currentRates}/>
+                    NGN <AmountFormatter currency={countryFlags[0].code} value={currentRates}/>
                     {/* <p>920.000 NGN</p> */}
                     </div>
                 </div>
@@ -327,6 +329,9 @@ const Content = styled.div`
     height: 85vh;
     width: 30vw;
     /* position: relative; */
+    .dashboardamount h3{
+      font-weight: 400 !important;
+    }
 
     @media screen and (max-width: 40em) {
         width: 100%;
@@ -340,7 +345,12 @@ const Content = styled.div`
     /* border: 1px solid red; */
 
 
-
+    .avatar{
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid #00A85A;
+    }
 
  
     
@@ -453,6 +463,7 @@ height: 90vh;
     width: 90%;
     margin: 0 auto;
     margin-top: -62px;
+    font-weight: 300;
     .dashboard{
         padding: 1rem;
         height: 100%;
@@ -474,10 +485,13 @@ height: 90vh;
         h3{
             font-size: 20px;
         }
+      
     }
     .dbox1{
         border-right: 1px solid #E9EDF5;
         border-bottom: 1px solid #E9EDF5;
+
+     
     }
     .dbox3{
         border-right: 1px solid #E9EDF5;
@@ -494,10 +508,6 @@ height: 90vh;
     justify-content: space-between;
     align-items: center;
     gap: 40px;
-
-
-
-
     /* border: 1px solid red; */
 }
 
@@ -533,7 +543,6 @@ const SectionTwo = styled.div`
     /* background: #ECE8F6; */
    /* padding: 10px;
    border-radius: 10px; */
-    display: none;
    }
 `
 const SectionThree = styled.div`
@@ -691,6 +700,7 @@ const SectionFour = styled.div`
        padding-block: 20px;
        border-radius: 10px;
    }
+   
    .text{
     text-align: center;
     padding: 2.5em;
