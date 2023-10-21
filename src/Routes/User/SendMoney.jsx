@@ -219,6 +219,7 @@ const Droplist = ({ id, onNavigate }) => (
       const [filteredBeneList, setFilteredBeneList] = useState(BeneList);
       const [selectedBene, setselectedBene] = useState();
       const [isSelected, setisSelected] = useState(false);
+      const [promocode, setPromoCode] = useState("");
       const [selectedItems, setSelectedItems] = useState(null);
       const [selectedItems2, setSelectedItems2] = useState(null);
   
@@ -349,6 +350,9 @@ const Droplist = ({ id, onNavigate }) => (
                                 </div>
                             <Header>
                                 <InputSearch allowClear placeholder='Enter keyword to search' style={{ width: 300}} className="input" onChange={handleSearch} />
+                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={() => navigate("/user/create/beneficiary")} style={{cursor:"pointer"}}> 
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M20 11C20.6213 11 21.125 11.5037 21.125 12.125V18.875H27.875C28.4963 18.875 29 19.3787 29 20C29 20.6213 28.4963 21.125 27.875 21.125H21.125V27.875C21.125 28.4963 20.6213 29 20 29C19.3787 29 18.875 28.4963 18.875 27.875V21.125H12.125C11.5037 21.125 11 20.6213 11 20C11 19.3787 11.5037 18.875 12.125 18.875H18.875V12.125C18.875 11.5037 19.3787 11 20 11Z" fill="#00A85A"/>
+            </svg>
                             </Header>
 
                 <BeneficiaryCont>
@@ -366,7 +370,7 @@ const Droplist = ({ id, onNavigate }) => (
                                     <div className='text'>
                                         <h5 >{d?.beneficiaryName}</h5>
                                         <p>{d?.beneficiaryPhoneNumber}</p>
-                                        <p>{d?.beneficiaryBank?.accountNumber.length ? "Bank" : "Pick Up"}</p>
+                                        {/* <p>{d?.beneficiaryBank?.accountNumber.length ? "Bank" : "Pick Up"}</p> */}
                                         <p>createOn : <FormattedDate dateString={d?.dateCreated}/></p>
                                     </div>
                                     <div className='options'>
@@ -625,9 +629,15 @@ const Droplist = ({ id, onNavigate }) => (
                                 currentTab === 1 && (
                                     <>
                                         <p>Promo Code</p>
-                                       <CustomInput placeholder="Enter Promo Code"  onChange={(e) => localStorage.setItem("promoCode",JSON.stringify(e?.target?.value)) }/>
+                                       <CustomInput placeholder="Enter Promo Code"  onChange={(e) =>{
+                                        setPromoCode(e?.target?.value)
+                                        localStorage.setItem("promoCode",JSON.stringify(e?.target?.value))
+                                       }  }/>
                                        {/* <br/> */}
-                                       <Btn>Apply</Btn>
+                                       {
+                                        promocode.length > 0 &&  <Btn>Apply</Btn>
+                                       }
+                                      
                                        <Btn styles={{backgroundColor:"#fff"}}>View Promo codes</Btn>
                                     </>
                                 )
@@ -1015,11 +1025,11 @@ const Details = styled.div`
               
 
         .details{
-            padding: 10px 10px;
+            padding: 5px 8px;
             display: flex;
             justify-content: space-between;
             border-bottom: 1px solid rgba(233, 237, 245, 1);
-
+            font-weight: 200;
             &:last-child{
                 border-bottom: none;
             }
@@ -1147,6 +1157,7 @@ gap: 10px;
     gap: 20px;
     width: 90%;
     margin: 0 auto;
+    height: 80px;
 
 
 
@@ -1156,7 +1167,7 @@ gap: 10px;
         gap: 2px;
         letter-spacing: 1;
         flex: 1;
-        padding: 2;
+        /* padding: 1em; */
         
         h5{
             font-size: 13px;
@@ -1181,7 +1192,7 @@ gap: 10px;
 const Header = styled.div`
     display: flex;
   justify-content: center;
-  flex-direction:column;
+  /* flex-direction:column; */
   align-items: center;
   padding-inline: 1em;
   text-align:center;

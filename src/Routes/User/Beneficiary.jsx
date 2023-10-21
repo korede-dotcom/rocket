@@ -168,7 +168,7 @@ function Beneficiary() {
                                 <div className='text'>
                                     <h5 >{d?.beneficiaryName}</h5>
                                     <p>{d?.beneficiaryPhoneNumber}</p>
-                                    <p>{d?.beneficiaryBank?.accountNumber.length ? "Bank" : "Pick Up"}</p>
+                                    {/* <p>{d?.beneficiaryBank?.accountNumber.length ? "Bank" : "Pick Up"}</p> */}
                                     <p>createOn : <FormattedDate dateString={d?.dateCreated}/></p>
                                 </div>
                                 <div className='options'>
@@ -255,7 +255,8 @@ gap: 10px;
     border-radius: 8px;
     display: flex;
     gap: 20px;
-    width: 90%;
+    width: 70%;
+    height: 80px;
     margin: 0 auto;
 
     .text{
@@ -290,6 +291,7 @@ const Box = styled.div`
     gap: 10px;
     justify-content: space-around;
     width: 100%;
+    
     .av{
         background: rgba(0, 168, 90, 1);
 

@@ -332,11 +332,13 @@ gap: 10px;
     padding: 1.2em;
     border-radius: 8px;
     display: flex;
-    gap: 20px;
-    width: 80%;
+    gap: 10px;
+    width: 316px !important;
+    
     /* border: 0.3px solid green; */
     margin: 0 auto;
     width: 90%;
+    height: 350px !important;
 
     @media screen and (max-width: 40em) {
             width: 100%;
@@ -348,15 +350,16 @@ gap: 10px;
         /* gap: 4px; */
         letter-spacing: 1;
         font-size: 12;
-        flex: 1;
+        /* flex: 1; */
         
 
 
     }
     .options{
         text-align: end;
-    height: 100%;
+    /* height: 100%; */
     font-size:12px;
+    align-items: center;
     }
 
     /* .arco-icon-more-vertical{
@@ -370,9 +373,10 @@ gap: 10px;
 const Box = styled.div`
     align-items: center;
     display: flex;
-    gap: 14px;
+    /* gap: 24px; */
     justify-content: space-around;
     width: 100%;
+    height: 90px;
     /* padding-inline: 1em; */
     /* @media screen and (min-width: 90em){
         display: mone;
