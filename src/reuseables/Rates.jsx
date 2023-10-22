@@ -33,6 +33,7 @@ function Rates() {
         value: 'NG', // ISO country code for the UK
         flag: '', // URL to the UK flag image
       };
+   
 
      const defaultCountrys =  Userdata?.data?.user?.wallet.map(d => {
         return {
@@ -44,16 +45,28 @@ function Rates() {
 
     const [selectedCountry, setSelectedCountry] = useState(defaultCountry);
     const [selectedCountry2, setSelectedCountry2] = useState(defaultCountry2);
+    console.log("🚀 ~ file: Rates.jsx:47 ~ Rates ~ selectedCountry2:", selectedCountry)
+    console.log("🚀 ~ file: Rates.jsx:47 ~ Rates ~ selectedCountry2:", selectedCountry2)
+    localStorage.setItem("country1",JSON.stringify(selectedCountry));
+    localStorage.setItem("country2",JSON.stringify(selectedCountry2));
 
 
      const handleCountryChange = (selectedOption) => {
-        console.log("🚀 ~ file: Dashboard.jsx:37 ~ handleCountryChange ~ selectedOption:", selectedOption)
+        const getC = JSON.parse(localStorage.getItem("countryList"));
+        const newC = getC?.find(d => d?.name?.toLowerCase() === selectedOption?.label?.toLowerCase() );
+        console.log("🚀 ~ file: Rates.jsx:55 ~ handleCountryChange ~ newC:", newC)
+     localStorage.setItem("country1",JSON.stringify(newC));
+        
+       
         setSelectedCountry(selectedOption);
         updateCurrencyDetails(selectedOption.label);
       };
 
      const handleCountryChange2 = (selectedOption) => {
         console.log("🚀 ~ file: Dashboard.jsx:37 ~ handleCountryChange ~ selectedOption:", selectedOption)
+        const getC = JSON.parse(localStorage.getItem("countryList"));
+        const newC = getC?.find(d => d?.name?.toLowerCase() === selectedOption?.label?.toLowerCase() );
+     localStorage.setItem("country2",JSON.stringify(newC));
         setSelectedCountry2(selectedOption);
         updateCurrencyDetails2(selectedOption.label);
       };
@@ -67,6 +80,7 @@ function Rates() {
       const [Countries,setCountries] = useState(null)
       const [getrates,setRates] = useState(null)
       const [currentRates,setcurrentRates] = useState(null)
+      const [currentCountry,setcurrentCountry] = useState(null)
 
 
 
@@ -125,7 +139,6 @@ function Rates() {
         queryFn: Ratess,
         onSuccess:(data) => {
         localStorage.setItem("amount",JSON.stringify(data?.data))
-        localStorage.setItem("amount",JSON.stringify(data?.data))
           setcurrentRates(data?.data)
         },
         // refetchInterval: 10000, // fetch data every 10 seconds
@@ -148,7 +161,6 @@ function Rates() {
         setAmount(value)
         localStorage.setItem("amount",JSON.stringify(rates?.data))
 
-          console.log("🚀 ~ file: Rates.jsx:128 ~ handleRatesChanges ~ e:", value)
         
       }
       

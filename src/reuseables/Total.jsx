@@ -4,13 +4,16 @@ import React from 'react'
 import styled from 'styled-components'
 import AmountFormatter from './AmountFormatter'
 
-export default function Total({text,amount,currency}) {
+export default function Total({text,amount,currency,other}) {
   return (
     <TotalCont>
       
         <div className='text'>
             <p>{text || 'Total amount you’ll be paying'}</p>
-            <h2>{ <AmountFormatter currency={currency}  value={amount}/>}</h2>
+              {
+                other ? (<h2>{  <AmountFormatter currency={other} value={amount}/>}</h2>) : (<h2>{  <AmountFormatter currency={currency}  value={amount}/>}</h2>)
+              }
+            
         </div>
     </TotalCont>
   )

@@ -8,7 +8,7 @@ function Msg({children,type}) {
   return (
     <div>
         <div style={{display:"flex",flexDirection:"column",gap:"20px",padding:"1em"}}>
-          <img src={type ? Success : Failed} height="50px"/>
+          <img src={type === true ? Success : Failed} height="50px"/>
           <p>
           {children}
           </p>

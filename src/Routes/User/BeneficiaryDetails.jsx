@@ -20,7 +20,7 @@ function BeneficiaryDetails() {
     console.log("🚀 ~ file: BeneficiaryDetails.jsx:19 ~ BeneficiaryDetails ~ id:", id)
     const Userdata = JSON.parse(localStorage.getItem("userDetails"))
     const BeneList = Userdata?.data.user.beneficiaries?.filter(d => d?.id === Number(id))[0]
-    console.log("🚀 ~ file: BeneficiaryDetails.jsx:22 ~ BeneficiaryDetails ~ BeneList:", BeneList)
+   localStorage.setItem("userBeneficiaryId",JSON.stringify({id:id,name:BeneList?.beneficiaryName}))
 
 
   return ( 
@@ -75,7 +75,7 @@ function BeneficiaryDetails() {
                 <div className='actions'>
                 <div className='actionbtn'>
                      <button onClick={() => navigate(`/user/beneficiary/upload?id=${id}`)}>Upload Id</button>
-                     <button className='send'>Send Money</button>
+                     <button className='send' onClick={() => navigate(`/user/sendmoney?id=${id}`)}>Send Money</button>
                 </div>
                 </div>
 

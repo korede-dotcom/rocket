@@ -27,6 +27,7 @@ import { BASE_URL } from '../../config/config';
 import Kyc from "../reuseables/Kyc"
 import visible from '../assets/view.png'
 import hide from '../assets/hide.png'
+import { countries } from '../services/Auth';
 
 // Inside your component
 
@@ -53,6 +54,7 @@ function Login() {
     const [isKyc, setIsKyc] = useState(false)
     const [type, setType] = useState(false)
     const [vis, setVis] = useState(false)
+
     const [loginDetails, setloginDetails] = useState({
         username: "",
         password: "",
@@ -102,6 +104,17 @@ function Login() {
     }
     
 
+    const { data:rates,isLoading:Ratesloading,refetch:RatesnameEnq} = useQuery({
+        queryKey: [],
+        queryFn: countries,
+        onSuccess:(data) => {
+        localStorage.setItem("countryList",JSON.stringify(data?.data))
+        },
+        onError: (err) => {
+       
+        console.log(err)
+        },
+      });
 
     const { mutate, isLoading, isError } = useMutation({
         mutationFn: userLogin,
@@ -276,11 +289,15 @@ const LoginCotainer = styled.div`
         /* background: none; */
         padding: 10px;
         /* border: none; */
-        background: #fff !important;
+        /* background: #fff !important; */
+        background-color: inherit;
+        line-height: 1;
         border: 1px solid #D0D5DD;
-        border-radius: 5px;
+        /* border-radius: 5px; */
         color: #000;
         font-weight: 300;
+        border: none;
+        border-bottom: 1px solid #000;
        }
        .passwordcont{
         position: relative;

@@ -507,7 +507,7 @@ height: 90vh;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 40px;
+    gap: 60px;
     /* border: 1px solid red; */
 }
 

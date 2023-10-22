@@ -1,12 +1,56 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React,{useState} from 'react';
 import Select from 'react-select';
 import countryList from 'react-select-country-list';
 import CountryFlag from 'react-country-flag';
 import { styled } from 'styled-components'
+import { useQuery } from '@tanstack/react-query';
+import { countries } from '../services/Auth';
+import {countryObjectsArray} from "../../config/CountryCodes"
 const CountryDropdown = ({ value, onChange,style,defaultValue}) => {
-  const options = countryList().getData();
+  const [cList,setClist] = useState([])
+  const { data,isLoading,refetch} = useQuery({
+    queryKey: [],
+    queryFn: countries,
+    onSuccess:(data) => {
+      const mapped = data?.data?.map(d => {
+        return {
+          value:d?.currencyCode,
+          label:d?.name,
+        }
+      })
+    setClist
+    
+    },
+    // refetchInterval: 10000, // fetch data every 10 seconds
+    onError: (err) => {
+    //   setMessage(err.response.data.detail || err.message);
+    //   setOpen(true);
+    console.log(err)
+    },
+  })
+
+
+  
+  const options =  countryList().getData();
+  console.log("🚀 ~ file: CountryList.jsx:13 ~ CountryDropdown ~ options:", options)
+  // const newOptions = 
+ const Userdata =  JSON.parse(localStorage.getItem("userDetails"))
+
+
+
+  const wallets = Userdata?.data?.user?.wallet
+  const optionsmap = wallets?.map(d => {
+    return {
+      value:countryObjectsArray(d?.country?.name),
+      label:d?.country?.name
+    }
+  })
+  const filteredUsers = wallets?.country?.filter(cname => optionsmap.includes(cname));
+
+
+
 
   return (
     <CountyCont>
@@ -14,7 +58,7 @@ const CountryDropdown = ({ value, onChange,style,defaultValue}) => {
     <Select
       value={value}
       onChange={onChange}
-      options={options}
+      options={optionsmap}
       defaultValue={defaultValue}
       getOptionLabel={(country) => (
         <div className='dropdown' style={{style} || {display:"inline-flex",gap:"2px",alignItems:"center", borderColor: '#dadada !important'}}>

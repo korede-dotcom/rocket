@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Userlayout from '../../reuseables/Userlayout'
 import {styled} from "styled-components"
 import Stepses from '../../reuseables/Stepses'
@@ -26,6 +26,11 @@ import Checktrnx from "../../images/checktnx.svg"
 import { Tooltip} from '@arco-design/web-react';
 import ReusableModal from '../../reuseables/ReusableModal';
 import Msg from '../../reuseables/Msg';
+import { useLocation } from 'react-router-dom';
+import Iframe from '../../reuseables/PaymentLinks';
+import Modals from '../../reuseables/Modals';
+import {countryObjectsArray} from "../../../config/CountryCodes"
+import AmountFormatter from '../../reuseables/AmountFormatter';
 const { Text } = Typography;
 const TextArea = Input.TextArea;
 
@@ -98,14 +103,30 @@ const Droplist = ({ id, onNavigate }) => (
 
 
   function SendMoney() {
-    
+
+    const navigates = useNavigate();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const id = queryParams.get('id');
+  
+    useEffect(() => {
+      if (id) {
+        setCurrent(2);
+      }
+    }, [id]);
+  
+    const [current, setCurrent] = useState(id ? 2 : 1);
       const handleNavigate = (id) => {
         const navigate = useNavigate();
         navigate(`/user/beneficiary/details?id=${id}`);
       };
-    const [current, setCurrent] = useState(1);
+
+    ;
     const [currentTab, setCurrentTab] = useState(1);
+    const [paymentlink, SetPaymentLink] = useState(false);
     const [currentArr, setCurrentArr] = useState([]);
+
+  
 
     const one = 1;
     const two = 2;
@@ -156,6 +177,8 @@ const Droplist = ({ id, onNavigate }) => (
             "description": "Bank Transfer"
       }
 
+    
+
     const [pchannel, setpchannel] = useState(paymentchannel?.data ||testpaymentchannel?.data );
     const [payouts, setpayouts] = useState(payout?.data ||payoutchannels?.data );
     console.log("🚀 ~ file: SendMoney.jsx:157 ~ SendMoney ~ payouts:", payouts)
@@ -179,11 +202,10 @@ const Droplist = ({ id, onNavigate }) => (
       const getNote = getLocals("note") || [];
       const payoutC = getLocals("payoutChannelId") || [];
       const paychannel = getLocals("paymentChannelId") || [];
-      const money = getLocals("amount") || [];
+      const money = getLocals("amount") || 0;
       const pcode = getLocals("promoCode") || [];
       const purposes = getLocals("purpose") || [];
       
-    console.log("🚀 ~ file: SendMoney.jsx:175 ~ SendMoney ~ getBeneF:", getBeneF)
     
    
     
@@ -209,6 +231,8 @@ const Droplist = ({ id, onNavigate }) => (
       const navigate = useNavigate();
 
       const Userdata = JSON.parse(localStorage.getItem("userDetails"))
+      const c1 = JSON.parse(localStorage.getItem("country1"))
+      const c2 = JSON.parse(localStorage.getItem("country2"))
       const BeneList = Userdata?.data.user.beneficiaries
   
       // const goBack = () => {
@@ -222,6 +246,7 @@ const Droplist = ({ id, onNavigate }) => (
       const [promocode, setPromoCode] = useState("");
       const [selectedItems, setSelectedItems] = useState(null);
       const [selectedItems2, setSelectedItems2] = useState(null);
+      const [status, setStatus] = useState(false);
   
       const handleSearch = (event) => {
           const keyword = event;
@@ -239,6 +264,11 @@ const Droplist = ({ id, onNavigate }) => (
         
           setFilteredBeneList(filteredList);
         };
+
+        const getCurrencyOne = Userdata?.data?.user?.wallet?.find(d => d?.country?.name === c1?.label)
+        console.log("🚀 ~ file: SendMoney.jsx:267 ~ SendMoney ~ getCurrencyOne:", getCurrencyOne)
+        const getCurrencyTwo = Userdata?.data?.user?.wallet?.find(d => d?.country?.name === c2?.label)
+        console.log("🚀 ~ file: SendMoney.jsx:269 ~ SendMoney ~ getCurrencyTwo:", getCurrencyTwo)
 
       
       
@@ -272,15 +302,25 @@ const Droplist = ({ id, onNavigate }) => (
           const [selectedCountry, setSelectedCountry] = useState(defaultCountry);
           const [open,setOpen] = useState(false)
           const [getmsg,setmsg] = useState("")
-
-          const { mutate, isLoading, isError } = useMutation({
-            mutationFn: sendMoney,
-            onSuccess: (data) => {
-                console.log("🚀 ~ file: Login.jsx:61 ~ Login ~ data:", data)
+      const [getlink, setlink] = useState({link:""});
+      
+      
+      const { mutate, isLoading, isError } = useMutation({
+          mutationFn: sendMoney,
+          onSuccess: (data) => {
+                console.log("🚀 ~ file: Login.jsx:61 ~ Login ~ data:", data?.data)
                 if (!data.status) {
                     setOpen(true)
                     setmsg(data?.message)
-
+                    setlink((prev) => {
+                        prev.link = data?.data
+                    })
+                }else{
+                    
+                    setOpen(true)
+                    setmsg(data?.message)
+                    setStatus(true)
+                    
                 }
            
                 
@@ -296,19 +336,41 @@ const Droplist = ({ id, onNavigate }) => (
                 return
             }
         });
+        console.log("🚀 ~ file: SendMoney.jsx:306 ~ SendMoney ~ getlink:", getlink)
+        console.log("🚀 ~ file: SendMoney.jsx:335 ~ SendMoney ~    countryObjectsArray(getCurrencyOne?.country?.name):",    countryObjectsArray(getCurrencyOne?.country?.name))
+        // const sendObj = {
+        //     "userId":  Userdata?.data?.user?.userId,
+        //     "userBeneficiaryId": getBeneF?.id,
+        //     "fromCountryId": money?.localCurrencyId,
+        //     "toCountryId": money?.foreignCurrencyId,
+        //     "amount": money?.fromAmount,
+        //     "paymentChannelId": paychannel?.id,
+        //     "walletId": 1,
+        //     "payoutChannelId": payoutC?.id,
+        //     "purpose":purposes,
+        //     "note": getNote,
+        //     "source": "Web",
+        //     "promoCode": Number(pcode),
+        //     "redirectURL" : "http://localhost:5174/user/sendmoney?status"
+        // }
+
         const sendObj = {
-            "userId":  Userdata?.data?.user?.userId,
-            "userBeneficiaryId": getBeneF?.id,
-            "fromCountryId": money?.foreignCurrencyId,
-            "toCountryId": money?.localCurrencyId,
-            "amount": money?.fromAmount,
-            "paymentChannelId": paychannel?.id,
-            "walletId": 1,
-            "payoutChannelId": payoutC?.id,
-            "purpose":purposes,
-            "note": getNote,
-            "transactionSource": "Web",
-            "promoCode": Number(pcode)
+            
+                "userId": 8230145,
+                "userBeneficiaryId": 78042355,
+                "fromCountryId": 232,
+                "toCountryId": 161,
+                "amount": 50,
+                "paymentChannelId": 1,
+                "walletId": 0,
+                "payoutChannelId": 1,
+                "purpose": "Bla ala",
+                "note": "",
+                "transactionSource": "Web",
+                "promoCode": 12012,
+                "redirectURL": "http://localhost:5174/user/sendmoney?status",
+                "source": "web"
+            
         }
 
 
@@ -320,7 +382,8 @@ const Droplist = ({ id, onNavigate }) => (
             // const money = getLocals("amount");
             // const pcode = getLocals("promoCode");
             // const purposes = getLocals("purpose")
-         
+            SetPaymentLink(!paymentlink)
+            
             mutate(sendObj)
           }
       
@@ -331,9 +394,18 @@ const Droplist = ({ id, onNavigate }) => (
             {
                 open && (
                     <ReusableModal isOpen={open} onClose={() => setOpen(!open)}>
-                        <Msg >
-                            <p>{getmsg}</p>
-                        </Msg>
+                        {
+                            status === true ? (
+                                <Msg type={true} >
+                                    <p>{getmsg}</p>
+                                </Msg>
+
+                            ) : (
+                                <Msg >
+                                <p>{getmsg}</p>
+                                 </Msg>
+                            )
+                        }
                     </ReusableModal>
 
                 )
@@ -723,36 +795,37 @@ const Droplist = ({ id, onNavigate }) => (
                      <button>Upload Id</button>
                      <button>Send Money</button>
                 </div> */}
+                            
+                            <Total other={getCurrencyOne?.country?.currencyCode} currency={countryObjectsArray(getCurrencyOne?.country?.name)} amount={money && money?.fromAmount} />
+                            <Total other={getCurrencyTwo?.country?.currencyCode} currency={countryObjectsArray(getCurrencyTwo?.country?.name)}  amount={money && money?.computedToAmount}/>
+                          
 
+                              
+                          
+                                {
+                                    getlink && (
+                                        <div
+                                        style={{
+                                            position: "fixed",
+                                            top: "0",
+                                            left: "0",
+                                            width: "100%",
+                                            height: "100%",
+                                            backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent backdrop
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            zIndex:"1",
+                                            
+                                        }}
+                                        >
+                                        <div style={{ minWidth: "80vw", Height: "100vh" }}>
+                                            <Iframe src={`${getlink.link}`} width={"100%"} height={"600px"} />
+                                        </div>
+                                        </div>
 
-                            <Total amount={money?.fromAmount} />
-                            <Total amount={money?.computedToAmount}/>
-                                {/* <div className='detailscont'>
-                                    <div className='details'>
-                                    <h5>Beneficiary Name</h5>
-                                    <p>Bada Sulaimon</p>
-                                    </div>
-                                    <div className='details'>
-                                    <h5>Date of Birth</h5>
-                                    <p>2000</p>
-                                    </div>
-                                    <div className='details'>
-                                    <h5>Mobile number</h5>
-                                    <p>2000</p>
-                                    </div>
-                                    <div className='details'>
-                                    <h5>Address</h5>
-                                    <p>2000</p>
-                                    </div>
-                                    <div className='details'>
-                                    <h5>Address</h5>
-                                    <p>2000</p>
-                                    </div>
-                                    <div className='details'>
-                                    <h5>Address</h5>
-                                    <p>2000</p>
-                                    </div>
-                                </div> */}
+                                    )
+                                }
                             <Btn className="btn" clicking={handleSendMoney} > {isLoading ? "loading...." :"Submit Transfer"}</Btn>
                             </Details>
                         </BeneficiaryCont>
@@ -1029,7 +1102,7 @@ const Details = styled.div`
             display: flex;
             justify-content: space-between;
             border-bottom: 1px solid rgba(233, 237, 245, 1);
-            font-weight: 200;
+            font-weight: lighter ;
             &:last-child{
                 border-bottom: none;
             }
@@ -1038,12 +1111,12 @@ const Details = styled.div`
 
             h5{
                 color: rgba(102, 112, 133, 1);
-                font-weight: 400;
-                font-size: 16px;
+                font-weight: 300;
+                font-size: 13px;
                 
             }
             p{
-                font-weight: 450;
+                font-weight: 250 !important;
                 font-size: 14px;
             }
         }

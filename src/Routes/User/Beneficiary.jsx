@@ -255,8 +255,7 @@ gap: 10px;
     border-radius: 8px;
     display: flex;
     gap: 20px;
-    width: 70%;
-    height: 80px;
+    width: 90%;
     margin: 0 auto;
 
     .text{
@@ -291,7 +290,6 @@ const Box = styled.div`
     gap: 10px;
     justify-content: space-around;
     width: 100%;
-    
     .av{
         background: rgba(0, 168, 90, 1);
 
