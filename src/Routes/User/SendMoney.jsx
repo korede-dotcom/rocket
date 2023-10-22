@@ -302,7 +302,7 @@ const Droplist = ({ id, onNavigate }) => (
           const [selectedCountry, setSelectedCountry] = useState(defaultCountry);
           const [open,setOpen] = useState(false)
           const [getmsg,setmsg] = useState("")
-      const [getlink, setlink] = useState({link:""});
+      const [getlink, setlink] = useState("");
       
       
       const { mutate, isLoading, isError } = useMutation({
@@ -312,9 +312,7 @@ const Droplist = ({ id, onNavigate }) => (
                 if (!data.status) {
                     setOpen(true)
                     setmsg(data?.message)
-                    setlink((prev) => {
-                        prev.link = data?.data
-                    })
+                    setlink(data?.data)
                 }else{
                     
                     setOpen(true)
@@ -803,7 +801,7 @@ const Droplist = ({ id, onNavigate }) => (
                               
                           
                                 {
-                                    getlink && (
+                                    paymentlink && (
                                         <div
                                         style={{
                                             position: "fixed",
@@ -820,7 +818,7 @@ const Droplist = ({ id, onNavigate }) => (
                                         }}
                                         >
                                         <div style={{ minWidth: "80vw", Height: "100vh" }}>
-                                            <Iframe src={`${getlink.link}`} width={"100%"} height={"600px"} />
+                                            <Iframe src={getlink && getlink} width={"100%"} height={"600px"} />
                                         </div>
                                         </div>
 
