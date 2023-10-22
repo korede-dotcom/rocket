@@ -312,9 +312,9 @@ const Droplist = ({ id, onNavigate }) => (
                 if (!data.status) {
                     setOpen(true)
                     setmsg(data?.message)
-                    setlink(data?.data)
                 }else{
                     
+                    setlink(data?.data)
                     setOpen(true)
                     setmsg(data?.message)
                     setStatus(true)
@@ -335,7 +335,7 @@ const Droplist = ({ id, onNavigate }) => (
             }
         });
         console.log("🚀 ~ file: SendMoney.jsx:306 ~ SendMoney ~ getlink:", getlink)
-        console.log("🚀 ~ file: SendMoney.jsx:335 ~ SendMoney ~    countryObjectsArray(getCurrencyOne?.country?.name):",    countryObjectsArray(getCurrencyOne?.country?.name))
+     
         // const sendObj = {
         //     "userId":  Userdata?.data?.user?.userId,
         //     "userBeneficiaryId": getBeneF?.id,
@@ -389,7 +389,7 @@ const Droplist = ({ id, onNavigate }) => (
   return (
     <Userlayout current="Send Money" useBack={true}>
         <Content>
-            {
+            {/* {
                 open && (
                     <ReusableModal isOpen={open} onClose={() => setOpen(!open)}>
                         {
@@ -407,7 +407,7 @@ const Droplist = ({ id, onNavigate }) => (
                     </ReusableModal>
 
                 )
-            }
+            } */}
             <div className='cont'>
 
                 {
@@ -817,9 +817,14 @@ const Droplist = ({ id, onNavigate }) => (
                                             
                                         }}
                                         >
-                                        <div style={{ minWidth: "80vw", Height: "100vh" }}>
-                                            <Iframe src={getlink && getlink} width={"100%"} height={"600px"} />
-                                        </div>
+                                            {
+                                                getlink?.length > 0 && (
+                                                <div style={{ minWidth: "80vw", Height: "100vh" }}>
+                                                    <Iframe src={getlink} width={"100%"} height={"600px"} />
+                                                </div>
+
+                                                )
+                                            }
                                         </div>
 
                                     )
