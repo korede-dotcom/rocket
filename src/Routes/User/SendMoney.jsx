@@ -389,7 +389,7 @@ const Droplist = ({ id, onNavigate }) => (
   return (
     <Userlayout current="Send Money" useBack={true}>
         <Content>
-            {/* {
+            {
                 open && (
                     <ReusableModal isOpen={open} onClose={() => setOpen(!open)}>
                         {
@@ -407,7 +407,7 @@ const Droplist = ({ id, onNavigate }) => (
                     </ReusableModal>
 
                 )
-            } */}
+            }
             <div className='cont'>
 
                 {
