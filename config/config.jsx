@@ -1,1 +1,1 @@
-export const BASE_URL = 'https://moneybusiness.tm-dev.xyz/'
+export const BASE_URL = 'https://apidoc.transferrocket.co.uk'

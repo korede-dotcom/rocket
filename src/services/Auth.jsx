@@ -7,7 +7,7 @@ const baseurl = BASE_URL
 export const userLogin = async (body) => {
 
   const { data } = await Axios.post(
-    `${baseurl}moneybusiness/auth`,
+    `${baseurl}/auth`,
     body
   );
   console.log(body)
@@ -17,7 +17,7 @@ export const userLogin = async (body) => {
 // create bank account
 export const createUser = async (body) => {
   const { data } = await Axios.post(
-    `${baseurl}moneybusiness/signup`,
+    `${baseurl}/signup`,
     body
   ); 
   return data;
@@ -25,13 +25,13 @@ export const createUser = async (body) => {
 
 export const countries = async () => {
   const { data } = await Axios.get(
-    `${baseurl}moneybusiness/getcountries`
+    `${baseurl}/getcountries`
   );
   return data;
 };
 export const checkEmail = async (body) => {
   const { data } = await Axios.get(
-    `${baseurl}moneybusiness/checkUserExistByEmail`,
+    `${baseurl}/checkUserExistByEmail`,
     body
   );
   console.log("🚀 ~ file: Auth.jsx:37 ~ checkEmail ~ data:", data)
@@ -39,14 +39,14 @@ export const checkEmail = async (body) => {
 };
 export const profession = async () => {
   const { data } = await Axios.get(
-    `${baseurl}moneybusiness/getprofession`
+    `${baseurl}/getprofession`
   );
   return data;
 };
 
 export const employment = async () => {
   const { data } = await Axios.get(
-    `${baseurl}moneybusiness/getemploymentstatus`
+    `${baseurl}/getemploymentstatus`
   );
   return data;
 };
@@ -55,21 +55,21 @@ export const employment = async () => {
 export const GetToken = async (id) => {
   console.log("🚀 ~ file: Auth.jsx:56 ~ GetToken ~ id:", id)
   const { data } = await Axios.get(
-    `${baseurl}moneybusiness/getsumsubaccesstoken?userId=${id?.queryKey[0]}`
+    `${baseurl}/getsumsubaccesstoken?userId=${id?.queryKey[0]}`
   );
   return data;
 };
 
 export const states = async (cid,sid) => {
   const { data } = await Axios.get(
-    `${baseurl}moneybusiness/getstates?countryId=${cid || 0}&stateId=${sid || 0}`
+    `${baseurl}/getstates?countryId=${cid || 0}&stateId=${sid || 0}`
   );
   return data;
 };
 
 export const cities = async (cid,sid,ciid) => {
   const { data } = await Axios.get(
-    `${baseurl}moneybusiness/getcities?countryId=${cid || 0}&stateId=${sid || 0}&citiId=${ciid || 0}`
+    `${baseurl}/getcities?countryId=${cid || 0}&stateId=${sid || 0}&citiId=${ciid || 0}`
   );
   return data;
 };
