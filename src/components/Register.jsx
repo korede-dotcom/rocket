@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { styled } from 'styled-components'
 import { Input, Link, Space } from '@arco-design/web-react';
 import Logo from '../images/logo.svg'
@@ -39,8 +39,10 @@ function Register() {
     const [step2, setstep2] = useState(false);
     const [step3, setstep3] = useState(false);
     const [selectedCountry, setselectedCountry] = useState("");
+    const [emp, setemp] = useState("");
+    const [prof, setprof] = useState("");
     const [SelectState, setSelectState] = useState("");
-    const [SelectCity, setSelectCity] = useState();
+    const [SelectCity, setSelectCity] = useState("");
     const [countryDetails, setCountryDetails] = useState();
     const [stateDetails, setStateDetails] = useState();
     const [gender, setGender] = useState();
@@ -57,14 +59,13 @@ function Register() {
         "phone": "",
         "address": "",
         "postcode": "",
-        "countryId": 161,
-        "stateId": 306,
-        "cityId": undefined,
-        "employmentStatusId": 1,
-        "professionId": 5,
+        "countryId": "",
+        "stateId": "",
+        "cityId": "",
+        "employmentStatusId": "",
+        "professionId": "",
         "companyName": "",
         "onboardingSource": "Web",
-        "agentId": 0
     })
 
 
@@ -83,36 +84,50 @@ function Register() {
         },
       });
 
-    const [Countries,setCountries] = useState(countrylist || testCountries.data)
-    const navigate = useNavigate();
+ 
 
    
     const { data:statelist,isLoading:statelistloading,refetch:refetchstatelist } = useQuery({
     
     //   queryKey: [countryDetails?.id,0],
-        queryFn: states(countryDetails?.id || 0 ,0),
+        queryFn: states(countryDetails?.id || 0 ,1),
+        onSuccess:(data) => {
+
+        },
         // refetchInterval: 10000, // fetch data every 10 seconds
         onError: (err) => {
         //   setMessage(err.response.data.detail || err.message);
         //   setOpen(true);
         },
     });
+    const [City,setCity] = useState([])
     
-    const { data:citylist,isLoading:citylistloading,refetch:refetchcitylist } = useQuery({
+    // const { data:citylist,isLoading:citylistloading,refetch:refetchcitylist } = useQuery({
     
-    //   queryKey: [countryDetails?.id,0],
-        queryFn: cities(countryDetails?.id,stateDetails?.id,0),
-        // refetchInterval: 10000, // fetch data every 10 seconds
-        onError: (err) => {
-        //   setMessage(err.response.data.detail || err.message);
-        //   setOpen(true);
-        },
-    });
+    // //   queryKey: [countryDetails?.id,0],
+    //     queryFn: cities(countryDetails?.id,stateDetails?.id,0),
+    //     onSuccess:(data) => {
+    //         console.log("🚀 ~ file: Register.jsx:109 ~ Register ~ data:", data)
+    //         setCity(data?.data)
+    //     },
+    //     // refetchInterval: 10000, // fetch data every 10 seconds
+    //     onError: (err) => {
+    //     //   setMessage(err.response.data.detail || err.message);
+    //     //   setOpen(true);
+    //     },
+    // });
+
+    console.log("🚀 ~ file: Register.jsx:115 ~ Register ~ City:", City)
+
 
     const { data:employmentlist,isLoading:employmentlistloading,refetch:refetchemploymentlist } = useQuery({
     
     //   queryKey: [countryDetails?.id,0],
         queryFn: employment,
+        onSuccess:(data) => {
+            setEmployment(data)
+        },
+
         // refetchInterval: 10000, // fetch data every 10 seconds
         onError: (err) => {
         //   setMessage(err.response.data.detail || err.message);
@@ -131,35 +146,167 @@ function Register() {
         },
     });
 
+    const [Countries,setCountries] = useState([])
+    const navigate = useNavigate();
+    const [State,setState] = useState([])
+    const [Employment,setEmployment] = useState([])
+    const [Proffession,setProffession] = useState([])
     
+
+
+    useEffect(() => {
+        // Fetch states whenever the country ID changes
+        const requestOptions = {
+          method: "GET",
+          redirect: "follow",
+        };
     
-    const [City,setCity] = useState(citylist || cityTest.data)
-    const [State,setState] = useState(statelist || testState.data)
-    const [Employment,setEmployment] = useState(employmentlist || employmentTest.data)
-    const [Proffession,setProffession] = useState(professionlist || professionTest.data)
+        fetch(
+          `https://apidoc.transferrocket.co.uk/getcountries`,
+          requestOptions
+        )
+          .then((response) => {
+              return response.json()
+            })
+            .then((data) => {
+                console.log("🚀 ~ file: Register.jsx:157 ~ useEffect ~ response:", data)
+                setCountries(data.data);
+           
+          })
+          .catch((error) => console.log("error", error));
+      }, [countryDetails?.id]);
+    useEffect(() => {
+        // Fetch states whenever the country ID changes
+        const requestOptions = {
+          method: "GET",
+          redirect: "follow",
+        };
+    
+        fetch(
+          `https://apidoc.transferrocket.co.uk/getstates?countryId=${countryDetails?.id}&stateId=0`,
+          requestOptions
+        )
+          .then((response) => {
+              return response.json()
+            })
+            .then((data) => {
+                console.log("🚀 ~ file: Register.jsx:157 ~ useEffect ~ response:", data)
+                setState(data.data);
+           
+          })
+          .catch((error) => console.log("error", error));
+      }, [countryDetails?.id]);
+
+      useEffect(() => {
+        // Fetch states whenever the country ID changes
+        const requestOptions = {
+          method: "GET",
+          redirect: "follow",
+        };
+    
+        fetch(
+          `https://apidoc.transferrocket.co.uk/getcities?countryId=${countryDetails?.id}&stateId=${stateDetails?.id}&citiId=0`,
+          requestOptions
+        )
+          .then((response) => {
+              return response.json()
+            })
+            .then((data) => {
+                console.log("🚀 ~ file: Register.jsx:156 ~ useEffect ~ response:", data)
+                setCity(data?.data);
+           
+          })
+          .catch((error) => console.log("error", error));
+      }, [SelectState]);
+
+      useEffect(() => {
+        // Fetch states whenever the country ID changes
+        const requestOptions = {
+          method: "GET",
+          redirect: "follow",
+        };
+    
+        fetch(
+          `https://apidoc.transferrocket.co.uk/getemploymentstatus`,
+          requestOptions
+        )
+          .then((response) => {
+              return response.json()
+            })
+            .then((data) => {
+                console.log("🚀 ~ file: Register.jsx:156 ~ useEffect ~ response:", data)
+                setEmployment(data?.data);
+           
+          })
+          .catch((error) => console.log("error", error));
+      }, []);
+      useEffect(() => {
+        // Fetch states whenever the country ID changes
+        const requestOptions = {
+          method: "GET",
+          redirect: "follow",
+        };
+    
+        fetch(
+          `https://apidoc.transferrocket.co.uk/getprofession`,
+          requestOptions
+        )
+          .then((response) => {
+              return response.json()
+            })
+            .then((data) => {
+                console.log("🚀 ~ file: Register.jsx:156 ~ useEffect ~ response:", data)
+                setProffession(data?.data);
+           
+          })
+          .catch((error) => console.log("error", error));
+      }, []);
+    
 
 
     // Function to navigate back
  
-    const CountryOption = [...Countries.map(d => d.name)];
-    const StateOption = [...State.map(d => d.name)]
-    const EmploymentOption = [...Employment.map(d => d.name)]
-    const ProffessionOption = [...Proffession.map(d => d.name)]
-    const CityOption = [...City.map(d => d.name)]
+    const CountryOption = [...Countries?.map(d => d?.name)];
+    const StateOption = [...State?.map(d => d?.name)]
+    console.log("🚀 ~ file: Register.jsx:173 ~ Register ~ StateOption:", StateOption)
+    const EmploymentOption = [...Employment.map(d => d?.name)]
+    const ProffessionOption = [...Proffession.map(d => d?.name)]
+    const CityOption = [...City?.map(d => d?.name)]
+    console.log("🚀 ~ file: Register.jsx:220 ~ Register ~ CityOption:", CityOption)
   
 
     const handleSelectCountry = (e) => {
-        setselectedCountry(e)
-        const getCountryDetails = Countries.find(d => d.name === e);
+        const getCountryDetails = Countries.find(d => d?.name === e);
         setCountryDetails(getCountryDetails && getCountryDetails)
-        console.log("🚀 ~ file: Register.jsx:78 ~ handleSelectCountry ~ e:", getCountryDetails)
+        setselectedCountry(getCountryDetails?.name)
+        console.log("🚀 ~ file: Register.jsx:78 ~ handleSelectCountry ~ e:", selectedCountry)
+        setUser((prev) => {
+            return {...prev, ["countryId"]:getCountryDetails?.id}
+         })
         
     }
 
     const handleSelectState = (e) => {
         setSelectState(e)
         const getStateDetails = State.find(d => d.name === e);
+        setUser((prev) => {
+            return {...prev, ["stateId"]:getStateDetails?.id}
+         })
         setStateDetails(getStateDetails && getStateDetails)
+    }
+    const handleSelectProf = (e) => {
+        const getStateDetails = Proffession.find(d => d.name === e);
+        setUser((prev) => {
+            return {...prev, ["professionId"]:getStateDetails?.id}
+        })
+        setprof(e)
+    }
+    const handleSelectEmp = (e) => {
+        const getStateDetails = Employment.find(d => d.name === e);
+        setemp(e)
+            setUser((prev) => {
+                return {...prev, ["employmentStatusId"]:getStateDetails?.id}
+             })
     }
     const handleSelectCity = (e) => {
         setSelectCity(e)
@@ -171,10 +318,35 @@ function Register() {
     }
    
 
-    const handleStepThree = () => {
+    const handleStepThree = async () => {
         setstep1(false)
         setstep2(false)
         setstep3(true)
+
+        const requestOptions = {
+            method: "POST",
+            redirect: "follow",
+            body: JSON.stringify(user), 
+          };
+      
+          fetch(
+            `https://apidoc.transferrocket.co.uk/signup`,
+            requestOptions
+          )
+            .then((response) => {
+                return response.json()
+              })
+              .then((data) => {
+                  console.log("🚀 ~ file: Register.jsx:156 ~ useEffect ~ response:", data)
+                if (data.status) {
+                    navigate("/")
+                }
+             
+            })
+            .catch((error) => console.log("error", error));
+
+       
+
     }
     const handleStepTwo = () => {
         setstep1(false)
@@ -324,7 +496,26 @@ function Register() {
                                 <div>
                                     <span>Gender</span>
                                     {/* <InputStyle > */}
-                                    <Select name="gender"  style={{height:"30px"}} onChange={(value) => {
+
+                                    <Select
+                                    name="gender"
+                                    styles={{
+                                        padding:"0px !important"
+                                        // You can add custom styles here if needed
+                                    }}
+
+                                    options={["Male","Female"]}
+                                    value={user?.gender} // Pass the selected option to the value prop
+                                    onChange={(value) => {
+                                        setUser((prev) => {
+                                            return {...prev, ['gender']:value}
+                                         })
+                                    }} // Handle option selection
+                                    placeholder="Please select your gender"
+                                    showSearch
+                                    isClearable={true} // Allow clearing the selected option
+                                    />
+                                    {/* <Select name="gender"  style={{height:"30px"}} onChange={(value) => {
                                         setGender(value)
                                         setUser((prev) => {
                                             return {...prev, ['gender']:value}
@@ -337,7 +528,7 @@ function Register() {
                                             {option}
                                             </Option>
                                         ))}
-                                    </Select>
+                                    </Select> */}
                                     {/* </InputStyle> */}
                                 </div>
                                 <div>
@@ -354,28 +545,64 @@ function Register() {
                                 <div>
                                     <span>Country</span>
                                     {/* <InputStyle > */}
-                                    <Select name="countryId" style={{height:"30px"}} onChange={handleSelectCountry} showSearch  value={selectedCountry && selectedCountry } placeholder='Please select a Country'  allowClear>
-                                    {selectedCountry}
+                                    {/* <Select name="countryId" style={{height:"30px"}} onChange={handleSelectCountry} showSearch  value={"Nigeria"} placeholder='Please select a Country'  allowClear>
+                                    <p>{selectedCountry}</p>
                                         {CountryOption.map((option, index) => (
-                                            <Option key={option} disabled={index === 3} value={option}>
+                                            <Option key={option} value={option}>
                                             {option}
                                             </Option>
                                         ))}
-                                    </Select>
+                                    </Select> */}
+                                    <Select
+                                    name="countryId"
+                                    styles={{
+                                        padding:"0px !important"
+                                        // You can add custom styles here if needed
+                                    }}
+
+                                    options={CountryOption}
+                                    value={selectedCountry} // Pass the selected option to the value prop
+                                    onChange={handleSelectCountry} // Handle option selection
+                                    placeholder="Please select a Country"
+                                    showSearch
+                                    isClearable={true} // Allow clearing the selected option
+                                    />
                                     {/* </InputStyle> */}
                                 </div>
                                 <div>
                                     <span>State</span>
-                                    {/* <InputStyle > */}
-                                    <Select name="stateId" style={{height:"30px"}} onChange={handleSelectState} showSearch  value={SelectState && SelectState } placeholder='Please select a State'  allowClear>
-                                    {SelectState}
-                                        {StateOption.map((option, index) => (
-                                            <Option key={option} disabled={index === 3} value={option}>
-                                            {option}
-                                            </Option>
-                                        ))}
-                                    </Select>
+                                  
+                                    <Select
+                                    name="stateId"
+                                    styles={{
+                                        padding:"0px !important"
+                                        // You can add custom styles here if needed
+                                    }}
+
+                                    options={StateOption}
+                                    value={SelectState} // Pass the selected option to the value prop
+                                    onChange={handleSelectState} // Handle option selection
+                                    placeholder="Please select a State"
+                                    showSearch
+                                    isClearable={true} // Allow clearing the selected option
+                                    />
                                     {/* </InputStyle> */}
+                                </div>
+                                <div>
+                                <Select
+                                    name="cityId"
+                                    styles={{
+                                        padding:"0px !important"
+                                        // You can add custom styles here if needed
+                                    }}
+
+                                    options={CityOption}
+                                    value={SelectCity} // Pass the selected option to the value prop
+                                    onChange={handleSelectCity} // Handle option selection
+                                    placeholder="Please select a city"
+                                    showSearch
+                                    isClearable={true} // Allow clearing the selected option
+                                    />
                                 </div>
                                 <div>
                                     <span>Mobile Number</span>
@@ -460,22 +687,22 @@ function Register() {
                                     </InputStyle>
                                 </div>
                                 <div>
-                                    <span>City</span>
                                 
-                                    <InputStyle >
+                                    {/* <InputStyle >
                                         <Select  name='cityId' style={{height:"30px"}} onChange={handleSelectCity} showSearch  value={cityDetails?.name && cityDetails?.name } placeholder='Please select a Country'  allowClear>
                                             {CityOption.map((option, index) => (
                                             <Option key={option} disabled={index === 3} value={option}>
                                                 {option}
                                             </Option>
                                             ))}
-                                        </Select>
-                                    </InputStyle>
+                                        </Select> */}
+                                   
+                                    {/* </InputStyle> */}
                                 </div>
                                 
                                 <div>
                                     <span>Employment Status</span>
-                                    <InputStyle >
+                                    {/* <InputStyle >
                                         <Select name="employmentStatusId" style={{height:"30px"}} onChange={handleSelectCountry} showSearch  value={selectedCountry && selectedCountry } placeholder='Please select a Country'  allowClear>
                                             {EmploymentOption.map((option, index) => (
                                             <Option key={option} disabled={index === 3} value={option}>
@@ -483,12 +710,28 @@ function Register() {
                                             </Option>
                                             ))}
                                         </Select>
-                                    </InputStyle>
+                                    </InputStyle> */}
+
+                                    <Select
+                                    name="cityId"
+                                    styles={{
+                                        padding:"0px !important"
+                                        // You can add custom styles here if needed
+                                    }}
+
+                                    options={EmploymentOption}
+                                    value={emp} // Pass the selected option to the value prop
+                                    // onChange={handleSelectCity} // Handle option selection
+                                    onChange={handleSelectEmp}
+                                    placeholder="Please select a Employment"
+                                    showSearch
+                                    isClearable={true} // Allow clearing the selected option
+                                    />
                                     
                                 </div>          
                                 <div>
                                     <span>Profession</span>
-                                    <InputStyle >
+                                    {/* <InputStyle >
                                     <Select name="professionId" placeholder='Select Proffession' style={{borderRadius:'8px;',height:"20px",background:"none"}}   allowClear showSearch>
                                         {ProffessionOption.map((option, index) => (
                                         <Option key={option} disabled={index === 3} value={option}>
@@ -496,7 +739,22 @@ function Register() {
                                         </Option>
                                         ))}
                                     </Select>
-                                    </InputStyle>
+                                    </InputStyle> */}
+                                     <Select
+                                    name="cityId"
+                                    styles={{
+                                        padding:"0px !important"
+                                        // You can add custom styles here if needed
+                                    }}
+
+                                    options={ProffessionOption}
+                                    value={prof} // Pass the selected option to the value prop
+                                    // onChange={handleSelectCity} // Handle option selection
+                                    onChange={handleSelectProf}
+                                    placeholder="Please select a Profession"
+                                    showSearch
+                                    isClearable={true} // Allow clearing the selected option
+                                    />
                                 </div>
                                 <div>
                                     <span>Company Name</span>
@@ -665,7 +923,7 @@ const Center = styled.div`
 
        .arco-select-view{
         background: #FFFFFF;
-        padding: 20px;
+        padding: 8px;
         border-radius: 8px;
         border: 1px solid var(--gray-300, #D0D5DD);
        }

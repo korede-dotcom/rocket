@@ -62,7 +62,7 @@ export const GetToken = async (id) => {
 
 export const states = async (cid,sid) => {
   const { data } = await Axios.get(
-    `${baseurl}/getstates?countryId=${cid || 0}&stateId=${sid || 0}`
+    `${baseurl}/getstates?countryId=${cid || 0}&stateId=${sid || 1}`
   );
   return data;
 };
