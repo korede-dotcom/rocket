@@ -188,7 +188,91 @@ function Dashboard() {
             </div>
           
             <div className='dashboardcontent'>
-                <SectionThree>
+              
+                    <div className='dashboard'>
+                        <div className='dbox dbox1'>
+                             <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="3" y="3" width="32" height="32" rx="16" fill="#31B550"/>
+                                <path d="M28 15.7305V14.7812C28 13.6939 27.1186 12.8125 26.0312 12.8125H11.9688C10.8814 12.8125 10 13.6939 10 14.7812V15.7305C10 15.8275 10.0787 15.9062 10.1758 15.9062H27.8242C27.9213 15.9062 28 15.8275 28 15.7305Z" fill="white"/>
+                                <path d="M10 17.207V23.2188C10 24.3061 10.8814 25.1875 11.9688 25.1875H26.0312C27.1186 25.1875 28 24.3061 28 23.2188V17.207C28 17.11 27.9213 17.0312 27.8242 17.0312H10.1758C10.0787 17.0312 10 17.11 10 17.207ZM14.5 21.8125C14.5 22.1231 14.2481 22.375 13.9375 22.375H13.375C13.0644 22.375 12.8125 22.1231 12.8125 21.8125V21.25C12.8125 20.9394 13.0644 20.6875 13.375 20.6875H13.9375C14.2481 20.6875 14.5 20.9394 14.5 21.25V21.8125Z" fill="white"/>
+                                <rect x="3" y="3" width="32" height="32" rx="16" stroke="#31B550" strokeOpacity="0.1" strokeWidth="5"/>
+                                </svg>
+                                <div className='dashboardamount'>
+                                <p>Total Transaction </p>
+                                {/* <h3>{dashboardDetails?.totalSuccessful || (dashboardDetails?.depositedAmount || 0)}</h3> */}
+                                <h3>{ <AmountFormatter currency={currencyDetails && currencyDetails[0]?.country?.currencyCode || 0} value={dashboardDetails?.totalSuccessful || (dashboardDetails?.depositedAmount || 0)} /> }</h3>
+                                </div>
+                        </div>      
+                        <div className='dbox dbox2'>
+                        <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="32" height="32" rx="16" fill="#F79009"/>
+                        <path d="M28 15.7305V14.7812C28 13.6939 27.1186 12.8125 26.0312 12.8125H11.9688C10.8814 12.8125 10 13.6939 10 14.7812V15.7305C10 15.8275 10.0787 15.9062 10.1758 15.9062H27.8242C27.9213 15.9062 28 15.8275 28 15.7305Z" fill="white"/>
+                        <path d="M10 17.207V23.2188C10 24.3061 10.8814 25.1875 11.9688 25.1875H26.0312C27.1186 25.1875 28 24.3061 28 23.2188V17.207C28 17.11 27.9213 17.0312 27.8242 17.0312H10.1758C10.0787 17.0312 10 17.11 10 17.207ZM14.5 21.8125C14.5 22.1231 14.2481 22.375 13.9375 22.375H13.375C13.0644 22.375 12.8125 22.1231 12.8125 21.8125V21.25C12.8125 20.9394 13.0644 20.6875 13.375 20.6875H13.9375C14.2481 20.6875 14.5 20.9394 14.5 21.25V21.8125Z" fill="white"/>
+                        <rect x="3" y="3" width="32" height="32" rx="16" stroke="#FEC84B" strokeOpacity="0.1" strokeWidth="5"/>
+                        </svg>
+                        <div className='dashboardamount'>
+                            <p>Pending Transactions</p>
+                            <h3>{dashboardDetails?.totalPendingAmount || (dashboardDetails?.pendingAmount || 0)}</h3>
+                        </div>
+                         </div>      
+                        <div className='dbox dbox3'>
+                        <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="32" height="32" rx="16" fill="#5631A1"/>
+                        <path d="M25.2501 19.5996H22.2751C21.8889 19.5996 21.5185 19.753 21.2454 20.0261C20.9723 20.2992 20.8188 20.6696 20.8188 21.0559C20.8188 21.4421 20.9723 21.8125 21.2454 22.0856C21.5185 22.3587 21.8889 22.5121 22.2751 22.5121H25.2501C25.4488 22.5115 25.6393 22.4323 25.7798 22.2918C25.9203 22.1513 25.9995 21.9608 26.0001 21.7621V20.3496C25.9999 20.1507 25.9209 19.9601 25.7803 19.8195C25.6396 19.6788 25.449 19.5998 25.2501 19.5996ZM22.7076 21.8696C22.493 21.8672 22.2881 21.7802 22.1373 21.6276C21.9864 21.4751 21.9018 21.2692 21.9018 21.0546C21.9018 20.84 21.9864 20.6341 22.1373 20.4816C22.2881 20.329 22.4931 20.242 22.7076 20.2396C22.9222 20.242 23.1271 20.329 23.278 20.4816C23.4288 20.6341 23.5134 20.8401 23.5134 21.0546C23.5134 21.2692 23.4288 21.4751 23.2779 21.6277C23.1271 21.7802 22.9221 21.8672 22.7076 21.8696Z" fill="white"/>
+                        <path d="M23.23 15.487L22.2075 13.8445C22.0439 13.5837 21.786 13.3961 21.4875 13.3206C21.189 13.2452 20.8729 13.2878 20.605 13.4395C20.585 13.4495 17.3225 15.487 17.3225 15.487H23.23Z" fill="white"/>
+                        <path d="M22.2752 23.1363C19.5165 23.032 19.5165 19.0761 22.2753 18.9738H24.8002V17.3613C24.7997 17.03 24.6678 16.7123 24.4335 16.478C24.1992 16.2437 23.8816 16.1119 23.5502 16.1113H13.2502C12.9189 16.1119 12.6013 16.2437 12.367 16.478C12.1327 16.7123 12.0008 17.03 12.0002 17.3613V24.7313C12.0004 25.0628 12.1321 25.3807 12.3665 25.6151C12.6009 25.8495 12.9188 25.9812 13.2502 25.9813H23.5502C23.8817 25.9812 24.1996 25.8495 24.434 25.6151C24.6684 25.3807 24.8001 25.0628 24.8002 24.7313V23.1363C24.4945 23.1343 22.626 23.1378 22.2752 23.1363Z" fill="white"/>
+                        <path d="M16.1451 15.4873C16.1451 15.4873 20.2561 12.9104 20.3501 12.8673C20.0015 12.4301 19.579 12.0133 18.9801 12.0173C18.7817 12.011 18.5841 12.0459 18.3999 12.1199C18.2157 12.1939 18.0489 12.3054 17.9101 12.4473L14.9026 15.4873C15.2127 15.4843 15.8397 15.4895 16.1451 15.4873Z" fill="white"/>
+                        <path d="M22.7079 20.7393C22.6252 20.7405 22.5463 20.7743 22.4883 20.8332C22.4302 20.8922 22.3977 20.9716 22.3977 21.0543C22.3977 21.137 22.4302 21.2164 22.4883 21.2753C22.5463 21.3342 22.6252 21.368 22.7079 21.3693C22.7906 21.368 22.8695 21.3342 22.9275 21.2753C22.9855 21.2164 23.0181 21.137 23.0181 21.0543C23.0181 20.9715 22.9855 20.8921 22.9275 20.8332C22.8695 20.7743 22.7906 20.7405 22.7079 20.7393Z" fill="white"/>
+                        <rect x="3" y="3" width="32" height="32" rx="16" stroke="#5631A1" strokeOpacity="0.1" strokeWidth="5"/>
+                        </svg>
+                        <div className='dashboardamount'>
+                            <p>Wallets</p>
+                            <h3>{ Userdata?.data?.user?.wallet?.length}</h3>
+                        </div>
+
+                        </div>      
+                        <div className='dbox dbox4'>
+                    <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="3" width="32" height="32" rx="16" fill="#F04438"/>
+                    <g clipPath="url(#clip0_391_5535)">
+                    <path d="M19 23.0576C17.9095 23.0576 17.0225 23.9447 17.0225 25.0351C17.1219 27.6549 20.8784 27.6542 20.9774 25.0351C20.9774 23.9447 20.0903 23.0576 19 23.0576Z" fill="white"/>
+                    <path d="M20.9765 11.9132C19.9952 10.6959 18.0053 10.6953 17.0236 11.9132C16.532 12.4985 16.3256 13.2658 16.4574 14.0183C16.8503 16.2632 17.4047 19.4315 17.6536 20.8544C17.9324 22.3522 20.0678 22.3517 20.3463 20.8545L21.5427 14.0183C21.6745 13.2658 21.4681 12.4985 20.9765 11.9132Z" fill="white"/>
+                    </g>
+                    <rect x="3" y="3" width="32" height="32" rx="16" stroke="#F04438" strokeOpacity="0.1" strokeWidth="5"/>
+                    <defs>
+                    <clipPath id="clip0_391_5535">
+                    <rect width="16" height="16" fill="white" transform="translate(11 11)"/>
+                    </clipPath>
+                    </defs>
+                    </svg>
+                    <div className='dashboardamount'>
+                        <p>Failed Transactions</p>
+                        <h3>{dashboardDetails?.totalFailedAmount || (dashboardDetails?.failedAmount || 0)}</h3>
+                    </div>
+                        </div>      
+                    </div>
+            </div>
+        </SectionOne>
+       
+        <SectionTwo>
+            <Box>
+                <div className='action' style={{background:`url(${chooseplan})`}} onClick={() => navigate("/user/wallet")}>
+                    <span>Wallet</span>
+                    <p>Fund your wallet easily</p>
+                     {/* <img src={Wallet} height="50px"/> */}
+                </div>
+            </Box>
+            <Box className='boxtwo' onClick={() => navigate("/user/sendmoney")}>
+               
+                    <div className='action' style={{background:`url(${withdrawfunds})`}}>
+                    <span>Send Money</span>
+                        <p>Quickly send money to your loved ones</p>
+                        {/* <img src={kite} height="50px"/> */}
+                    </div>
+           
+            </Box>
+        </SectionTwo>
+        <SectionThree>
             <div className='text'>
                 <p>Select country to view rates</p>
                 <CountryDropdown  value={selectedCountry} onChange={handleRates} />
@@ -213,29 +297,6 @@ function Dashboard() {
                 </div>
             </div>
         </SectionThree>
-                    
-            </div>
-        </SectionOne>
-       
-        <SectionTwo>
-            <Box>
-                <div className='action' style={{background:`url(${chooseplan})`}} onClick={() => navigate("/user/wallet")}>
-                    <span>Wallet</span>
-                    <p>Fund your wallet easily</p>
-                     {/* <img src={Wallet} height="50px"/> */}
-                </div>
-            </Box>
-            <Box className='boxtwo' onClick={() => navigate("/user/sendmoney")}>
-               
-                    <div className='action' style={{background:`url(${withdrawfunds})`}}>
-                    <span>Send Money</span>
-                        <p>Quickly send money to your loved ones</p>
-                        {/* <img src={kite} height="50px"/> */}
-                    </div>
-           
-            </Box>
-        </SectionTwo>
-       
         <SectionFour>
             <div className="container">
         <img src={microphone} height="150px"/>
