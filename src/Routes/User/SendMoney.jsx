@@ -366,7 +366,7 @@ const Droplist = ({ id, onNavigate }) => (
                 "note": "",
                 "transactionSource": "Web",
                 "promoCode": 12012,
-                "redirectURL": "http://localhost:5174/user/sendmoney?status",
+                "redirectURL": "https://rocket-5gw7-1i9y6fcex-koredebada-gmailcom.vercel.app/sendmoney?status",
                 "source": "web"
             
         }
