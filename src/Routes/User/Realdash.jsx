@@ -274,7 +274,7 @@ function Dashboard() {
         </SectionTwo>
         <SectionThree>
             <div className='text'>
-                <p>Select country to view rates</p>
+                <p>Today's rates</p>
                 <CountryDropdown  value={selectedCountry} onChange={handleRates} />
                 {/* <CustomInput placeholder="Input Amount" onChange={(e) => console.log(e.target.value) } /> */}
 
