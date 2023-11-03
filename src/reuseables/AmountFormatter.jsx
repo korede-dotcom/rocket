@@ -8,6 +8,7 @@ const AmountFormatter = ({ value, currency }) => {
       style="currency"
      currency={currency && currency}
       minimumFractionDigits={2}
+      
     />
   );
 };
