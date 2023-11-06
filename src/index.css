@@ -13,10 +13,7 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
   --small-color-font: var(--gray-500, #667085);
-  --primary-color: var(--Primary-Colour, #00A85A);
-
-
-
+  --primary-color: var(--Primary-Colour, #00a85a);
 }
 
 * select,
@@ -27,18 +24,14 @@ input {
   outline: none;
 }
 
-
-
-*{
+* {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
   font-weight: 350;
-
 }
 
-
-.arco-select > .arco-select-view{
+.arco-select > .arco-select-view {
   height: 5% !important;
   /* box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05) !important; */
 }
@@ -52,14 +45,12 @@ input {
   }
 }
 
-.arco-input-group-addbefore{
+.arco-input-group-addbefore {
   background-color: #ffffff;
-
-
 }
 
 .arco-input-group-suffix > svg {
-    margin-inline-end: 10px;
+  margin-inline-end: 10px;
 }
 
 .arco-steps-item {
@@ -71,15 +62,13 @@ input {
   animation: fadeIn 1s ease-in-out;
 }
 
-body{
+body {
   height: 100vh;
-  width: 100vw;
+  width: 100%;
   overflow: hidden;
   color: #000;
   transition: opacity 0.3s ease;
 }
-
-
 
 /* Remove the outline from all input elements */
 
@@ -99,7 +88,7 @@ body{
 
 } */
 
-.arco-input-inner-wrapper{
+.arco-input-inner-wrapper {
   background-color: transparent;
   outline: none;
   /* box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05) !important; */
@@ -112,24 +101,21 @@ body{
   display: none;
 } */
 
-.smalltext{
+.smalltext {
   font-size: 11.3px;
-  color: var( --small-color-font);
+  color: var(--small-color-font);
 }
 
-.css-13cymwt-control{
-  border-color: #e2e2e2!important;
+.css-13cymwt-control {
+  border-color: #e2e2e2 !important;
   outline: none;
-  
 }
 
-   
-
-#react-select-37-listbox{
+#react-select-37-listbox {
   background: none !important;
 }
 
-.css-1nmdiq5-menu{
+.css-1nmdiq5-menu {
   background: white !important ;
 }
 /* a {
@@ -173,17 +159,17 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 } */
 
-.css-1u9des2-indicatorSeparator{
-    display: none;
+.css-1u9des2-indicatorSeparator {
+  display: none;
 }
 
 /* Remove outline on all input elements */
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active{
-    -webkit-box-shadow: 0 0 0 30px rgba(208, 213, 221, 1) inset !important;
-    color: #000 !important;
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px rgba(208, 213, 221, 1) inset !important;
+  color: #000 !important;
 }
 
 input {
@@ -195,7 +181,6 @@ input {
 input:focus {
   outline: none !important;
 }
-
 
 @media (prefers-color-scheme: light) {
   :root {

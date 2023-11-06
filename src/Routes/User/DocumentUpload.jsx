@@ -42,7 +42,7 @@ import Loader from "../../reuseables/Loader";
 import ReusableModal from "../../reuseables/ReusableModal";
 import Msg from "../../reuseables/Msg";
 
-function CreateBeneficiary() {
+function DocumentUpload() {
   const [accNum, setAccNum] = useState(null);
   const [info, setInfo] = useState(null);
   const [show, setShow] = useState(false);
@@ -234,12 +234,6 @@ function CreateBeneficiary() {
     setCountryDetails(getCountryDetails && getCountryDetails);
   };
 
-  const EmploymentOption = [{ name: "Direct To Bank" }, { name: "Pick Up" }];
-
-  const handleCountryChange = (selectedOption) => {
-    setSelectedCountry(selectedOption);
-  };
-
   const collectionType = (e) => {
     //   reset setCreateBene state to the useable one
     setType(e);
@@ -307,36 +301,40 @@ function CreateBeneficiary() {
   };
 
   return (
-    <Userlayout current="Add Beneficiary Details" useBack={true}>
+    <Userlayout current="ID Upload" useBack={true}>
       <Content>
         <div className="cont">
-          <Header>
-            <h2>Collection Details</h2>
-            <p>Please fill in the details below</p>
-          </Header>
           <div className="sec">
             <SectionThree>
               <div className="text">
-                <p className="textheader">Select country</p>
-                <CountryDropdown
-                  value={selectedCountry}
-                  onChange={handleSelectCountry}
-                />
                 <div className="type">
-                  <p className="textheader">Select Collection Type</p>
+                  <p className="textheader">Document Type</p>
                   <CustomSelect
-                    defaultValue={type}
+                    defaultValue={{
+                      id: 1,
+                      label: "Drivers Licence",
+                    }}
                     onChange={collectionType}
                     options={[
-                      { name: "direct", label: "direct to bank" },
-                      { name: "Pick Up", label: "Pick Up" },
+                      {
+                        id: 1,
+                        label: "Drivers Licence",
+                      },
+                      {
+                        id: 3,
+                        label: "National ID",
+                      },
+                      {
+                        id: 2,
+                        label: "Passport",
+                      },
                     ]}
                     styles={{ fontSize: "10px ! important" }}
                   />
                 </div>
               </div>
             </SectionThree>
-            <SectionThree>
+            {/*  <SectionThree>
               {type.label === "Pick Up" ? (
                 <div className="text">
                   <p>Full Name</p>
@@ -430,7 +428,7 @@ function CreateBeneficiary() {
                   ) : null}
                 </div>
               )}
-            </SectionThree>
+            </SectionThree> */}
             <button
               disabled={nameEnq?.data?.account_name ? false : true}
               onClick={createbeneficiary}
@@ -663,4 +661,4 @@ const SectionThree = styled.div`
   }
 `;
 
-export default CreateBeneficiary;
+export default DocumentUpload;

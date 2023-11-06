@@ -1,98 +1,119 @@
-import React,{useEffect, useState} from 'react'
-import Userlayout from '../../reuseables/Userlayout'
-import WalletCard from '../../reuseables/walletCard'
-import {styled} from 'styled-components'
+import React, { useEffect, useState } from "react";
+import Userlayout from "../../reuseables/Userlayout";
+import WalletCard from "../../reuseables/walletCard";
+import { styled } from "styled-components";
 // import Kyc from '../../reuseables/Kyc'
-import { Carousel } from '@arco-design/web-react';
-import { useQuery } from '@tanstack/react-query'
-import { GetDetails } from '../../services/Dashboard'
-import AmountFormatter from '../../reuseables/AmountFormatter'
-import {countryObjectsArray} from "../../../config/CountryCodes"
-import { Link } from 'react-router-dom';
-import { Tranx } from '../../services/Dashboard';
-import { Transactions as Trnx } from '../../../config/Test';
-
+import { Carousel } from "@arco-design/web-react";
+import { useQuery } from "@tanstack/react-query";
+import { GetDetails } from "../../services/Dashboard";
+import AmountFormatter from "../../reuseables/AmountFormatter";
+import { countryObjectsArray } from "../../../config/CountryCodes";
+import { Link } from "react-router-dom";
+import { Tranx } from "../../services/Dashboard";
+import { Transactions as Trnx } from "../../../config/Test";
 
 function Wallet() {
+  const Userdata = JSON.parse(localStorage?.getItem("userDetails"));
 
-  const Userdata = JSON.parse(localStorage?.getItem("userDetails"))
-  
-  const [getWallet,setWallet] = useState(null)
+  const [getWallet, setWallet] = useState(null);
 
-  const { data:newDetails,isLoading:newDetailsloading,refetch:refetchnewDetails} = useQuery({
+  const {
+    data: newDetails,
+    isLoading: newDetailsloading,
+    refetch: refetchnewDetails,
+  } = useQuery({
     queryKey: [Userdata?.data?.user?.userId],
     queryFn: GetDetails,
-    onSuccess:(data) => {
-      setWallet(data?.data?.wallet)
-    },   // refetchInterval: 10000, // fetch data every 10 seconds
+    onSuccess: (data) => {
+      setWallet(data?.data?.wallet);
+    }, // refetchInterval: 10000, // fetch data every 10 seconds
     onError: (err) => {
       // navigate("/")
-    //   setMessage(err.response.data.detail || err.message);
-    //   setOpen(true);
+      //   setMessage(err.response.data.detail || err.message);
+      //   setOpen(true);
     },
   });
 
   const [userData, setUserData] = useState(null);
-  const { data: nameEnq, isLoading: namEnqloading, refetch: refetchnameEnq } = useQuery({
-      queryKey: [userData?.data?.user?.userId],
-      queryFn: Tranx,
-      onError: (err) => {
-          console.error(err);
-      },
+  const {
+    data: nameEnq,
+    isLoading: namEnqloading,
+    refetch: refetchnameEnq,
+  } = useQuery({
+    queryKey: [userData?.data?.user?.userId],
+    queryFn: Tranx,
+    onError: (err) => {
+      console.error(err);
+    },
   });
 
   useEffect(() => {
-      const userDataFromLocalStorage = JSON.parse(localStorage.getItem("userDetails"));
-      setUserData(userDataFromLocalStorage);
-  }, []); 
+    const userDataFromLocalStorage = JSON.parse(
+      localStorage.getItem("userDetails")
+    );
+    setUserData(userDataFromLocalStorage);
+  }, []);
 
   useEffect(() => {
-      // Check if nameEnq is available and not loading
-      if (nameEnq && !namEnqloading) {
-          console.log("🚀 ~ file: History.jsx:95 ~ History ~ nameEnq:", nameEnq);
-          // Perform any actions you want to do with nameEnq here
-      }
+    // Check if nameEnq is available and not loading
+    if (nameEnq && !namEnqloading) {
+      console.log("🚀 ~ file: History.jsx:95 ~ History ~ nameEnq:", nameEnq);
+      // Perform any actions you want to do with nameEnq here
+    }
   }, [nameEnq, namEnqloading]);
 
-      
-  
-  const [transactionList, setTransactionList ] = useState(nameEnq?.data || Trnx?.data)
+  const [transactionList, setTransactionList] = useState(
+    nameEnq?.data || Trnx?.data
+  );
 
-  const [searchKeyword, setSearchKeyword] = useState('');
-  const [filteredData, setFilteredData] = useState(transactionList && transactionList);
-  console.log("🚀 ~ file: Wallet.jsx:63 ~ Wallet ~ filteredData:", filteredData)
-  const [sortOrder, setSortOrder] = useState('asc'); // or 'desc' for descending
-  const [showFilterOptions,setshowFilterOptions] = useState(false)
-  const [filterby,setFilerby] = useState("")
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [filteredData, setFilteredData] = useState(
+    transactionList && transactionList
+  );
+  console.log(
+    "🚀 ~ file: Wallet.jsx:63 ~ Wallet ~ filteredData:",
+    filteredData
+  );
+  const [sortOrder, setSortOrder] = useState("asc"); // or 'desc' for descending
+  const [showFilterOptions, setshowFilterOptions] = useState(false);
+  const [filterby, setFilerby] = useState("");
 
   // const objectKeys = Object.keys(filteredData[0]);
-  const objectKeys = filteredData && filteredData.length > 0 ? Object.keys(filteredData[0]) : [];
-  
-
+  const objectKeys =
+    filteredData && filteredData.length > 0 ? Object.keys(filteredData[0]) : [];
 
   return (
-      <Userlayout current="wallet" useBack={true}>
-        <Content>
-          <div  className='cont' style={{display:"flex",flexDirection:"column",gap:"10px"}} >
+    <Userlayout current="wallet" useBack={true}>
+      <Content>
+        <div
+          className="cont"
+          style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+        >
           {/* <WalletCard amount="30000"/>  */}
           <Carousel
-      autoPlay
-      animation='card'
-      showArrow='line'
-      indicatorPosition='never'
-      style={{ width: '100%', color:"#000" }}
-    >
-      {getWallet?.map((d, index) => (
-       
-        <div
-          key={index}
-        >
-            <WalletCard countryName={countryObjectsArray(d?.country?.name)} currency={d?.country?.name + " " + d?.country?.currencyCode} amount={<AmountFormatter currency={d?.country?.currencyCode} value={d?.balance} /> }/> 
-        </div>
-      ))}
-    </Carousel>
+            autoPlay
+            animation="card"
+            showArrow="line"
+            indicatorPosition="never"
+            style={{ width: "100%", color: "#000" }}
+          >
+            {getWallet?.map((d, index) => (
+              <div key={index}>
+                <WalletCard
+                  countryName={countryObjectsArray(d?.country?.name)}
+                  currency={d?.country?.name + " " + d?.country?.currencyCode}
+                  amount={
+                    <AmountFormatter
+                      currency={d?.country?.currencyCode}
+                      value={d?.balance}
+                    />
+                  }
+                />
+              </div>
+            ))}
+          </Carousel>
 
-             {/* <BeneficiaryCont>
+          {/* <BeneficiaryCont>
                 <div className='head'>
                 <p>Today</p>
                 </div>
@@ -148,45 +169,40 @@ function Wallet() {
              
                
             </BeneficiaryCont> */}
-          </div>
-
+        </div>
 
         {/* <Kyc/> */}
-        </Content>
-      </Userlayout>
-)}
-
+      </Content>
+    </Userlayout>
+  );
+}
 
 const Content = styled.div`
-    width: 30vw;
-    /* background-color: #fff; */
+  width: 100%;
+  /* background-color: #fff; */
   padding-inline: 1em;
   margin: 0 auto;
   height: 100%;
-  @media screen and (max-width:40em) {
+  @media screen and (max-width: 40em) {
     width: 90%;
   }
-  `
+`;
 const BeneficiaryCont = styled.div`
-overflow-y: scroll;
-padding-inline: 1em;
-/* border: 1px solid red; */
-height: 90%;
-display: flex;
-flex-direction: column;
-gap: 10px;
+  overflow-y: scroll;
+  padding-inline: 1em;
+  /* border: 1px solid red; */
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 
-
-
-
-.head{
+  .head {
     width: 80%;
     /* padding: 1em; */
     margin: 0 auto;
-}
+  }
 
-
-.box{
+  .box {
     padding-inline: 3em;
     background-color: #fff;
     padding: 1.2em;
@@ -199,49 +215,44 @@ gap: 10px;
     width: 90%;
 
     @media screen and (max-width: 40em) {
-            width: 100%;
+      width: 100%;
     }
 
-    .text{
-        display: inline-flex;
-        flex-direction: column;
-        /* gap: 4px; */
-        letter-spacing: 1;
-        font-size: 12;
-        flex: 1;
-        
-
-
+    .text {
+      display: inline-flex;
+      flex-direction: column;
+      /* gap: 4px; */
+      letter-spacing: 1;
+      font-size: 12;
+      flex: 1;
     }
-    .options{
-        text-align: end;
-    height: 100%;
-    font-size:12px;
+    .options {
+      text-align: end;
+      height: 100%;
+      font-size: 12px;
     }
 
     /* .arco-icon-more-vertical{
         display: none;
     }
      */
-}
-
-
-`
+  }
+`;
 const Box = styled.div`
-    align-items: center;
-    display: flex;
-    gap: 14px;
-    justify-content: space-around;
-    width: 100%;
-    /* padding-inline: 1em; */
-    /* @media screen and (min-width: 90em){
+  align-items: center;
+  display: flex;
+  gap: 14px;
+  justify-content: space-around;
+  width: 100%;
+  /* padding-inline: 1em; */
+  /* @media screen and (min-width: 90em){
         display: mone;
     } */
-    .av{
-        background: rgba(0, 168, 90, 1);
+  .av {
+    background: rgba(0, 168, 90, 1);
 
-        /* width: 50%;
+    /* width: 50%;
         height: 50%; */
-    }
-`
-export default Wallet
+  }
+`;
+export default Wallet;

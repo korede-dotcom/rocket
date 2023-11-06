@@ -10,9 +10,11 @@ import Nav from "./Nav";
 function Userlayout({ children, current, useBack }) {
   return (
     <Layout>
-      <Header current={current} useBack={useBack} />
-      <div className="cont">{children}</div>
-      {window.location.pathname !== "/upload" && <Nav />}
+      <div className="main">
+        <Header current={current} useBack={useBack} />
+        <div className="cont">{children}</div>
+        {window.location.pathname !== "/upload" && <Nav />}
+      </div>
     </Layout>
   );
 }
@@ -22,6 +24,12 @@ const Layout = styled.div`
   background: #f2f2f2;
   padding: 0;
   margin: 0;
+
+  .main {
+    max-width: 440px;
+    width: 100%;
+    margin: 0 auto;
+  }
 
   .cont {
     height: 85vh;

@@ -176,12 +176,13 @@ function Dashboard() {
           <div className="sel1">
             <div className="container">
               <img className="avatar" src={Userdata?.data?.user?.idImageURL} />
-              <div className="currencyselect">
+              <FlexCol className="currencyselect">
+                {/* <Select></Select> */}
                 <CountryDropdown
                   value={selectedCountry}
                   onChange={handleCountryChange}
                 />
-              </div>
+              </FlexCol>
             </div>
             <p>Wallet Balance</p>
             <div className="wallets">
@@ -247,6 +248,10 @@ function Dashboard() {
                       countryCode={
                         selectedCountry?.value || countryFlags[0].code
                       }
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                      }}
                       svg
                     />
                     {/* <p>920.000 USD</p> */}
@@ -347,7 +352,7 @@ function Dashboard() {
 
 const Content = styled.div`
   height: 85vh;
-  width: 30vw;
+  width: 100%;
   /* position: relative; */
   .dashboardamount h3 {
     font-weight: 400 !important;
@@ -516,11 +521,15 @@ const SectionOne = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 60px;
     /* border: 1px solid red; */
   }
 
   .currencyselect {
-    width: 100%;
+    display: inline-flex;
+    /* border: 1px solid red; */
+    flex: 1;
+    justify-content: center;
   }
 
   .welcome {

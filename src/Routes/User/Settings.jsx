@@ -1,4 +1,4 @@
-import React,{useRef} from "react";
+import React, { useRef } from "react";
 import Userlayout from "../../reuseables/Userlayout";
 import styled from "styled-components";
 //
@@ -11,7 +11,7 @@ import document from "../../assets/documents.png";
 import faqs from "../../assets/faqs.png";
 import logout from "../../assets/logout.png";
 import greaterthan from "../../assets/greaterthan.svg";
-import copy from '../../assets/copy.svg';
+import copy from "../../assets/copy.svg";
 //
 import Box from "../../reuseables/Box";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +22,7 @@ const Settings = () => {
       id: 0,
       title: "Your contact details",
       image: contact,
-      path: "/customer/contact/details"
+      path: "/customer/contact/details",
     },
     {
       id: 1,
@@ -43,7 +43,7 @@ const Settings = () => {
       id: 4,
       title: "ID Documents",
       image: document,
-      path: '/user/id/documents'
+      path: "/user/id/documents",
     },
     {
       id: 5,
@@ -81,7 +81,7 @@ const Settings = () => {
       id: 4,
       title: "FAQs",
       image: faqs,
-    }
+    },
   ];
   const settingsMap3 = [
     {
@@ -93,29 +93,21 @@ const Settings = () => {
       id: 1,
       title: "Delete My Account",
       image: delet,
-    }
+    },
   ];
 
-
-
   const handleUploadImage = (e) => {
-    const parent =  e.target.parentElement;
+    const parent = e.target.parentElement;
     const getInput = parent.querySelector(".uploader");
-    getInput.click()
-    getInput.addEventListener("change",(e) => {
-      console.log(e)
-    })
-
-
-
-    
+    getInput.click();
+    getInput.addEventListener("change", (e) => {
+      console.log(e);
+    });
   };
-  
+
   // Usage: Call handleUploadImage() when your image is clicked
-  
+
   // Usage: Call handleUploadImage() when your image is clicked
-  
-    
 
   const navigate = useNavigate();
   const Userdata = JSON.parse(localStorage.getItem("userDetails"));
@@ -124,14 +116,24 @@ const Settings = () => {
       <Container>
         <InnerBox>
           <div className="user-info">
-            <div className="pro-photo" onClick={handleUploadImage} >
-             
+            <div className="pro-photo" onClick={handleUploadImage}>
               <img src={Userdata?.data?.user?.idImageURL} alt="" />
-                <input type="file" className="uploader" style={{display:"none"}} />
-
+              <input
+                type="file"
+                className="uploader"
+                style={{ display: "none" }}
+              />
             </div>
             <p className="proname">Korede Sulaimon</p>
-            <p className="copyreg"> <span>bit.ly/agentkorede</span><img src={copy} alt=""  onClick={() =>  navigator.clipboard.writeText('Copy')}/></p>
+            <p className="copyreg">
+              {" "}
+              <span>bit.ly/agentkorede</span>
+              <img
+                src={copy}
+                alt=""
+                onClick={() => navigator.clipboard.writeText("Copy")}
+              />
+            </p>
           </div>
           <p className="title">Profile Settings</p>
           <Box alignItems="flex-start" flexDirection="column">
@@ -198,57 +200,57 @@ const InnerBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 20px;
   justify-content: center;
 
-  .user-info{
+  .user-info {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     row-gap: 3px;
     margin: 25px 0 10px;
-    .pro-photo{
+    .pro-photo {
       display: flex;
       align-items: center;
       justify-content: center;
       width: 80%;
       height: 100px;
       border-radius: 50%;
-      border: 2px solid #00A85A;
-      img{
+      border: 2px solid #00a85a;
+      img {
         width: 100%;
         height: 100%;
         border-radius: 50%;
       }
     }
-    .proname{
+    .proname {
       color: #090814;
       font-size: 14px;
       font-weight: 500;
       line-height: 150%;
     }
-    .copyreg{
+    .copyreg {
       display: flex;
       align-items: center;
       gap: 5px;
-      span{
-        color: #00A85A;
+      span {
+        color: #00a85a;
       }
-      color: #6B7280;
+      color: #6b7280;
       font-size: 13px;
       font-weight: 500;
-      line-height: 150%; 
+      line-height: 150%;
     }
   }
 
-
-  .title{
+  .title {
     // width: 100%;
-    min-width: 300px;
-    color: #6B7280;
+    min-width: 100%;
+    color: #6b7280;
     font-size: 13px;
     font-weight: 500;
-    line-height: 150%; 
+    line-height: 150%;
     margin-top: 20px;
   }
 
@@ -259,23 +261,23 @@ const InnerBox = styled.div`
     align-items: center;
     justify-content: space-between;
     padding: 10px;
-    border-bottom: 1px solid #E9EDF5;
+    border-bottom: 1px solid #e9edf5;
     // border: 2px solid green;
-    .left{
+    .left {
       display: flex;
       align-items: center;
       gap: 13px;
-      span{
-        color: #333B4A;
+      span {
+        color: #333b4a;
         font-size: 12px;
         font-weight: 500;
       }
-      .outboard{
-        color: #F04438;
+      .outboard {
+        color: #f04438;
       }
     }
   }
-  .wrapper:last-child{
+  .wrapper:last-child {
     border: none;
   }
 `;

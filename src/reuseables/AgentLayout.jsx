@@ -2,38 +2,40 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 
-import React from 'react'
-import {styled} from 'styled-components'
-import Header from './Header'
-import Nav from './Nav'
-import AgentNav from './AgentNav'
+import React from "react";
+import { styled } from "styled-components";
+import Header from "./Header";
+import Nav from "./Nav";
+import AgentNav from "./AgentNav";
 
-
-function Agentlayout({children,current,useBack}) {
+function Agentlayout({ children, current, useBack }) {
   return (
-   <Layout>
-    <Header current={current} useBack={useBack}/>
-    <div className='cont'>
-        {children}
-    </div>
-    <AgentNav/>
-   </Layout>
-  )
+    <Layout>
+      <div className="main">
+        <Header current={current} useBack={useBack} />
+        <div className="cont">{children}</div>
+        <AgentNav />
+      </div>
+    </Layout>
+  );
 }
 
 const Layout = styled.div`
-    height: 100vh;
-    background: #F2F2F2;
-    padding: 0;
-    margin: 0;
+  height: 100vh;
+  background: #f2f2f2;
+  padding: 0;
+  margin: 0;
 
-    .cont{
-        height: 85vh;
-        overflow-y: scroll;
- 
-    }
-;
+  .main {
+    max-width: 440px;
+    width: 100%;
+    margin: 0 auto;
+  }
 
-`
+  .cont {
+    height: 85vh;
+    overflow-y: scroll;
+  }
+`;
 
-export default Agentlayout
+export default Agentlayout;
