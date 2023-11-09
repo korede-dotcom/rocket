@@ -2,7 +2,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Userlayout from "../../reuseables/Userlayout";
 import { styled } from "styled-components";
 import User from "../../images/user.svg";
@@ -184,6 +184,7 @@ function Dashboard() {
                 />
               </FlexCol>
             </div>
+
             <p>Wallet Balance</p>
             <div className="wallets">
               <h5>

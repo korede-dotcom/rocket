@@ -28,11 +28,13 @@ const Settings = () => {
       id: 1,
       title: "Change Address",
       image: contact,
+      path: "/user/settings/address",
     },
     {
       id: 2,
       title: "Wallet",
       image: contact,
+      path: "/user/settings/wallet",
     },
     {
       id: 3,

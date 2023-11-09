@@ -41,6 +41,7 @@ import CustomInput from "../../reuseables/CustomInput";
 import Loader from "../../reuseables/Loader";
 import ReusableModal from "../../reuseables/ReusableModal";
 import Msg from "../../reuseables/Msg";
+import { Link } from "react-router-dom";
 
 function DocumentUpload() {
   const [accNum, setAccNum] = useState(null);
@@ -333,6 +334,8 @@ function DocumentUpload() {
                   />
                 </div>
               </div>
+
+              <a href="/idscan.html">Redirect to Html page</a>
             </SectionThree>
             {/*  <SectionThree>
               {type.label === "Pick Up" ? (

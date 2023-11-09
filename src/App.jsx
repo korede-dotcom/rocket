@@ -36,6 +36,9 @@ import CustomerContactDetails from "./Routes/User/Settings/CustomerContactDetail
 import IdDocuments from "./Routes/User/Settings/IdDocuments";
 import UploadId from "./Routes/User/UploadId";
 import DocumentUpload from "./Routes/User/DocumentUpload";
+import ChangeAddress from "./Routes/User/Settings/ChangeAddress";
+import Wallets from "./Routes/User/Settings/Wallets";
+import WalletsDetails from "./Routes/User/Settings/WalletsDetails";
 //
 
 function App() {
@@ -82,8 +85,21 @@ function App() {
             element={<CustomerContactDetails />}
           />
           <Route path="/user/id/documents" element={<IdDocuments />} />
+          <Route path="/user/settings/address" element={<ChangeAddress />} />
+          <Route path="/user/settings/wallet" element={<Wallets />} />
+          <Route
+            path="/user/settings/wallet/:id"
+            element={<WalletsDetails />}
+          />
           <Route path="/user/upload" element={<DocumentUpload />} />
           <Route path="/upload" element={<UploadId />} />
+          <Route
+            path="/idscan"
+            render={() => {
+              window.location.href = "idscan.html";
+            }}
+          />
+
           {/* Settings End */}
           {/* </Route> */}
           <Route path="*" element={<h1>Error</h1>} />

@@ -12,10 +12,8 @@ const Box = ({
   return (
     <BoxWrapper
       style={{
-        padding: padding ? padding : "10px",
+        padding: padding ? padding : "20px",
         margin: margin ? margin : "10px 20px",
-        alignItems: alignItems ? "alignItems" : "center",
-        justifyContent: justifyContent ? justifyContent : "space-between",
         flexDirection: flexDirection ? flexDirection : "row",
       }}
     >
@@ -27,10 +25,12 @@ const Box = ({
 export default Box;
 
 const BoxWrapper = styled.div`
-  border-radius: 7.733px;
+  border-radius: 10.733px;
   background: #fff;
   display: flex;
   min-width: 100%;
+  width: 100%;
+  max-height: 90vh;
 
   @media screen and (min-width: 550px) {
     margin: 10px 10% !important;
