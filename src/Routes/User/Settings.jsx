@@ -63,6 +63,7 @@ const Settings = () => {
       id: 0,
       title: "Change Password",
       image: changepassword,
+      path: "/user/settings/password",
     },
     {
       id: 1,
@@ -153,8 +154,8 @@ const Settings = () => {
           </Box>
           <p className="title">Support & Security</p>
           <Box alignItems="flex-start" flexDirection="column">
-            {settingsMap2.map(({ title, image }, i) => (
-              <div className="wrapper" key={i}>
+            {settingsMap2.map(({ title, image, path }, i) => (
+              <div className="wrapper" key={i} onClick={() => navigate(path)}>
                 <div className="left">
                   <img src={image} alt="" />
                   <span>{title}</span>

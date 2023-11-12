@@ -288,7 +288,7 @@ function Dashboard() {
             <div
               className="action"
               style={{ background: `url(${chooseplan})` }}
-              onClick={() => navigate("/user/wallet")}
+              onClick={() => navigate("/user/settings/wallet")}
             >
               <span>Wallet</span>
               <p>Fund your wallet easily</p>

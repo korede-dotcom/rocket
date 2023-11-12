@@ -15,7 +15,7 @@ import {
 } from "@arco-design/web-react/icon";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { Tranx } from "../../../services/Dashboard";
+import { GetDetails, Tranx } from "../../../services/Dashboard";
 import { Transactions as Trnx } from "../../../../config/Test";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import AmountFormatter from "../../../reuseables/AmountFormatter";
@@ -226,6 +226,47 @@ function Wallets() {
 
     setFilteredData(sortedData);
   };
+
+  const Userdata = JSON.parse(localStorage?.getItem("userDetails"));
+
+  const [getWallet, setWallet] = useState(null);
+
+  const {
+    data: newDetails,
+    isLoading: newDetailsloading,
+    refetch: refetchnewDetails,
+  } = useQuery({
+    queryKey: [Userdata?.data?.user?.userId],
+    queryFn: GetDetails,
+    onSuccess: (data) => {
+      setWallet(data?.data?.wallet);
+    }, // refetchInterval: 10000, // fetch data every 10 seconds
+    onError: (err) => {
+      // navigate("/")
+      //   setMessage(err.response.data.detail || err.message);
+      //   setOpen(true);
+    },
+  });
+
+  useEffect(() => {
+    const userDataFromLocalStorage = JSON.parse(
+      localStorage.getItem("userDetails")
+    );
+    setUserData(userDataFromLocalStorage);
+  }, []);
+
+  useEffect(() => {
+    // Check if nameEnq is available and not loading
+    if (nameEnq && !namEnqloading) {
+      console.log("🚀 ~ file: History.jsx:95 ~ History ~ nameEnq:", nameEnq);
+      // Perform any actions you want to do with nameEnq here
+    }
+  }, [nameEnq, namEnqloading]);
+
+  console.log(
+    "🚀 ~ file: Wallet.jsx:63 ~ Wallet ~ filteredData:",
+    filteredData
+  );
 
   return (
     <Userlayout current="Wallets" useBack={true}>
