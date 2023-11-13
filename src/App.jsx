@@ -39,6 +39,7 @@ import DocumentUpload from "./Routes/User/DocumentUpload";
 import ChangeAddress from "./Routes/User/Settings/ChangeAddress";
 import Wallets from "./Routes/User/Settings/Wallets";
 import WalletsDetails from "./Routes/User/Settings/WalletsDetails";
+import ChangePassord from "./Routes/User/Settings/ChangePassword";
 //
 
 function App() {
@@ -86,6 +87,7 @@ function App() {
           />
           <Route path="/user/id/documents" element={<IdDocuments />} />
           <Route path="/user/settings/address" element={<ChangeAddress />} />
+          <Route path="/user/settings/password" element={<ChangePassord />} />
           <Route path="/user/settings/wallet" element={<Wallets />} />
           <Route
             path="/user/settings/wallet/:id"
