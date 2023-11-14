@@ -40,6 +40,7 @@ import ChangeAddress from "./Routes/User/Settings/ChangeAddress";
 import Wallets from "./Routes/User/Settings/Wallets";
 import WalletsDetails from "./Routes/User/Settings/WalletsDetails";
 import ChangePassord from "./Routes/User/Settings/ChangePassword";
+import AddWallet from "./Routes/User/Settings/AddWallet";
 //
 
 function App() {
@@ -89,6 +90,7 @@ function App() {
           <Route path="/user/settings/address" element={<ChangeAddress />} />
           <Route path="/user/settings/password" element={<ChangePassord />} />
           <Route path="/user/settings/wallet" element={<Wallets />} />
+          <Route path="/user/settings/add-wallet" element={<AddWallet />} />
           <Route
             path="/user/settings/wallet/:id"
             element={<WalletsDetails />}

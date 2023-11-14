@@ -179,6 +179,16 @@ function Wallets() {
     );
     setUserData(userDataFromLocalStorage);
   }, []);
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: [],
+    queryFn: GetDetails,
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
 
   useEffect(() => {
     // Check if nameEnq is available and not loading
@@ -364,35 +374,21 @@ function Wallets() {
             />
           </SwiperSlide>
         </Swiper>
-        {/*   <div
+        <div
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            margin: "20px 0",
+            margin: "10px 20px",
           }}
         >
-          <div
-            style={{
-              padding: "20px",
-              borderRadius: "10px",
-              background: "#121212",
-              width: "100%",
-              height: "18vh",
-              position: "relative",
-            }}
-          >
-            <img
+          <Link to="/user/settings/add-wallet">
+            <Button
               style={{
-                position: "absolute",
-                right: "10px",
-                bottom: "0px",
+                background: "rgba(0, 168, 90, 1)",
               }}
-              src={wallet}
-              alt=""
-            />
-          </div>
-        </div> */}
+            >
+              Add Wallet
+            </Button>
+          </Link>
+        </div>
         <div className="head">
           <p>Wallet History</p>
         </div>
@@ -703,3 +699,18 @@ const Box = styled.div`
 `;
 
 export default Wallets;
+
+const Button = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  border: none;
+  padding: 14px;
+  margin-top: 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  color: white;
+`;
