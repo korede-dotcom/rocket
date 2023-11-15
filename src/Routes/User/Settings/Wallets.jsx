@@ -15,7 +15,11 @@ import {
 } from "@arco-design/web-react/icon";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { GetDetails, Tranx } from "../../../services/Dashboard";
+import {
+  GetDetails,
+  GetUserWalletsTransactions,
+  Tranx,
+} from "../../../services/Dashboard";
 import { Transactions as Trnx } from "../../../../config/Test";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import AmountFormatter from "../../../reuseables/AmountFormatter";
@@ -161,6 +165,20 @@ const InputSearch = Input.Search;
 
 function Wallets() {
   const [userData, setUserData] = useState(null);
+  const Userdata = JSON.parse(localStorage?.getItem("userDetails"));
+
+  const { data: walletT, isLoading: walletTLoading } = useQuery({
+    queryKey: [],
+    queryFn: GetUserWalletsTransactions(
+      `userId=${Userdata?.data?.user?.userId}&requestId=${Userdata?.data?.userRoleId}`
+    ),
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (err) => {
+      console.error(err);
+    },
+  });
   const {
     data: nameEnq,
     isLoading: namEnqloading,
@@ -190,14 +208,6 @@ function Wallets() {
     },
   });
 
-  useEffect(() => {
-    // Check if nameEnq is available and not loading
-    if (nameEnq && !namEnqloading) {
-      console.log("🚀 ~ file: History.jsx:95 ~ History ~ nameEnq:", nameEnq);
-      // Perform any actions you want to do with nameEnq here
-    }
-  }, [nameEnq, namEnqloading]);
-
   const [transactionList, setTransactionList] = useState(
     nameEnq?.data || Trnx?.data
   );
@@ -211,8 +221,6 @@ function Wallets() {
   const [filterby, setFilerby] = useState("");
 
   // const objectKeys = Object.keys(filteredData[0]);
-  const objectKeys =
-    filteredData && filteredData.length > 0 ? Object.keys(filteredData[0]) : [];
 
   // Function to handle search
   const handleSearch = (e) => {
@@ -237,26 +245,7 @@ function Wallets() {
     setFilteredData(sortedData);
   };
 
-  const Userdata = JSON.parse(localStorage?.getItem("userDetails"));
-
   const [getWallet, setWallet] = useState(null);
-
-  const {
-    data: newDetails,
-    isLoading: newDetailsloading,
-    refetch: refetchnewDetails,
-  } = useQuery({
-    queryKey: [Userdata?.data?.user?.userId],
-    queryFn: GetDetails,
-    onSuccess: (data) => {
-      setWallet(data?.data?.wallet);
-    }, // refetchInterval: 10000, // fetch data every 10 seconds
-    onError: (err) => {
-      // navigate("/")
-      //   setMessage(err.response.data.detail || err.message);
-      //   setOpen(true);
-    },
-  });
 
   useEffect(() => {
     const userDataFromLocalStorage = JSON.parse(
@@ -265,19 +254,7 @@ function Wallets() {
     setUserData(userDataFromLocalStorage);
   }, []);
 
-  useEffect(() => {
-    // Check if nameEnq is available and not loading
-    if (nameEnq && !namEnqloading) {
-      console.log("🚀 ~ file: History.jsx:95 ~ History ~ nameEnq:", nameEnq);
-      // Perform any actions you want to do with nameEnq here
-    }
-  }, [nameEnq, namEnqloading]);
-
-  console.log(
-    "🚀 ~ file: Wallet.jsx:63 ~ Wallet ~ filteredData:",
-    filteredData
-  );
-
+  console.log(walletT, Userdata, "we");
   return (
     <Userlayout current="Wallets" useBack={true}>
       <Content>
@@ -299,80 +276,84 @@ function Wallets() {
             padding: "0 20px",
           }}
         >
-          <SwiperSlide
-            style={{
-              padding: "20px",
-              borderRadius: "10px",
-              background: "#121212",
-              width: "100%",
-              height: "18vh",
-              position: "relative",
-            }}
-          >
-            <div>
-              <div
+          {userData?.data?.user?.wallet?.map((item) => {
+            return (
+              <SwiperSlide
                 style={{
-                  display: "flex",
-                  alignItems: "center",
+                  padding: "20px",
+                  borderRadius: "10px",
+                  background: "#121212",
+                  width: "100%",
+                  height: "18vh",
+                  position: "relative",
                 }}
               >
-                <CountryFlag
-                  countryCode={"NGN"}
-                  style={{
-                    width: "30px",
-                    height: "30px",
-                    borderRadius: "2000px",
-                  }}
-                  svg
-                />
-                <div
-                  style={{
-                    color: "white",
-                    marginLeft: "10px",
-                  }}
-                >
-                  British Pound
-                </div>
-              </div>
+                <div>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CountryFlag
+                      countryCode={item?.country?.currencyCode}
+                      style={{
+                        width: "30px",
+                        height: "30px",
+                        borderRadius: "2000px",
+                      }}
+                      svg
+                    />
+                    <div
+                      style={{
+                        color: "white",
+                        marginLeft: "10px",
+                      }}
+                    >
+                      {item?.country?.name} {item?.country?.currencyCode}
+                    </div>
+                  </div>
 
-              <div
-                style={{
-                  color: "white",
-                  fontSize: "30px",
-                  marginTop: "10px",
-                }}
-              >
-                ${kFormatter2("4000")}
-              </div>
-              <Link
-                to={`/user/settings/wallet/${"id"}`}
-                style={{
-                  textDecoration: "none",
-                  display: "block",
-                  width: "fit-content",
-                }}
-              >
-                <div
-                  style={{
-                    color: "white",
-                    fontSize: "17px",
-                    marginTop: "10px",
-                  }}
-                >
-                  Explore
+                  <div
+                    style={{
+                      color: "white",
+                      fontSize: "30px",
+                      marginTop: "10px",
+                    }}
+                  >
+                    ${kFormatter2(item?.balance)}
+                  </div>
+                  <Link
+                    to={`/user/settings/wallet/${"id"}`}
+                    style={{
+                      textDecoration: "none",
+                      display: "block",
+                      width: "fit-content",
+                    }}
+                  >
+                    <div
+                      style={{
+                        color: "white",
+                        fontSize: "17px",
+                        marginTop: "10px",
+                      }}
+                    >
+                      Explore
+                    </div>
+                  </Link>
                 </div>
-              </Link>
-            </div>
-            <img
-              style={{
-                position: "absolute",
-                right: "10px",
-                bottom: "0px",
-              }}
-              src={wallet}
-              alt=""
-            />
-          </SwiperSlide>
+                <img
+                  style={{
+                    position: "absolute",
+                    right: "10px",
+                    bottom: "0px",
+                  }}
+                  src={wallet}
+                  alt=""
+                />
+              </SwiperSlide>
+            );
+          })}
         </Swiper>
         <div
           style={{

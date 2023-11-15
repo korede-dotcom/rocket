@@ -7,6 +7,8 @@ import CountryDropdown from "../../../reuseables/CountryList";
 import Btn from "../../../reuseables/Btn";
 import { useMutation } from "@tanstack/react-query";
 import { createWallet } from "../../../services/Dashboard";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const AddWallet = () => {
   const [selectedCountry, setSelectedCountry] = useState();
@@ -16,10 +18,18 @@ const AddWallet = () => {
     setSelectedCountry(selectedOption);
   };
 
+  const navigate = useNavigate();
+
   const { mutate, isLoading, isError } = useMutation({
     mutationFn: createWallet,
     onSuccess: (data) => {
       console.log(data);
+      if (data?.status) {
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
+        navigate("/user/settings/wallet");
+      }
     },
     onError: (data) => {
       setTimeout(() => {
@@ -119,6 +129,7 @@ const AddWallet = () => {
         </button> */}
 
         <Btn
+          disabled={isLoading}
           clicking={() => {
             mutate({
               userId: userData?.data?.user?.userId,
@@ -126,7 +137,7 @@ const AddWallet = () => {
                 name: "My Naira Wallet",
                 note: "My Naira Wallet",
                 country: {
-                  id: selectedCountry,
+                  id: selectedCountry?.id,
                 },
               },
             });
@@ -135,7 +146,7 @@ const AddWallet = () => {
             width: "100%",
           }}
         >
-          Save Changes
+          {isLoading ? "Creating..." : " Save Changes"}
         </Btn>
       </Centeredbox>
     </Userlayout>

@@ -18,6 +18,7 @@ const CountryDropdown = ({ value, onChange, style, defaultValue }) => {
         return {
           value: d?.currencyCode,
           label: d?.name,
+          id: d?.id,
         };
       });
       setClist;
@@ -43,6 +44,7 @@ const CountryDropdown = ({ value, onChange, style, defaultValue }) => {
     return {
       value: countryObjectsArray(d?.country?.name),
       label: d?.country?.name,
+      id: d?.country?.id,
     };
   });
   const filteredUsers = wallets?.country?.filter((cname) =>
