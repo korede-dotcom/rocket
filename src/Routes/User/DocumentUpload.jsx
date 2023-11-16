@@ -335,7 +335,9 @@ function DocumentUpload() {
                 </div>
               </div>
 
-              <a href="/idscan.html">Redirect to Html page</a>
+              <a href="/idscan.html">
+                <button>Scan Document</button>
+              </a>
             </SectionThree>
             {/*  <SectionThree>
               {type.label === "Pick Up" ? (
@@ -482,6 +484,8 @@ const Content = styled.div`
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      width: 100%;
+      margin-top: 20px;
       background: rgba(0, 168, 90, 1);
 
       &:hover {

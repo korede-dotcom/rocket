@@ -10,6 +10,7 @@ import carousel1 from "../../assets/carousel1.svg";
 import carousel2 from "../../assets/carousel2.svg";
 import carousel3 from "../../assets/carousel3.svg";
 import progress from "../../assets/progress.svg";
+import { Link } from "react-router-dom";
 
 // function CameraApp() {
 //   const videoRef = useRef(null);
@@ -105,9 +106,11 @@ const UploadId = () => {
               ))}
             </Carousel>
           </div>
+          <Link to="/user/upload">
           <div className="btns">
             <p>Continue</p>
           </div>
+          </Link>
         </UploadIdBox>
       </Centeredbox>
     </Userlayout>
